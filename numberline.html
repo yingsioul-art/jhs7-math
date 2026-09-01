@@ -675,6 +675,17 @@ const PRAC=[
   why:"−19 離原點比較遠，而且是往<b>左邊</b>跑，所以 −19 在 −16 的左邊 → <b>−16 ＞ −19</b>。<br><b>八題做完了。</b>你已經把課本 1-1 主題 4 的兩個概念都練過一次。"}
 ];
 
+
+/* 打散選項順序 —— 正解不會永遠在同一個位置（每次開啟都重洗） */
+PRAC.forEach(function(P){
+  var pairs=P.o.map(function(t,i){return {t:t, ok:(i===P.a)};});
+  for(var i=pairs.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1)), tmp=pairs[i]; pairs[i]=pairs[j]; pairs[j]=tmp;
+  }
+  P.o=pairs.map(function(x){return x.t;});
+  P.a=pairs.findIndex(function(x){return x.ok;});
+});
+
 let pi=0, pDone=(state.prac||0);
 function pDots(){
   $("pDots").innerHTML=PRAC.map((_,i)=>
