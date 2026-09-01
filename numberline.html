@@ -126,6 +126,26 @@ tr:last-child td{border-bottom:none}
   border-radius:99px;cursor:pointer;font-size:13px;font-family:inherit;margin-top:28px}
 footer{padding:36px 0;color:var(--ink2);font-size:13px;line-height:1.9;text-align:center}
 svg{max-width:100%;height:auto;display:block}
+
+/* ── 開始之前 ── */
+.flow{counter-reset:s;list-style:none;padding:0;margin:14px 0 0}
+.flow li{counter-increment:s;position:relative;padding:7px 0 7px 40px;font-size:15.5px;line-height:1.7}
+.flow li::before{content:counter(s);position:absolute;left:0;top:8px;width:25px;height:25px;
+  background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:12.5px;font-weight:700}
+details.pre{background:#fff;border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden}
+details.pre summary{padding:13px 16px;cursor:pointer;font-size:16px;font-weight:600;list-style:none;
+  display:flex;align-items:center;gap:10px}
+details.pre summary::-webkit-details-marker{display:none}
+details.pre summary::before{content:"?";flex-shrink:0;width:22px;height:22px;border-radius:50%;
+  background:var(--line);color:var(--ink2);display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;font-weight:700}
+details.pre[open] summary::before{content:"\2713";background:var(--green);color:#fff}
+details.pre[open] summary{border-bottom:1px solid var(--line)}
+details.pre .bd{padding:14px 16px;font-size:15.5px;line-height:1.8;color:var(--ink2)}
+details.pre .bd strong{color:var(--ink)}
+details.pre .bd p{margin:0 0 10px}
+details.pre .bd p:last-child{margin:0}
 </style>
 </head>
 <body>
@@ -147,6 +167,40 @@ svg{max-width:100%;height:auto;display:block}
     <span class="tag">七上第 1 章最難</span>
   </div>
 </header>
+
+<!-- ══ 開始之前 ══ -->
+<section>
+  <div class="step">開始之前</div>
+  <h2>這一課不是考試，是一場追蹤</h2>
+
+  <p class="lead">等一下你會先看到一題會考題。<strong>那不是要考你</strong>——是想讓你先猜一次。<br>這是七年級上第一章十三年來最難的一題，而且將近四成的人選了同一個錯的答案。</p>
+
+  <div class="card">
+    <p style="margin:0 0 4px"><strong>這一課會這樣走：</strong></p>
+    <ol class="flow">
+      <li>先看一個問題：P 往左邊跑，那 Q 會去哪裡？</li>
+      <li><strong>你先猜</strong>一個答案（猜錯完全沒關係）</li>
+      <li>看看全國的考生怎麼選</li>
+      <li>自己拖拖看，你會親眼看到答案</li>
+      <li>這時候才解釋「為什麼一定是這樣」</li>
+      <li>換個問法再看一次（也可以用拖的）</li>
+      <li>最後：數線是誰發明的，為什麼那麼重要</li>
+    </ol>
+  </div>
+
+  <h3>先確認你知道這些</h3>
+  <p>下面每一項點開來看，幾十秒就能確認。<strong>如果都很熟，直接往下開始。</strong></p>
+  <details class="pre"><summary>「倒數」是什麼？（這一課一定要先懂）</summary><div class="bd"><p><strong>兩個數乘起來剛好等於 1，這兩個數就互為倒數。</strong></p><p>例如：4 × <span class="frac"><span>1</span><span>4</span></span> ＝ 1，所以 4 和 <span class="frac"><span>1</span><span>4</span></span> 互為倒數。</p><p>找倒數最快的方法：<strong>把分子分母上下顛倒</strong>。5 就是 <span class="frac"><span>5</span><span>1</span></span>，顛倒後是 <span class="frac"><span>1</span><span>5</span></span>。</p><p>📌 這一課要問的就是：<strong>如果原來那個數是負的，倒數會變成正的嗎？</strong></p></div></details>
+  <details class="pre"><summary>數線怎麼看？</summary><div class="bd"><p>一條橫線，中間是 <strong>0</strong>。<strong>往右邊越來越大，往左邊越來越小。</strong></p><p>所以 −5 在 −2 的左邊（因為 −5 比 −2 還小），而 2 在 0 的右邊。</p><p>📌 這一課會一直用到一句話：<strong>「在 0 的哪一邊」＝「是正的還是負的」</strong>。</p></div></details>
+  <details class="pre"><summary>「絕對值」是什麼？（後面的變化題會用到）</summary><div class="bd"><p>絕對值＝<strong>這個數離 0 有多遠</strong>，不管它在左邊還是右邊。</p><p>寫成 <span class="eq">|−3|</span>，讀作「−3 的絕對值」，答案是 <strong>3</strong>（因為 −3 離 0 有 3 格）。</p><p><span class="eq">|3|</span> 也是 3。<em>兩個方向一樣遠，絕對值就一樣。</em></p></div></details>
+
+  <div class="note">
+    <p><b>三個提醒</b></p>
+    <p style="margin-top:10px">① <strong>一開始那題，全國有 38.6% 的人把答案放到數線的另一邊</strong>。答錯很正常，而且錯得很有道理。</p>
+    <p style="margin-top:8px">② 這一題<strong>完全不用計算</strong>，只要想清楚「它會跑到哪一邊」。</p>
+    <p style="margin-top:8px">③ 每一段要答完才解鎖下一段，不是要考你，是不想讓你跳過思考。進度會自己存著。</p>
+  </div>
+</section>
 
 <!-- ══ 0 案發 ══ -->
 <section>
