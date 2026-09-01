@@ -189,6 +189,32 @@ svg{max-width:100%;height:auto;display:block}
   transition:opacity .15s}
 .dl a.get:hover{opacity:.86}
 .dl .meta{font-size:13px;color:var(--ink2);margin:10px 0 0}
+
+/* 五點座標即時表 */
+.coords{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.cbox{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 10px;text-align:center}
+.cbox .cn{font-size:12px;color:var(--ink2);font-weight:700;letter-spacing:.06em}
+.cbox .cv{font-family:"Cambria",Georgia,serif;font-size:17px;font-weight:700;margin:3px 0 1px}
+.cbox .ca{font-size:12px;color:var(--ink2)}
+.cbox.neg .cv{color:#b03030}
+.cbox.pos .cv{color:#15803d}
+.cbox.zero .cv{color:var(--ink2)}
+
+/* 完整解法步驟 */
+.sol{margin:20px 0}
+.sstep{display:flex;gap:14px;margin-bottom:20px}
+.sn{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-top:2px}
+.sb{flex:1;min-width:0}
+.sb h4{margin:2px 0 8px;font-size:17px;color:var(--ink)}
+.sb p{font-size:15.5px;line-height:1.85;margin:0 0 10px}
+.sb p:last-child{margin:0}
+.sb p.warn{background:#fdf8e8;border-left:3px solid #e3d5a4;padding:8px 12px;border-radius:0 8px 8px 0;font-size:14.5px}
+.case{border-radius:10px;padding:14px 16px;margin:12px 0}
+.case p{margin:0 0 7px;font-size:15.5px;line-height:1.9}
+.case p:last-child{margin:0}
+.case.bad{background:var(--red-soft);border:1px solid #edc4c4}
+.case.good{background:var(--green-soft);border:1px solid #b7ddc3}
 </style>
 </head>
 <body>
@@ -460,6 +486,7 @@ svg{max-width:100%;height:auto;display:block}
     </svg>
     <div class="slider-lab"><span>原點在 A</span><span>原點在 E</span></div>
     <input type="range" id="sl2" min="0" max="400" value="0" aria-label="原點位置">
+    <div class="coords" id="coords"></div>
     <div class="readout">
       <div class="pill"><div class="lb"><span class="eq">|a| ＋ |b|</span></div><div class="vl" id="v1">0.00</div></div>
       <div class="pill"><div class="lb"><span class="eq">|e|</span></div><div class="vl" id="v2">4.00</div></div>
@@ -478,6 +505,129 @@ svg{max-width:100%;height:auto;display:block}
       <button class="opt" data-k="D"><span class="k">D</span><span>在 <span class="eq">CD</span> 上且較接近 <strong>D</strong> 點</span></button>
     </div>
     <div class="fb" id="fb0"></div>
+  </div>
+
+  <div class="locked-zone" id="z5a">
+  <h3>完整算法：一步一步來</h3>
+  <p>用拖的可以<em>找到</em>答案，但考場上沒有滑桿。下面是紙筆的做法——<strong>六步，每一步都不跳。</strong></p>
+
+  <div class="sol">
+    <div class="sstep">
+      <div class="sn">1</div>
+      <div class="sb">
+        <h4>先給五個點編號</h4>
+        <p>題目只說「等距」，沒說一格多長——<strong>那就自己定一格 ＝ 1</strong>。<br>
+        比例才是重點，一格是 1 公分還是 1 公尺都不影響答案。</p>
+        <p>從 A 開始數，每個點在第幾格：</p>
+        <p class="eq" style="text-align:center;font-size:17px">A ＝ 0 格　B ＝ 1 格　C ＝ 2 格　D ＝ 3 格　E ＝ 4 格</p>
+        <p class="warn">⚠️ 注意：這是<strong>「第幾格」</strong>，還不是座標。座標要等原點決定了才有。</p>
+      </div>
+    </div>
+
+    <div class="sstep">
+      <div class="sn">2</div>
+      <div class="sb">
+        <h4>把「原點在哪」設成一個字母</h4>
+        <p>原點在 <span class="eq">AE</span> 上，但不知道確切位置——<strong>不知道的東西就用字母代表</strong>。</p>
+        <p>設原點在 <strong>A 右方 <span class="eq">t</span> 格</strong>。因為它在 A 和 E 之間，所以 <span class="eq">0 ≤ t ≤ 4</span>。</p>
+      </div>
+    </div>
+
+    <div class="sstep">
+      <div class="sn">3</div>
+      <div class="sb">
+        <h4>算出每個點的座標</h4>
+        <p><strong>座標 ＝ 這個點的格數 − 原點的格數。</strong><br>
+        （因為座標就是「從原點出發，往右走幾格」。往左就是負的。）</p>
+        <div class="scroll" style="margin:12px -6px">
+        <table style="margin:0">
+          <tr><th>點</th><th>第幾格</th><th>座標</th><th>在原點的哪一邊</th></tr>
+          <tr><td><b>A</b></td><td>0</td><td class="eq">0 − t ＝ <b>−t</b></td><td>左邊（或重合）</td></tr>
+          <tr><td><b>B</b></td><td>1</td><td class="eq">1 − t</td><td><span style="color:var(--red)">要看 t 多大</span></td></tr>
+          <tr><td><b>E</b></td><td>4</td><td class="eq">4 − t</td><td>右邊（或重合）</td></tr>
+        </table>
+        </div>
+        <p class="warn">⚠️ B 的位置是<strong>整題的關鍵</strong>：原點可能在 B 左邊，也可能在 B 右邊。</p>
+      </div>
+    </div>
+
+    <div class="sstep">
+      <div class="sn">4</div>
+      <div class="sb">
+        <h4>把絕對值拆開</h4>
+        <p>這一課學過：<strong>絕對值 ＝ 離原點的距離</strong>，一定是 0 或正數。<br>
+        所以拆絕對值的規則是：<em>本來就是正的 → 直接拿掉符號；本來是負的 → 前面加一個負號讓它變正</em>。</p>
+        <p><span class="eq">|a| ＝ |−t| ＝ <b>t</b></span>　<span class="dim">（因為 t ≥ 0，−t 是負的或 0）</span></p>
+        <p><span class="eq">|e| ＝ |4−t| ＝ <b>4−t</b></span>　<span class="dim">（因為 t ≤ 4，4−t 是正的或 0）</span></p>
+        <p style="margin-top:14px"><strong><span class="eq">|b| ＝ |1−t|</span> 就要分兩種情況了：</strong></p>
+        <div class="scroll" style="margin:10px -6px">
+        <table style="margin:0">
+          <tr><th>情況</th><th>原點在哪</th><th><span class="eq">1−t</span> 是</th><th><span class="eq">|b|</span> ＝</th></tr>
+          <tr><td><b>甲</b></td><td>B 的左邊（<span class="eq">t ≤ 1</span>）</td><td>正的</td><td class="eq"><b>1 − t</b></td></tr>
+          <tr><td><b>乙</b></td><td>B 的右邊（<span class="eq">t ＞ 1</span>）</td><td><span style="color:var(--red)">負的</span></td><td class="eq"><b>t − 1</b></td></tr>
+        </table>
+        </div>
+        <p>📌 <strong>回去拖一次滑桿，把原點從 B 的左邊拖到右邊</strong>——你會看到 B 那一格的數字從綠色（正）變成紅色（負）。<em>那一刻就是甲、乙兩種情況的分界。</em></p>
+      </div>
+    </div>
+
+    <div class="sstep">
+      <div class="sn">5</div>
+      <div class="sb">
+        <h4>兩種情況各代一次</h4>
+        <p>題目給的條件是 <span class="eq">|a| ＋ |b| ＝ |e|</span>。把上面拆好的東西代進去：</p>
+
+        <div class="case bad">
+          <p><b>情況甲</b>（假設 <span class="eq">t ≤ 1</span>）</p>
+          <p class="eq">t ＋ (1 − t) ＝ 4 − t</p>
+          <p class="eq">1 ＝ 4 − t　　<span class="dim">（左邊的 t 和 −t 抵銷了）</span></p>
+          <p class="eq">t ＝ 3</p>
+          <p>但一開始假設 <span class="eq">t ≤ 1</span>，算出來卻是 3 —— <strong>自相矛盾，這種情況不成立。</strong></p>
+        </div>
+
+        <div class="case good">
+          <p><b>情況乙</b>（假設 <span class="eq">t ＞ 1</span>）</p>
+          <p class="eq">t ＋ (t − 1) ＝ 4 − t</p>
+          <p class="eq">2t − 1 ＝ 4 − t　　<span class="dim">（左邊兩個 t 併起來）</span></p>
+          <p class="eq">2t ＋ t ＝ 4 ＋ 1　　<span class="dim">（把 t 移到左邊、數字移到右邊）</span></p>
+          <p class="eq">3t ＝ 5</p>
+          <p class="eq">t ＝ <b><span class="frac"><span>5</span><span>3</span></span></b> ≈ 1.67</p>
+          <p><span class="eq">5/3 ＞ 1</span>，和假設一致 → <strong>這才是答案。</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sstep">
+      <div class="sn">6</div>
+      <div class="sb">
+        <h4>把 t 翻譯回「在哪兩點之間」</h4>
+        <p>原點在 A 右方 <span class="eq">5/3 ≈ 1.67</span> 格。而 <strong>B 在 1 格、C 在 2 格</strong>：</p>
+        <p class="eq" style="text-align:center;font-size:17px">1 ＜ 1.67 ＜ 2　→　原點在 <b>B 和 C 之間</b></p>
+        <p>再比誰近：</p>
+        <p class="eq">距 B ＝ 1.67 − 1 ＝ <b>0.67</b> 格　　距 C ＝ 2 − 1.67 ＝ <b>0.33</b> 格</p>
+        <p><span class="eq">0.33 ＜ 0.67</span> → <strong>比較靠近 C</strong>。答案選 <b>B</b>。</p>
+      </div>
+    </div>
+
+    <div class="sstep">
+      <div class="sn">✓</div>
+      <div class="sb">
+        <h4>最後驗算一次</h4>
+        <p>把 <span class="eq">t ＝ 5/3</span> 代回去，看條件成不成立：</p>
+        <p class="eq">a ＝ −5/3 → |a| ＝ 5/3<br>
+        b ＝ 1 − 5/3 ＝ −2/3 → |b| ＝ 2/3<br>
+        e ＝ 4 − 5/3 ＝ 7/3 → |e| ＝ 7/3</p>
+        <p class="eq"><b>|a| ＋ |b| ＝ 5/3 ＋ 2/3 ＝ 7/3 ＝ |e|</b> ✓</p>
+        <p>條件成立，答案沒錯。<span class="dim">（也可以直接用滑桿驗：拖到 1.67，兩邊差距就是 0。）</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><b>這題真正在考什麼？</b></p>
+    <p style="margin-top:10px">不是算式難，而是<strong>你敢不敢把「不知道的東西」設成一個字母</strong>，還有<strong>記不記得絕對值要分情況</strong>。</p>
+    <p style="margin-top:10px">那個「分兩種情況」不是老師刁難——<em>是因為 B 有可能在原點的任一邊，而絕對值在兩邊的算法真的不一樣</em>。你在滑桿上已經親眼看過 b 變號的那一刻了。</p>
+  </div>
   </div>
 
   <div class="locked-zone" id="z5b">
@@ -751,10 +901,10 @@ $("pNext").addEventListener("click",()=>{
 /* ══ 會考挑戰回饋 ══ */
 const FB={
  0:{ans:"B",
-  A:["在 BC 上是對的，但偏向錯了","<p>用滑桿驗證：把差距調到 0 時，綠線會停在 B 和 C 之間，<strong>比較靠近 C</strong>（大約在 B 往右 0.67 格的位置）。</p>"],
-  B:["正確，而且你可以用滑桿驗證","<p>把間距當成 1 格：原點落在 A 右邊 <span class='eq'>5/3</span> 格 ≈ 1.67 格處，也就是 <strong>B 和 C 之間、離 C 只有 0.33 格</strong>。</p><p>代數解法是設原點在 A 右方 t 格，解 <span class='eq'>t ＋ |1−t| ＝ 4−t</span> 得 <span class='eq'>t ＝ 5/3</span>。<em>但你其實用拖的就找到了——這就是數線的價值。</em></p>"],
-  C:["超過了","<p>在 <span class='eq'>CD</span> 上的話，<span class='eq'>|a|＋|b|</span> 會比 <span class='eq'>|e|</span> 大太多。拖滑桿過去看看差距變成多少。</p>"],
-  D:["更遠了","<p>原點越往右，<span class='eq'>|a|</span> 和 <span class='eq'>|b|</span> 越大、<span class='eq'>|e|</span> 越小，兩邊差距只會拉開。往左拉找差距 0 的地方。</p>"]},
+  A:["在 BC 上是對的，但偏向錯了","<p>用滑桿驗證：把差距調到 0 時，綠線會停在 B 和 C 之間，<strong>比較靠近 C</strong>（大約在 B 往右 0.67 格的位置）。</p><p>往下有<strong>一步一步的完整算法</strong>，看完就會知道 1.67 是怎麼算出來的。</p>"],
+  B:["正確","<p>原點落在 A 右邊 <span class='eq'>5/3</span> 格 ≈ 1.67 格處，也就是 <strong>B 和 C 之間、離 C 只有 0.33 格</strong>。</p><p>用拖的可以找到答案，但考場上沒有滑桿——<strong>往下有一步一步的紙筆算法</strong>，包含為什麼要分兩種情況。</p>"],
+  C:["超過了","<p>在 <span class='eq'>CD</span> 上的話，<span class='eq'>|a|＋|b|</span> 會比 <span class='eq'>|e|</span> 大太多。拖滑桿過去看看差距變成多少。</p><p>往下有<strong>一步一步的完整算法</strong>，看完就會知道 1.67 是怎麼算出來的。</p>"],
+  D:["更遠了","<p>原點越往右，<span class='eq'>|a|</span> 和 <span class='eq'>|b|</span> 越大、<span class='eq'>|e|</span> 越小，兩邊差距只會拉開。往左拉找差距 0 的地方。</p><p>往下有<strong>一步一步的完整算法</strong>，看完就會知道 1.67 是怎麼算出來的。</p>"]},
  1:{ans:"B",
   A:["方向對了，長度反了","<p>你把 Q 放在 <span class='eq'>AO</span> 之間——<strong>這是對的</strong>，比六成的人強。</p><p>但你認為 <span class='eq'>AQ ＜ QO</span>，也就是 Q 比較靠近 A（靠近 −2）。回去拖一次滑桿：Q 其實<em>非常靠近 0</em>。</p>"],
   B:["答對了，而且你避開了最大的坑","<p>Q 在 <span class='eq'>AO</span> 之間，而且緊貼著 O，所以 <span class='eq'>AQ ＞ QO</span>。</p><p>往下看——<strong>將近四成的人把 Q 放到了數線的另一半</strong>。</p>"],
@@ -788,7 +938,7 @@ function unlock(id){
 }
 function gate(){
   if((state.prac||0)>=PRAC.length){unlock("z4");unlock("z5")}
-  if(state.q0!==undefined){unlock("z5b")}
+  if(state.q0!==undefined){unlock("z5a");unlock("z5b")}
   if(state.q1!==undefined){unlock("z5c");drawDist()}
   if(state.q3!==undefined){unlock("z6")}
   paint();
@@ -875,13 +1025,24 @@ function labB(){
   const left=Math.abs(a)+Math.abs(b), right=Math.abs(e), diff=Math.abs(left-right);
   $("v1").textContent=left.toFixed(2); $("v2").textContent=right.toFixed(2); $("v3").textContent=diff.toFixed(2);
   $("orig").setAttribute("transform","translate("+(t*60).toFixed(1)+",0)");
+  // 三個點的座標與絕對值：看得到正負號什麼時候翻
+  const box=(nm,val)=>{
+    const cls = Math.abs(val)<0.005 ? "zero" : (val<0 ? "neg" : "pos");
+    return '<div class="cbox '+cls+'"><div class="cn">'+nm+'</div>'+
+           '<div class="cv">'+M(val.toFixed(2))+'</div>'+
+           '<div class="ca">|'+nm.toLowerCase()+'| ＝ '+Math.abs(val).toFixed(2)+'</div></div>';
+  };
+  $("coords").innerHTML = box("A",a)+box("B",b)+box("E",e);
   const v=$("labv2");
   if(diff<0.03){
     v.className="verdict good";
-    v.innerHTML="<strong>找到了。</strong>原點在 A 右方約 <span class='eq'>1.67</span> 格 ＝ <span class='eq'>5/3</span> 格——落在 <strong>B 和 C 之間，離 C 比較近</strong>（距 B 0.67 格、距 C 只有 0.33 格）。";
+    v.innerHTML="<strong>找到了。</strong>原點在 A 右方約 <span class='eq'>1.67</span> 格 ＝ <span class='eq'>5/3</span> 格——落在 <strong>B 和 C 之間，離 C 比較近</strong>（距 B 0.67 格、距 C 只有 0.33 格）。<br>選好答案之後，下面有一步一步的完整算法。";
   }else if(diff<0.5){
     v.className="verdict warn";
     v.innerHTML="很接近了，差距剩 "+diff.toFixed(2)+"。再微調一點點。";
+  }else if(t>1.02 && t<1.5){
+    v.className="verdict warn";
+    v.innerHTML="⚠️ <strong>注意剛剛發生了什麼：</strong>原點越過 B 之後，<span class='eq'>b</span> 從正的變成<span style='color:#b03030'>負的</span>了。<br>絕對值只看距離，所以 <span class='eq'>|b|</span> 的算法也跟著換了一套——<em>這正是等一下解題時要「分兩種情況」的原因</em>。";
   }else{
     v.className="verdict";
     v.innerHTML="現在 <span class='eq'>|a|＋|b|</span> ＝ "+left.toFixed(2)+"、<span class='eq'>|e|</span> ＝ "+right.toFixed(2)+"，差距 "+diff.toFixed(2)+"。往"+(left<right?"右":"左")+"拖。";
