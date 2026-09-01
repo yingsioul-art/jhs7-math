@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>科學記號｜七上 1-4</title>
+<style>
+:root{
+  --paper:#f7f8f5; --ink:#20261f; --ink2:#525c50; --line:#d8ded4;
+  --accent:#15803d; --accent-soft:#e9f5ec;
+  --teal:#0f6b63; --teal-soft:#e6f2f0;
+  --blue:#1d5b79; --blue-soft:#e8f1f5;
+  --green:#15803d; --green-soft:#e9f5ec;
+  --red:#b03030; --red-soft:#fdeeee;
+  --shadow:0 1px 2px rgba(32,38,31,.06),0 8px 24px rgba(32,38,31,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  font-size:17px;line-height:1.85;letter-spacing:.01em}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px 120px}
+
+header{padding:56px 0 28px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+.kicker{font-size:13px;letter-spacing:.22em;color:var(--accent);font-weight:700;margin-bottom:14px}
+h1{font-size:34px;line-height:1.3;margin:0 0 14px;letter-spacing:-.01em}
+.sub{color:var(--ink2);font-size:15px;margin:0}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.tag{font-size:12px;padding:4px 11px;border:1px solid var(--line);border-radius:99px;color:var(--ink2);background:#fff}
+
+.bar{position:sticky;top:0;z-index:50;background:rgba(247,248,245,.95);
+  border-bottom:1px solid var(--line);margin:0 -20px 0;padding:10px 20px}
+.bar-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.track{flex:1;height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.bar b{font-size:12px;color:var(--ink2);font-weight:600;font-variant-numeric:tabular-nums}
+
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.step{font-size:12px;letter-spacing:.2em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.step .n{display:inline-block;background:var(--accent);color:#fff;border-radius:50%;
+  width:20px;height:20px;line-height:20px;text-align:center;margin-right:8px;letter-spacing:0}
+h2{font-size:25px;line-height:1.4;margin:0 0 20px;letter-spacing:-.01em}
+h3{font-size:19px;margin:34px 0 12px}
+h4{font-size:16.5px;margin:24px 0 8px;color:var(--teal)}
+p{margin:0 0 18px}
+.lead{font-size:19px;line-height:1.9}
+.dim{color:var(--ink2)}
+.big{font-size:22px;font-weight:700;line-height:1.6;margin:26px 0}
+em{font-style:normal;background:linear-gradient(transparent 62%,#bfe6c9 62%);font-weight:600;padding:0 1px}
+.eq{font-family:"Cambria","Times New Roman",Georgia,serif;font-size:1.06em;font-variant-numeric:tabular-nums}
+.eq sup{font-size:.68em;vertical-align:super;line-height:0}
+.eq.blk{display:block;text-align:center;font-size:21px;margin:20px 0}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;
+  font-size:.82em;line-height:1.15;margin:0 2px}
+.frac span:first-child{border-bottom:1.3px solid currentColor;padding:0 4px}
+.hl{background:#fff3c4;border-radius:3px;padding:0 3px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin:24px 0;box-shadow:var(--shadow)}
+.quote{border-left:3px solid var(--accent);background:var(--accent-soft);padding:18px 20px;border-radius:0 10px 10px 0;margin:24px 0}
+.quote p:last-child{margin:0}
+.note{background:var(--blue-soft);border:1px solid #cfe0e8;border-radius:12px;padding:18px 20px;margin:24px 0;font-size:16px}
+.note p:last-child{margin:0}
+.note b{color:var(--blue)}
+.aside{background:#fdf8e8;border:1px dashed #e3d5a4;border-radius:12px;padding:16px 18px;margin:24px 0;font-size:15px;color:#5c4d20}
+.aside p:last-child{margin:0}
+
+.fcard{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:20px;margin:16px 0;box-shadow:var(--shadow)}
+.fcard.warn{border-color:var(--red)}
+.fcard .fname{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.fcard.warn .fname{color:var(--red)}
+.fcard .fbody{font-size:21px;text-align:center;margin:10px 0 14px;font-family:"Cambria",Georgia,serif}
+.fcard .fsay{font-size:15.5px;color:var(--ink2);line-height:1.75;margin:0}
+.fcard .fsay strong{color:var(--ink)}
+
+.q{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow)}
+.q-src{font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:12px}
+.q-body{font-size:16.5px;line-height:1.9;margin-bottom:20px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:12px;align-items:center;padding:14px 16px;border:1.5px solid var(--line);
+  border-radius:11px;cursor:pointer;background:#fff;font-size:16px;line-height:1.7;
+  transition:border-color .15s,background .15s;text-align:left;width:100%;font-family:inherit;color:inherit}
+.opt:hover:not(.locked){border-color:var(--ink2);background:#fbfcfa}
+.opt .k{font-weight:700;flex-shrink:0;width:22px;color:var(--ink2)}
+.opt.picked{border-color:var(--ink);border-width:2px}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.right .k{color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt.wrong .k{color:var(--red)}
+.opt.locked{cursor:default}
+.opt .pct{margin-left:auto;font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink2);
+  flex-shrink:0;padding-left:10px;font-weight:600}
+.fb{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);font-size:16px;display:none}
+.fb.show{display:block;animation:rise .45s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fb h4{margin:0 0 8px;font-size:15px;letter-spacing:.06em;color:inherit}
+.fb p:last-child{margin:0}
+
+.locked-zone{opacity:.3;pointer-events:none;filter:blur(4px) saturate(.2);user-select:none}
+.revealed{animation:reveal .6s ease both}
+@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.prac{background:#fff;border:2px solid var(--teal);border-radius:16px;padding:22px;margin:26px 0;box-shadow:var(--shadow)}
+.prac-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;
+  font-size:13px;color:var(--ink2);font-weight:600;gap:10px;flex-wrap:wrap}
+.prac-top .src{color:var(--teal);letter-spacing:.08em}
+.dots{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap}
+.dot{width:22px;height:6px;border-radius:99px;background:var(--line);transition:background .3s}
+.dot.done{background:var(--green)}
+.dot.now{background:var(--teal)}
+.prac-q{font-size:17.5px;line-height:2;margin-bottom:8px}
+.prac-hint{font-size:14.5px;color:var(--ink2);margin-bottom:16px;line-height:1.7}
+.prac-fb{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:15.5px;line-height:1.8;display:none}
+.prac-fb.show{display:block;animation:rise .3s ease}
+.prac-fb.ok{background:var(--green-soft);border:1px solid #b7ddc3}
+.prac-fb.no{background:var(--red-soft);border:1px solid #edc4c4}
+
+.btn{padding:9px 18px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;
+  border-radius:99px;cursor:pointer;font-size:14.5px;font-family:inherit;font-weight:600;transition:opacity .15s}
+.btn:hover{opacity:.86}
+.btn.ghost{background:#fff;color:var(--accent)}
+.btn:disabled{opacity:.35;cursor:default}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+.lab{background:linear-gradient(#fff,#fbfcfa);border:1px solid var(--line);border-radius:16px;
+  padding:22px;margin:26px 0;box-shadow:var(--shadow)}
+.lab-t{font-size:12px;letter-spacing:.18em;color:var(--blue);font-weight:700;margin-bottom:16px}
+input[type=range]{width:100%;accent-color:var(--accent);height:26px}
+.slider-lab{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin:6px 0 2px}
+.readout{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.pill{flex:1;min-width:106px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.pill .lb{font-size:12.5px;color:var(--ink2)}
+.pill .vl{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.pill.hi{background:var(--accent-soft);border-color:#b7ddc3}
+.pill.hi .vl{color:var(--accent)}
+.verdict{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:15px;line-height:1.7;
+  background:var(--blue-soft);border:1px solid #cfe0e8}
+.verdict.good{background:var(--green-soft);border-color:#b7ddc3}
+.verdict.warn{background:#fdf8e8;border-color:#e3d5a4}
+
+.dist{margin:18px 0}
+.dbar{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:14px}
+.dbar .dk{width:20px;font-weight:700;flex-shrink:0}
+.dtrack{flex:1;height:26px;background:#eceee9;border-radius:6px;overflow:hidden}
+.dfill{height:100%;border-radius:6px;width:0;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.dbar .dv{width:52px;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink2);flex-shrink:0;font-weight:600}
+
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:15px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#eef1eb;font-weight:700;font-size:13.5px;letter-spacing:.04em}
+tr:last-child td{border-bottom:none}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px -20px;padding:0 20px}
+.scroll table{margin:0;min-width:460px}
+
+.flow{counter-reset:s;list-style:none;padding:0;margin:14px 0 0}
+.flow li{counter-increment:s;position:relative;padding:7px 0 7px 40px;font-size:15.5px;line-height:1.7}
+.flow li::before{content:counter(s);position:absolute;left:0;top:8px;width:25px;height:25px;
+  background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:12.5px;font-weight:700}
+details.pre{background:#fff;border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden}
+details.pre summary{padding:13px 16px;cursor:pointer;font-size:16px;font-weight:600;list-style:none;
+  display:flex;align-items:center;gap:10px}
+details.pre summary::-webkit-details-marker{display:none}
+details.pre summary::before{content:"?";flex-shrink:0;width:22px;height:22px;border-radius:50%;
+  background:var(--line);color:var(--ink2);display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;font-weight:700}
+details.pre[open] summary::before{content:"\2713";background:var(--green);color:#fff}
+details.pre[open] summary{border-bottom:1px solid var(--line)}
+details.pre .bd{padding:14px 16px;font-size:15.5px;line-height:1.8;color:var(--ink2)}
+details.pre .bd strong{color:var(--ink)}
+details.pre .bd p{margin:0 0 10px}
+details.pre .bd p:last-child{margin:0}
+
+.done{text-align:center;padding:52px 0 20px}
+.done h2{font-size:27px}
+.reset{background:none;border:1px solid var(--line);color:var(--ink2);padding:9px 18px;
+  border-radius:99px;cursor:pointer;font-size:13px;font-family:inherit;margin-top:28px}
+footer{padding:36px 0;color:var(--ink2);font-size:13px;line-height:1.9;text-align:center}
+svg{max-width:100%;height:auto;display:block}
+
+.dl{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:20px 22px;margin:24px 0;text-align:left}
+.dl h4{margin:0 0 8px;font-size:17px;color:var(--ink)}
+.dl p{font-size:15px;line-height:1.8;margin:0 0 14px;color:var(--ink2)}
+.dl a.get{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;
+  text-decoration:none;padding:11px 20px;border-radius:99px;font-size:15px;font-weight:700;
+  transition:opacity .15s}
+.dl a.get:hover{opacity:.86}
+.dl .meta{font-size:13px;color:var(--ink2);margin:10px 0 0}
+
+/* 展開器 */
+.plain{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 14px;margin:14px 0;
+  font-family:"Cambria",Georgia,serif;font-size:20px;text-align:center;word-break:break-all;line-height:1.7}
+.plain .z{color:#b5bbb0}
+.plain .d{color:var(--accent);font-weight:700}
+.signnote{margin-top:10px;padding:11px 14px;border-radius:9px;font-size:14.5px;text-align:center;
+  background:var(--green-soft);border:1px solid #b7ddc3;color:var(--green);font-weight:700}
+.cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:16px 0}
+.cmpbox{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 10px;text-align:center}
+.cmpbox .ct{font-family:"Cambria",Georgia,serif;font-size:18px;font-weight:700}
+.cmpbox .cp{font-size:12.5px;color:var(--ink2);margin-top:4px;word-break:break-all}
+.cmpbox.win{border-color:var(--accent);background:var(--accent-soft)}
+.cmpsign{font-size:26px;font-weight:700;color:var(--accent);font-family:"Cambria",Georgia,serif}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-inner">
+  <b id="pnum">0 / 13</b>
+  <div class="track"><div class="fill" id="pfill"></div></div>
+</div></div>
+
+<div class="wrap">
+
+<header>
+  <div class="kicker">七年級上 · 第一章 1-4 指數記法與科學記號 · 主題 3</div>
+  <h1>科學記號</h1>
+  <p class="sub">牛郎和織女相隔 150000000000000 公里。<br><strong>這一串 0，你數得完嗎？——這就是科學記號存在的理由。</strong></p>
+  <div class="meta">
+    <span class="tag">課本 p.73–79</span>
+    <span class="tag">課本練習 8 題</span>
+    <span class="tag">會考挑戰 5 題</span>
+    <span class="tag">約 40 分鐘</span>
+  </div>
+</header>
+
+<!-- ══ 開始之前 ══ -->
+<section>
+  <div class="step">開始之前</div>
+  <h2>這一課會怎麼走</h2>
+
+  <div class="card">
+    <ol class="flow">
+      <li><strong>先把寫法認熟</strong>：<span class="eq">a×10<sup>n</sup></span>，以及 a 為什麼一定要在 1 到 10 之間</li>
+      <li>這個寫法從哪來——<strong>它其實是為了「不要數錯 0」而發明的</strong></li>
+      <li><strong>用課本的例題和隨堂練習動手做</strong>（8 題：先學會寫，再學會比大小）</li>
+      <li>重點整理：把整個主題收成一張表</li>
+      <li>最後是<strong>會考挑戰</strong>——5 題，其中一題有<strong>16% 的人以為它是負數</strong></li>
+    </ol>
+  </div>
+
+  <h3>先確認你知道這些</h3>
+  <details class="pre"><summary>10 的次方，長什麼樣子？</summary><div class="bd">
+    <p><span class="eq">10<sup>1</sup>＝10</span>、<span class="eq">10<sup>2</sup>＝100</span>、<span class="eq">10<sup>3</sup>＝1000</span>⋯⋯<strong>指數是幾，後面就有幾個 0</strong>。</p>
+    <p>往另一邊走：<span class="eq">10<sup>−1</sup>＝0.1</span>、<span class="eq">10<sup>−2</sup>＝0.01</span>、<span class="eq">10<sup>−3</sup>＝0.001</span>⋯⋯<strong>指數是負幾，小數點後就有幾位</strong>。</p>
+    <p>🔴 <strong>非常重要：<span class="eq">10<sup>−6</sup></span> 是一個很小的<em>正數</em>（0.000001），不是負數。</strong></p>
+    <p>那個負號是在說「<em>往小的方向走</em>」，不是在說「這個數是負的」。<strong>這一課最多人錯的地方就在這裡。</strong></p>
+  </div></details>
+  <details class="pre"><summary>1-4 主題 1 的乘方，還記得嗎？</summary><div class="bd">
+    <p><span class="eq">a<sup>n</sup></span>：底數 a 乘 n 次。<strong>指數只是右上角一個小數字，代表「乘幾次」。</strong></p>
+    <p>科學記號裡的 <span class="eq">10<sup>n</sup></span> 就是同一件事，只是底數固定是 10。忘了可以回<a href="power.html" style="color:var(--accent);font-weight:700">主題 1（整數的乘方）</a>。</p>
+  </div></details>
+  <details class="pre"><summary>為什麼要學這個？</summary><div class="bd">
+    <p>因為科學上常常遇到<strong>大到爆炸或小到看不見</strong>的數：</p>
+    <p>地球的質量約 <span class="eq">5970000000000000000000</span> 公噸<br>
+    一顆細胞大約 <span class="eq">0.00000014</span> 公尺</p>
+    <p>這種數字<strong>寫起來很長、讀起來很痛苦、而且非常容易把 0 數錯</strong>。科學記號就是為了解決這件事。</p>
+  </div></details>
+</section>
+
+<!-- ══ 1 概念 ══ -->
+<section>
+  <div class="step"><span class="n">1</span>這一節在教什麼</div>
+  <h2>一個寫法，兩條規則</h2>
+
+  <div class="fcard">
+    <div class="fname">① 科學記號的寫法（課本 p.73 Key point）</div>
+    <div class="fbody">a × 10<sup>n</sup>　　其中 1 ≤ a ＜ 10，n 是整數</div>
+    <p class="fsay">把一個正數寫成「<strong>一個 1 到 10 之間的數</strong>」乘上「<strong>10 的某次方</strong>」。<br><br>
+    <span class="eq">930000000 ＝ 9.3 × 10<sup>8</sup></span><br>
+    <span class="eq">0.00000431 ＝ 4.31 × 10<sup>−6</sup></span></p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">② 為什麼 a 一定要在 1 到 10 之間</div>
+    <div class="fbody" style="font-size:18px">93 × 10<sup>7</sup> ✗　　9.3 × 10<sup>8</sup> ✓</div>
+    <p class="fsay">兩個式子的<strong>值一模一樣</strong>，但只有下面那個算科學記號。<br>
+    因為如果不規定，同一個數會有<em>無限多種寫法</em>，就沒辦法互相比較了。<br><br>
+    📌 <strong>規定 a 在 1 到 10 之間，是為了讓每個數只有一種寫法。</strong></p>
+  </div>
+
+  <div class="fcard warn">
+    <div class="fname">③ 🔴 這一節最多人錯的地方</div>
+    <div class="fbody">10<sup>−6</sup> ＝ 0.000001　<span style="font-size:16px">（是正數！）</span></div>
+    <p class="fsay">指數上的負號，是在說「<strong>這個數很小、很接近 0</strong>」，<br>
+    <em>不是</em>在說「這個數在 0 的左邊」。<br><br>
+    <span class="eq">7.52 × 10<sup>−6</sup> ＝ 0.00000752</span>——<strong>比 0 大，只是很小很小。</strong><br>
+    📌 111 年會考有 <strong>16.09%</strong> 的人在這裡選了「小於 0」。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">④ 比大小（課本 p.76 Key point）</div>
+    <div class="fbody" style="font-size:17px;text-align:left;line-height:2">
+      <strong>第一步：先比指數 n</strong>——大的那個數就大<br>
+      <strong>第二步：指數一樣，才比前面的 a</strong>
+    </div>
+    <p class="fsay">例：<span class="eq">1.2×10<sup>4</sup></span> 和 <span class="eq">2.3×10<sup>3</sup></span> → 指數 4 ＞ 3 → <strong>前者大</strong>。<br>
+    （雖然 1.2 比 2.3 小，但<em>指數說了算</em>。）<br><br>
+    📌 <strong>永遠先看指數。</strong>這一句就解決了會考大部分的比大小題。</p>
+  </div>
+
+  <h3>先玩一下：把它攤開來看</h3>
+  <p>拖動下面兩條，看科學記號展開成一般數字的樣子。<strong>特別注意指數變成負的時候，數字往哪邊跑。</strong></p>
+
+  <div class="lab">
+    <div class="lab-t">實驗一 ── 科學記號攤開來長什麼樣</div>
+
+    <div class="slider-lab"><span>前面的數 a</span><span id="l1">7.52</span></div>
+    <input type="range" id="s1" min="100" max="999" step="1" value="752">
+    <div class="slider-lab"><span>10 的指數 n</span><span id="l2">−6</span></div>
+    <input type="range" id="s2" min="-9" max="9" step="1" value="-6">
+
+    <div class="eq" style="text-align:center;font-size:22px;font-weight:700;margin:14px 0 4px" id="sci"></div>
+    <div style="text-align:center;font-size:13px;color:var(--ink2)">攤開來就是</div>
+    <div class="plain" id="plain"></div>
+    <div class="signnote" id="signnote"></div>
+    <div class="verdict" id="v1"></div>
+  </div>
+
+  <h3>再玩一下：兩個誰比較大</h3>
+  <p>課本 p.76 的規則：<strong>先比指數，指數一樣才比前面的數</strong>。下面可以自己出題驗證。</p>
+
+  <div class="lab">
+    <div class="lab-t">實驗二 ── 先比指數，再比係數</div>
+    <div class="slider-lab"><span>左邊的 a</span><span id="l3">3.2</span></div>
+    <input type="range" id="s3" min="10" max="99" step="1" value="32">
+    <div class="slider-lab"><span>左邊的指數</span><span id="l4">−5</span></div>
+    <input type="range" id="s4" min="-9" max="9" step="1" value="-5">
+    <div class="slider-lab" style="margin-top:14px"><span>右邊的 a</span><span id="l5">6.3</span></div>
+    <input type="range" id="s5" min="10" max="99" step="1" value="63">
+    <div class="slider-lab"><span>右邊的指數</span><span id="l6">−6</span></div>
+    <input type="range" id="s6" min="-9" max="9" step="1" value="-6">
+
+    <div class="cmp">
+      <div class="cmpbox" id="cL"><div class="ct" id="ctL"></div><div class="cp" id="cpL"></div></div>
+      <div class="cmpsign" id="csign">?</div>
+      <div class="cmpbox" id="cR"><div class="ct" id="ctR"></div><div class="cp" id="cpR"></div></div>
+    </div>
+    <div class="verdict" id="v2"></div>
+  </div>
+</section>
+
+<!-- ══ 2 歷史 ══ -->
+<section>
+  <div class="step"><span class="n">2</span>這個寫法從哪來</div>
+  <h2>發明它，是為了不要數錯 0</h2>
+
+  <p class="lead">科學記號不是數學家為了漂亮想出來的。<br><strong>它是被「數字太長」這個實際的麻煩逼出來的。</strong></p>
+
+  <h3>先感受一下那個麻煩</h3>
+
+  <p>課本開頭問：牛郎和織女相隔多遠？答案大約是</p>
+
+  <p class="eq blk" style="font-size:17px">150000000000000 公里</p>
+
+  <p>現在請你回答兩個問題（<strong>不要用手指數</strong>）：</p>
+
+  <div class="card">
+    <p style="margin-bottom:8px">① 這是幾位數？</p>
+    <p style="margin:0">② 它比 <span class="eq">15000000000000 公里</span>（少一個 0）大幾倍？</p>
+  </div>
+
+  <p>很難吧。<em>不是因為你笨，是因為人類的眼睛本來就不擅長數一長串一樣的符號。</em></p>
+
+  <div class="quote">
+    <p><strong>換成科學記號：</strong></p>
+    <p class="eq" style="font-size:19px;margin:0">1.5 × 10<sup>14</sup> 公里</p>
+    <p style="margin:12px 0 0">14 位、比另一個大 10 倍——<strong>一眼就看出來了。</strong></p>
+  </div>
+
+  <h3>阿基米德早就在做同一件事</h3>
+
+  <p>大約西元前 3 世紀，希臘的<strong>阿基米德</strong>寫過一篇很有名的東西，叫《<strong>數沙者</strong>》。</p>
+
+  <p>他要回答一個當時被認為很荒謬的問題：<em>如果把整個宇宙裝滿沙子，需要幾粒？</em></p>
+
+  <p>問題是——<strong>當時的希臘數字系統，最大只能表示到「一萬」。</strong>再大就沒有名字了，也就沒辦法寫、沒辦法算。</p>
+
+  <div class="note">
+    <p><b>阿基米德的解法：他自己造了一套「數字的層級」。</b></p>
+    <p>以一萬為一階，一萬個一萬為下一階⋯⋯一層一層疊上去，讓大到不可思議的數也有辦法被寫下來。</p>
+    <p>他最後算出的答案，用今天的寫法大約是 <span class="eq">10<sup>63</sup></span> 粒沙。</p>
+  </div>
+
+  <p class="big">他真正做的，是發明一個<br>「大到寫不出來的數」也能被談論的方式。</p>
+
+  <p>兩千年後，當科學開始處理<strong>原子的大小</strong>和<strong>星系的距離</strong>時，人類遇到了完全一樣的困境——而解法也是同一個：<em>不要把 0 一個一個寫出來，把它們收進指數裡</em>。</p>
+
+  <h3>那個負號，也是同一個發明</h3>
+
+  <p>往大的方向走，指數是正的；往小的方向走，指數是負的。<strong>負指數不是「負數」，是「往另一個方向走」。</strong></p>
+
+  <div class="scroll">
+  <table>
+    <tr><th>科學記號</th><th>攤開來</th><th>這是</th></tr>
+    <tr><td class="eq">1 × 10<sup>3</sup></td><td class="eq">1000</td><td>一千</td></tr>
+    <tr><td class="eq">1 × 10<sup>0</sup></td><td class="eq">1</td><td>一</td></tr>
+    <tr><td class="eq">1 × 10<sup>−3</sup></td><td class="eq">0.001</td><td>千分之一 —— <strong>還是正的</strong></td></tr>
+    <tr><td class="eq">1 × 10<sup>−9</sup></td><td class="eq">0.000000001</td><td>十億分之一 —— <strong>還是正的</strong></td></tr>
+  </table>
+  </div>
+
+  <div class="aside">
+    <p>📌 <strong>指數的正負，管的是「往大還是往小」；一個數本身的正負，是在最前面。</strong></p>
+    <p>如果要表示「負的、很小的數」，會寫成 <span class="eq">−7.52 × 10<sup>−6</sup></span>——<em>負號要寫在最前面</em>。</p>
+  </div>
+</section>
+
+<!-- ══ 3 課本練習 ══ -->
+<section>
+  <div class="step"><span class="n">3</span>動手練</div>
+  <h2>照課本的順序，一題一題來</h2>
+
+  <p>下面 8 題<strong>全部出自課本 1-4 主題 3 的例題與隨堂練習</strong>。<br>
+  前四題練「怎麼寫」，後四題練「怎麼比大小」。</p>
+
+  <div class="prac">
+    <div class="prac-top"><span class="src" id="pSrc">課本 例 4</span><span id="pNo">第 1 題 / 共 8 題</span></div>
+    <div class="dots" id="pDots"></div>
+    <div class="prac-q" id="pQ"></div>
+    <div class="prac-hint" id="pHint"></div>
+    <div class="opts" id="pOpts"></div>
+    <div class="prac-fb" id="pFb"></div>
+    <div class="btnrow"><button class="btn" id="pNext" disabled>下一題</button></div>
+  </div>
+</section>
+
+<!-- ══ 4 重點整理 ══ -->
+<section class="locked-zone" id="z4">
+  <div class="step"><span class="n">4</span>重點整理</div>
+  <h2>整個主題 3 收成一張表</h2>
+
+  <div class="scroll">
+  <table>
+    <tr><th style="width:76px">課本位置</th><th>先備知識</th><th>新學的</th></tr>
+    <tr>
+      <td><b>p.73</b><br>寫法</td>
+      <td>主題 1：<span class="eq">a<sup>n</sup></span> 是乘 n 次<br>主題 2：10 的次方</td>
+      <td><span class="eq">a×10<sup>n</sup></span>，其中 <span class="eq">1≤a＜10</span><br><strong>a 的範圍是為了讓寫法唯一</strong></td>
+    </tr>
+    <tr>
+      <td><b>p.74</b><br>單位換算</td>
+      <td>國小的長度單位</td>
+      <td><span class="eq">1 km＝10<sup>3</sup> m</span>、<span class="eq">1 mm＝10<sup>−3</sup> m</span><br><span class="eq">1 μm＝10<sup>−6</sup> m</span>、<span class="eq">1 nm＝10<sup>−9</sup> m</span></td>
+    </tr>
+    <tr>
+      <td><b>p.76</b><br>比大小</td>
+      <td>1-1：數線上誰在右邊誰大</td>
+      <td><strong>先比指數</strong>（大的贏）<br><strong>指數一樣才比 a</strong></td>
+    </tr>
+  </table>
+  </div>
+
+  <h3>三個最容易錯的地方</h3>
+
+  <div class="card">
+    <p><strong>① 以為負指數 ＝ 負數</strong></p>
+    <p style="margin-bottom:0"><span class="eq">7.52×10<sup>−6</sup> ＝ 0.00000752</span>——<strong>是正數</strong>，只是很小。<br>
+    <span class="dim">會考 111-12 有 16.09% 的人在這裡選了「小於 0」。</span></p>
+  </div>
+
+  <div class="card">
+    <p><strong>② 比大小時只看前面的數</strong></p>
+    <p style="margin-bottom:0"><span class="eq">6.3×10<sup>−6</sup></span> 比 <span class="eq">3.2×10<sup>−5</sup></span> <strong>小</strong>，雖然 6.3 ＞ 3.2。<br>
+    <em>永遠先比指數。</em></p>
+  </div>
+
+  <div class="card">
+    <p><strong>③ a 沒有調到 1～10 之間</strong></p>
+    <p style="margin-bottom:0"><span class="eq">430 萬 ＝ 4300000 ＝ 43×10<sup>5</sup></span>——<strong>還沒寫完</strong>。<br>
+    要再調成 <span class="eq">4.3×10<sup>6</sup></span>。<span class="dim">（43 不在 1 到 10 之間。）</span></p>
+  </div>
+</section>
+
+<!-- ══ 5 會考挑戰 ══ -->
+<section class="locked-zone" id="z5">
+  <div class="step"><span class="n">5</span>會考挑戰</div>
+  <h2>同樣的東西，考場上怎麼問</h2>
+
+  <p>13 年來科學記號考過 <strong>7 題</strong>。下面挑了 5 題，<strong>由淺入深</strong>，其中兩題有官方的作答數據。</p>
+
+  <div class="q">
+    <div class="q-src">會考 108 年 第 6 題</div>
+    <div class="q-body">民國 106 年 8 月 15 日，大潭發電廠因跳電導致供電短少約 <b>430 萬瓩</b>，造成全臺灣多處地方停電。已知 <b>1 瓩等於 1 千瓦</b>，求 430 萬瓩等於多少瓦？</div>
+    <div class="opts" data-q="0" data-ans="C">
+      <button class="opt" data-k="A"><span class="k">A</span><span class="eq">4.3 × 10<sup>7</sup></span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span class="eq">4.3 × 10<sup>8</sup></span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span class="eq">4.3 × 10<sup>9</sup></span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span class="eq">4.3 × 10<sup>10</sup></span></button>
+    </div>
+    <div class="fb" id="fb0"></div>
+  </div>
+
+  <div class="locked-zone" id="z5b">
+  <div class="q">
+    <div class="q-src">會考 113 年 第 8 題　·　通過率 67.73%</div>
+    <div class="q-body">若 <span class="eq"><b>a ＝ 3.2×10<sup>−5</sup></b></span>、<span class="eq"><b>b ＝ 7.5×10<sup>−5</sup></b></span>、<span class="eq"><b>c ＝ 6.3×10<sup>−6</sup></b></span>，則 a、b、c 三數的大小關係為何？</div>
+    <div class="opts" data-q="1" data-ans="C">
+      <button class="opt" data-k="A"><span class="k">A</span><span class="eq">a ＜ b ＜ c</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span class="eq">a ＜ c ＜ b</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span class="eq">c ＜ a ＜ b</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span class="eq">c ＜ b ＜ a</span></button>
+    </div>
+    <div class="fb" id="fb1"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="z5c">
+  <h3>接下來這一題，是這一節最重要的一題</h3>
+  <p>它不用算，只要回答「這個數在數線的哪裡」。<br><strong>但全國有 16% 的人把它放到了 0 的左邊。</strong></p>
+
+  <div class="q">
+    <div class="q-src">會考 111 年 第 12 題　·　通過率 64.00%</div>
+    <div class="q-body">已知 <span class="eq"><b>p ＝ 7.52 × 10<sup>−6</sup></b></span>，下列關於 p 值的敘述何者正確？</div>
+    <div class="opts" data-q="2" data-ans="B">
+      <button class="opt" data-k="A"><span class="k">A</span>小於 0</button>
+      <button class="opt" data-k="B"><span class="k">B</span>介於 0 與 1 兩數之間，兩數中比較接近 0</button>
+      <button class="opt" data-k="C"><span class="k">C</span>介於 0 與 1 兩數之間，兩數中比較接近 1</button>
+      <button class="opt" data-k="D"><span class="k">D</span>大於 1</button>
+    </div>
+    <div class="fb" id="fb2"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="z5d">
+  <h3>全國是這樣作答的</h3>
+  <div class="dist" id="dist"></div>
+  <div class="note">
+    <p><b>把 A 和 C 加起來看：</b></p>
+    <p>選 A 的人（16.09%）認為 <span class="eq">10<sup>−6</sup></span> 讓整個數變成負的。<br>
+    選 C 的人（12.53%）知道它是正的，但<em>誤判了大小</em>——以為它接近 1。</p>
+    <p>📌 <strong>合起來 28.62% 的人，沒辦法把 <span class="eq">7.52×10<sup>−6</sup></span> 放在數線上的正確位置。</strong></p>
+    <p>而「待加強」的那一群，這題通過率只有 <strong>25.46%</strong>——<em>比亂猜還低</em>。這代表它不是「不會算」，是<strong>整個觀念裝反了</strong>。</p>
+  </div>
+
+  <div class="q">
+    <div class="q-src">會考 107 年 第 17 題　·　同一個觀念，換一種問法</div>
+    <div class="q-body">已知 <span class="eq"><b>a ＝ 3.1×10<sup>−4</sup></b></span>、<span class="eq"><b>b ＝ 5.2×10<sup>−8</sup></b></span>，判斷下列關於 <span class="eq">a − b</span> 之值的敘述何者正確？</div>
+    <div class="opts" data-q="3" data-ans="B">
+      <button class="opt" data-k="A"><span class="k">A</span>比 1 大</button>
+      <button class="opt" data-k="B"><span class="k">B</span>介於 0、1 之間</button>
+      <button class="opt" data-k="C"><span class="k">C</span>介於 −1、0 之間</button>
+      <button class="opt" data-k="D"><span class="k">D</span>比 −1 小</button>
+    </div>
+    <div class="fb" id="fb3"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="z5e">
+  <div class="q">
+    <div class="q-src">會考 115 年 第 8 題</div>
+    <div class="q-body">
+      <p style="margin-bottom:12px">有一培養皿上均勻分布細菌，下圖是培養皿的俯視圖，生物學家選定四個圓形區域，<strong>區域面積越大所含細菌數越多</strong>。</p>
+      <svg viewBox="0 0 240 200" style="max-width:230px;margin:0 auto 12px">
+        <circle cx="120" cy="100" r="92" fill="#fbfcfa" stroke="#20261f" stroke-width="1.6"/>
+        <circle cx="82" cy="72" r="38" fill="none" stroke="#8b8694" stroke-width="1.4"/>
+        <text x="82" y="30" font-size="13" text-anchor="middle" fill="#20261f">丙</text>
+        <circle cx="181" cy="66" r="17" fill="none" stroke="#8b8694" stroke-width="1.4"/>
+        <text x="181" y="42" font-size="13" text-anchor="middle" fill="#20261f">乙</text>
+        <circle cx="107" cy="150" r="25" fill="none" stroke="#8b8694" stroke-width="1.4"/>
+        <text x="107" y="130" font-size="13" text-anchor="middle" fill="#20261f">丁</text>
+        <circle cx="176" cy="152" r="5" fill="none" stroke="#8b8694" stroke-width="1.4"/>
+        <text x="176" y="138" font-size="13" text-anchor="middle" fill="#20261f">甲</text>
+      </svg>
+      <p style="margin:0">若<b>甲、乙、丙</b>三個區域細菌的數量分別為 <span class="eq">4.4×10<sup>5</sup></span> 個、<span class="eq">7.3×10<sup>6</sup></span> 個、<span class="eq">5.4×10<sup>7</sup></span> 個，則下列何者可能是<b>丁</b>區域細菌的數量？</p>
+    </div>
+    <div class="opts" data-q="4" data-ans="C">
+      <button class="opt" data-k="A"><span class="k">A</span><span class="eq">1.7 × 10<sup>5</sup> 個</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span class="eq">1.7 × 10<sup>6</sup> 個</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span class="eq">1.7 × 10<sup>7</sup> 個</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span class="eq">1.7 × 10<sup>8</sup> 個</span></button>
+    </div>
+    <div class="fb" id="fb4"></div>
+  </div>
+  </div>
+</section>
+
+<!-- ══ 結案 ══ -->
+<section class="locked-zone" id="z6">
+  <div class="done">
+    <h2>主題 3 走完了</h2>
+    <p class="dim">寫法、單位換算、比大小——還有那個最重要的：負指數不是負數。</p>
+  </div>
+
+  <div class="quote">
+    <p><strong>如果只能記兩句話帶走：</strong></p>
+    <p class="eq" style="font-size:18px;margin:0 0 8px"><strong>① 指數的負號，管的是「多小」，不是「正負」。</strong></p>
+    <p class="eq" style="font-size:18px;margin:0"><strong>② 比大小，永遠先比指數。</strong></p>
+  </div>
+
+  <div class="dl">
+    <h4>📄 這一節的會考原題（PDF）</h4>
+    <p>上面 5 題在網頁上是重新排版過的。這份 PDF 是<strong>原本考卷上的樣子</strong>——官方排版、原始附圖。</p>
+    <a class="get" href="pdf/scinot_exam.pdf" download>下載原始考題 PDF</a>
+    <p class="meta">5 題 · 108-06、113-08、111-12、107-17、115-08 · 取自國中教育會考正式試題</p>
+  </div>
+
+  <div class="card">
+    <p><strong>七上第 1 章，到這裡告一段落。</strong><br>
+    負數與數線 → 加減 → 乘除與四則 → 乘方 → 科學記號，<em>整章的骨架你都走過了</em>。</p>
+    <p style="margin-bottom:0"><span style="color:var(--ink2)">還缺 1-4 主題 2「10 的次方」與指數律那一段（課本 p.71–72 還沒拍到），補齊後會出現在首頁。</span></p>
+  </div>
+
+  <div class="btnrow" style="justify-content:center;margin-top:26px">
+    <a class="btn ghost" href="index.html" style="text-decoration:none">回到單元列表</a>
+  </div>
+  <div style="text-align:center"><button class="reset" id="rst">清除這一課的進度，重新做一次</button></div>
+</section>
+
+<footer>
+  國中數學七上自學站 · 第一章 1-4 主題 3 科學記號<br>
+  課本例題與隨堂練習取自康軒版第一冊；會考題與官方數據取自國中教育會考正式試題及試題分析<br>
+  <a href="index.html" style="color:var(--accent)">單元列表</a> ·
+  <a href="https://yingsioul-art.github.io/jhs8-math/" style="color:var(--accent)">八上數學</a> ·
+  <a href="https://yingsioul-art.github.io/jhs8-science/" style="color:var(--accent)">八上自然</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+const KEY="jhs7-scinot-v1", TOTAL=13;
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){state={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+const $=(id)=>document.getElementById(id);
+const M=(n)=>String(n).replace(/-/g,"−");
+
+/* ══ 課本練習 8 題 ══ */
+const PRAC=[
+ {src:"課本 例 4（以科學記號表示）",
+  q:"把 <b class='eq'>930000000</b> 寫成科學記號",
+  hint:"先把小數點移到第一個數字後面（9.3），再數一數移了幾位。",
+  o:["9.3 × 10<sup>8</sup>","9.3 × 10<sup>7</sup>","93 × 10<sup>7</sup>","0.93 × 10<sup>9</sup>"], a:0,
+  why:"<span class='eq'>930000000 ＝ 9.3 × 100000000 ＝ 9.3 × 10<sup>8</sup></span><br>9 後面一共有 <b>8 位</b>，所以指數是 8。<br>⚠️ <span class='eq'>93×10<sup>7</sup></span> 和 <span class='eq'>0.93×10<sup>9</sup></span> 的<b>值雖然對，但不是科學記號</b>——前面的數必須在 1 到 10 之間。"},
+
+ {src:"課本 例 4（以科學記號表示）",
+  q:"把 <b class='eq'>0.00000431</b> 寫成科學記號",
+  hint:"小數點要往右移到 4 的後面。往右移，指數是負的。",
+  o:["4.31 × 10<sup>−6</sup>","4.31 × 10<sup>−5</sup>","4.31 × 10<sup>6</sup>","0.431 × 10<sup>−5</sup>"], a:0,
+  why:"<span class='eq'>0.00000431 ＝ 4.31 × 0.000001 ＝ 4.31 × 10<sup>−6</sup></span><br>小數點後第 <b>6</b> 位才出現第一個不是 0 的數字 → 指數是 <b>−6</b>。<br>📌 <b>這個數是正的</b>（0.00000431 ＞ 0），負號只是說它很小。"},
+
+ {src:"課本 例 4（分數也可以）",
+  q:"把 <b class='eq'><span class='frac'><span>8</span><span>100000</span></span></b> 寫成科學記號",
+  hint:"分母 100000 是 10 的幾次方？分之一就是負次方。",
+  o:["8 × 10<sup>−5</sup>","8 × 10<sup>5</sup>","8 × 10<sup>−4</sup>","0.8 × 10<sup>−4</sup>"], a:0,
+  why:"分母 <span class='eq'>100000 ＝ 10<sup>5</sup></span>，所以<br><span class='eq'><span class='frac'><span>8</span><span>10<sup>5</sup></span></span> ＝ 8 × <span class='frac'><span>1</span><span>10<sup>5</sup></span></span> ＝ 8 × 10<sup>−5</sup></span><br>📌 <b>「幾分之一」就是 10 的負次方</b>——這是負指數最直接的意思。"},
+
+ {src:"課本 隨堂練習（諾羅病毒）",
+  q:"諾羅病毒的直徑約 27 奈米，也就是 <b class='eq'>0.000000027</b> 公尺。<br>用科學記號表示這個數。",
+  hint:"小數點後第幾位才出現 2？",
+  o:["2.7 × 10<sup>−8</sup>","2.7 × 10<sup>−7</sup>","27 × 10<sup>−9</sup>","2.7 × 10<sup>8</sup>"], a:0,
+  why:"<span class='eq'>0.000000027 ＝ 2.7 × 10<sup>−8</sup></span>（小數點後第 8 位出現 2）<br>📌 課本的單位表：<span class='eq'>1 奈米 ＝ 10<sup>−9</sup> 公尺</span>，所以 <span class='eq'>27 奈米 ＝ 27×10<sup>−9</sup> ＝ 2.7×10<sup>−8</sup></span> 公尺——<b>兩種算法答案一樣</b>。<br>⚠️ <span class='eq'>27×10<sup>−9</sup></span> 值是對的，但 27 不在 1 到 10 之間，<b>不算科學記號</b>。"},
+
+ {src:"課本 例 6（比較大小）",
+  q:"<b class='eq'>1.2×10<sup>4</sup></b> 和 <b class='eq'>2.3×10<sup>3</sup></b>，哪一個比較大？",
+  hint:"先比指數，不要先看前面的數。",
+  o:["1.2×10<sup>4</sup> 比較大","2.3×10<sup>3</sup> 比較大","一樣大","不能比較"], a:0,
+  why:"指數 <b>4 ＞ 3</b>，所以 <span class='eq'>1.2×10<sup>4</sup></span> 比較大。<br>攤開來看：<span class='eq'>12000</span> vs <span class='eq'>2300</span>——差很多。<br>📌 <b>雖然 1.2 比 2.3 小，但指數說了算。</b>"},
+
+ {src:"課本 例 6（負指數比較大小）",
+  q:"<b class='eq'>3.4×10<sup>−4</sup></b> 和 <b class='eq'>3.6×10<sup>−5</sup></b>，哪一個比較大？",
+  hint:"⚠️ 還是先比指數。−4 和 −5，哪一個大？",
+  o:["3.4×10<sup>−4</sup> 比較大","3.6×10<sup>−5</sup> 比較大","一樣大","負的不能比"], a:0,
+  why:"<b>−4 ＞ −5</b>（數線上 −4 在 −5 右邊），所以 <span class='eq'>3.4×10<sup>−4</sup></span> 比較大。<br>攤開來看：<span class='eq'>0.00034</span> vs <span class='eq'>0.000036</span>——前者大 10 倍左右。<br>⚠️ <b>這是最容易錯的一種</b>：3.6 ＞ 3.4，很多人就選了後者。<em>先比指數，永遠先比指數。</em>"},
+
+ {src:"課本 隨堂練習（指數相同）",
+  q:"比較 <b class='eq'>4.59×10<sup>5</sup></b> 和 <b class='eq'>6.1×10<sup>5</sup></b>",
+  hint:"這次指數一樣，才輪到前面的數。",
+  o:["4.59×10<sup>5</sup> ＜ 6.1×10<sup>5</sup>","4.59×10<sup>5</sup> ＞ 6.1×10<sup>5</sup>","兩數相等","無法比較"], a:0,
+  why:"指數都是 5，所以比前面：<b>4.59 ＜ 6.1</b> → <span class='eq'>4.59×10<sup>5</sup> ＜ 6.1×10<sup>5</sup></span>。<br>📌 <b>只有在指數相同的時候，前面的數才有發言權。</b>"},
+
+ {src:"課本 隨堂練習（最後一題）",
+  q:"比較 <b class='eq'>5.6×10<sup>−5</sup></b> 和 <b class='eq'>9.2×10<sup>−6</sup></b>",
+  hint:"先比指數：−5 和 −6 哪個大？別被 9.2 騙了。",
+  o:["5.6×10<sup>−5</sup> ＞ 9.2×10<sup>−6</sup>","5.6×10<sup>−5</sup> ＜ 9.2×10<sup>−6</sup>","兩數相等","無法比較"], a:0,
+  why:"<b>−5 ＞ −6</b>，所以 <span class='eq'>5.6×10<sup>−5</sup> ＞ 9.2×10<sup>−6</sup></span>。<br>攤開來：<span class='eq'>0.000056</span> vs <span class='eq'>0.0000092</span>。<br>📌 <b>9.2 明明比 5.6 大很多，但還是輸了</b>——因為它的指數小一級，整整差了 10 倍。<br><b>八題做完了。</b>下面的會考題，有兩題就是在考這一招。"}
+];
+
+/* 打散選項順序 —— 正解不會永遠在同一個位置（每次開啟都重洗） */
+PRAC.forEach(function(P){
+  var pairs=P.o.map(function(t,i){return {t:t, ok:(i===P.a)};});
+  for(var i=pairs.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1)), tmp=pairs[i]; pairs[i]=pairs[j]; pairs[j]=tmp;
+  }
+  P.o=pairs.map(function(x){return x.t;});
+  P.a=pairs.findIndex(function(x){return x.ok;});
+});
+
+let pi=0, pDone=(state.prac||0);
+function pDots(){
+  $("pDots").innerHTML=PRAC.map((_,i)=>
+    '<span class="dot'+(i<pDone?" done":(i===pi?" now":""))+'"></span>').join("");
+}
+function pRender(){
+  const P=PRAC[pi];
+  $("pSrc").textContent=P.src;
+  $("pNo").textContent="第 "+(pi+1)+" 題 / 共 "+PRAC.length+" 題";
+  $("pQ").innerHTML=P.q;
+  $("pHint").innerHTML=P.hint;
+  pDots();
+  const solved = pi<pDone;
+  $("pOpts").innerHTML=P.o.map((t,i)=>
+    '<button class="opt'+(solved&&i===P.a?" right locked":(solved?" locked":""))+'" data-i="'+i+'">'+
+    '<span class="k">'+"ABCD"[i]+'</span><span class="eq">'+t+'</span></button>').join("");
+  const fb=$("pFb");
+  if(solved){fb.className="prac-fb show ok";fb.innerHTML="<b>答對了</b>　"+P.why;$("pNext").disabled=false}
+  else{fb.className="prac-fb";fb.innerHTML="";$("pNext").disabled=true}
+  $("pNext").textContent = pi>=PRAC.length-1 ? "完成，進入重點整理" : "下一題";
+  $("pOpts").querySelectorAll(".opt").forEach(b=>{
+    b.addEventListener("click",()=>{
+      if(b.classList.contains("locked"))return;
+      const i=+b.dataset.i, P=PRAC[pi], fb=$("pFb");
+      if(i===P.a){
+        b.classList.add("right","locked");
+        $("pOpts").querySelectorAll(".opt").forEach(x=>x.classList.add("locked"));
+        fb.className="prac-fb show ok"; fb.innerHTML="<b>答對了</b>　"+P.why;
+        if(pi>=pDone){pDone=pi+1;state.prac=pDone;save();paint();gate()}
+        $("pNext").disabled=false; pDots();
+      }else{
+        b.classList.add("wrong");
+        fb.className="prac-fb show no";
+        fb.innerHTML="<b>再想一次</b>　"+P.hint+"<br><span style='color:var(--ink2)'>選錯不扣分，直接再選一個。</span>";
+      }
+    });
+  });
+}
+$("pNext").addEventListener("click",()=>{
+  if(pi<PRAC.length-1){pi++;pRender();
+    document.querySelector(".prac").scrollIntoView({behavior:"smooth",block:"start"})}
+  else{unlock("z4");unlock("z5");$("z4").scrollIntoView({behavior:"smooth",block:"start"})}
+});
+
+/* ══ 會考挑戰回饋 ══ */
+const FB={
+ 0:{ans:"C",
+  A:["只做了一半的換算","<p>430 萬 ＝ <span class='eq'>4300000 ＝ 4.3×10<sup>6</sup></span>——這是<strong>瓩</strong>的數量，還沒換成瓦。</p><p>題目說 <strong>1 瓩 ＝ 1 千瓦 ＝ 1000 瓦</strong>，所以還要再乘 <span class='eq'>10<sup>3</sup></span>：<br><span class='eq'>4.3×10<sup>6</sup> × 10<sup>3</sup> ＝ 4.3×10<sup>9</sup></span></p>"],
+  B:["差一個位數","<p>照兩步走：<br>① <span class='eq'>430 萬 ＝ 4300000 ＝ 4.3×10<sup>6</sup></span> 瓩<br>② 1 瓩 ＝ 1000 瓦 ＝ <span class='eq'>10<sup>3</sup></span> 瓦</p><p>所以 <span class='eq'>4.3×10<sup>6</sup>×10<sup>3</sup> ＝ 4.3×10<sup>9</sup></span> 瓦。</p><p>📌 「萬」是 <span class='eq'>10<sup>4</sup></span>，很容易少數一位——<em>寫出來數比較保險</em>。</p>"],
+  C:["對了","<p>① <span class='eq'>430 萬 ＝ 430×10<sup>4</sup> ＝ 4300000 ＝ 4.3×10<sup>6</sup></span> 瓩<br>② 1 瓩 ＝ 1 千瓦 ＝ <span class='eq'>10<sup>3</sup></span> 瓦<br>③ <span class='eq'>4.3×10<sup>6</sup> × 10<sup>3</sup> ＝ 4.3×10<sup>9</sup></span> 瓦</p><p>📌 這題的陷阱在<strong>「萬」和「千」要分開處理</strong>：萬是 <span class='eq'>10<sup>4</sup></span>、千是 <span class='eq'>10<sup>3</sup></span>，合起來剛好多了 7 位。</p>"],
+  D:["多乘了一次","<p>430 萬瓩 → 瓦只需要<strong>再乘一次 1000</strong>（因為 1 瓩 ＝ 1 千瓦）。</p><p><span class='eq'>4.3×10<sup>6</sup> × 10<sup>3</sup> ＝ 4.3×10<sup>9</sup></span>，不是 <span class='eq'>10<sup>10</sup></span>。</p>"]},
+ 1:{ans:"C",
+  A:["完全反過來了","<p>先比指數：a 和 b 都是 <span class='eq'>10<sup>−5</sup></span>，c 是 <span class='eq'>10<sup>−6</sup></span>。</p><p><strong>−6 ＜ −5</strong>，所以 <strong>c 最小</strong>，不是最大。</p><p>再比 a、b：指數一樣 → 3.2 ＜ 7.5 → a ＜ b。</p><p>所以 <span class='eq'>c ＜ a ＜ b</span>。</p>"],
+  B:["c 的位置放錯了","<p>你答對了 a ＜ b（指數相同時比前面的數），這部分是對的。</p><p>問題在 c：它的指數是 <span class='eq'>10<sup>−6</sup></span>，<strong>比 a、b 的 10<sup>−5</sup> 小一級</strong> → c 應該是<strong>最小</strong>的，不在中間。</p><p>攤開來看：<span class='eq'>c ＝ 0.0000063</span>、<span class='eq'>a ＝ 0.000032</span>、<span class='eq'>b ＝ 0.000075</span>。</p>"],
+  C:["對了","<p><strong>第一步：先比指數。</strong>c 是 <span class='eq'>10<sup>−6</sup></span>，最小 → <strong>c 排第一</strong>。</p><p><strong>第二步：a、b 指數相同（都是 10<sup>−5</sup>），比前面的數。</strong>3.2 ＜ 7.5 → a ＜ b。</p><p>合起來：<span class='eq'>c ＜ a ＜ b</span>。</p><p>📌 全國有 <strong>15.45%</strong> 的人選 D——他們只看了前面的數（6.3 最大），忘了 c 的指數小一級。</p>"],
+  D:["只看了前面的數 ── 這是最多人選的錯誤","<p>15.45% 的人和你一樣。因為 <strong>6.3 看起來比 3.2 和 7.5 之中的 3.2 大</strong>，就把 c 排到後面了。</p><p>但 c 的指數是 <span class='eq'>10<sup>−6</sup></span>，比另外兩個小一級——<strong>整整差了 10 倍</strong>。</p><p>攤開來：<span class='eq'>c ＝ 0.0000063</span>，<span class='eq'>a ＝ 0.000032</span>——<em>c 明顯小很多</em>。</p><p><strong>永遠先比指數。</strong></p>"]},
+ 2:{ans:"B",
+  A:["這是這一節最大的坑","<p>你把指數上的負號，當成整個數的負號了。</p><p><span class='eq'>7.52 × 10<sup>−6</sup> ＝ 7.52 × 0.000001 ＝ 0.00000752</span></p><p><strong>0.00000752 是正數</strong>——它在 0 的右邊，只是非常靠近 0。</p><p>📌 <em>指數的負號管的是「多小」，不是「正負」。</em>如果要表示負數，負號會寫在<strong>最前面</strong>：<span class='eq'>−7.52×10<sup>−6</sup></span>。</p><p>往下看：全國有 16.09% 的人和你選了一樣的答案。</p>"],
+  B:["對了","<p><span class='eq'>7.52 × 10<sup>−6</sup> ＝ 0.00000752</span></p><p>它比 0 大（<strong>是正數</strong>），也比 1 小，而且小數點後有 5 個 0 才出現數字——<strong>非常靠近 0</strong>。</p><p>📌 往下看：全國有將近三成的人，沒辦法把這個數放在數線上的正確位置。</p>"],
+  C:["正負判斷對了，但位置差很遠","<p>你知道它是正數、也知道它在 0 和 1 之間——<strong>這兩件事都對</strong>。</p><p>但 <span class='eq'>0.00000752</span> 離 1 有多遠？它連 0.001 都不到。</p><p>把它放在數線上：<em>它幾乎就貼在 0 上面</em>。</p>"],
+  D:["攤開來看一下","<p><span class='eq'>10<sup>−6</sup></span> 是 <span class='eq'>0.000001</span>——一個<strong>比 1 小很多</strong>的數。</p><p>所以 <span class='eq'>7.52×10<sup>−6</sup> ＝ 0.00000752</span>，遠遠小於 1。</p><p>📌 <strong>指數是負的 → 這個數一定小於 1</strong>（而且還是正的）。</p>"]},
+ 3:{ans:"B",
+  A:["兩個都是很小的正數","<p><span class='eq'>a ＝ 0.00031</span>、<span class='eq'>b ＝ 0.000000052</span>——兩個都比 1 小很多。</p><p>大的減小的，結果只會<strong>更小</strong>，不可能比 1 大。</p>"],
+  B:["對了","<p><span class='eq'>a ＝ 3.1×10<sup>−4</sup> ＝ 0.00031</span><br><span class='eq'>b ＝ 5.2×10<sup>−8</sup> ＝ 0.000000052</span></p><p><strong>a 的指數比較大 → a ＞ b</strong>，所以 <span class='eq'>a−b</span> 是<strong>正的</strong>。</p><p>而且 b 太小了（比 a 小一萬倍），減掉幾乎沒有影響——<span class='eq'>a−b ≈ 0.00031</span>，仍然介於 0 和 1 之間。</p><p>📌 這題其實不用真的減，<em>只要判斷「誰大誰小」和「大概多大」</em>。</p>"],
+  C:["誰減誰弄反了","<p>先比大小：a 的指數是 <span class='eq'>−4</span>，b 是 <span class='eq'>−8</span>。<strong>−4 ＞ −8 → a ＞ b</strong>。</p><p>大的減小的 → <strong>結果是正的</strong>，不會落在 −1 和 0 之間。</p><p>⚠️ 這裡很容易被 5.2 ＞ 3.1 誤導——<em>但指數說了算</em>。</p>"],
+  D:["差距沒有那麼大","<p>兩個數都非常小（都小於 0.001），相減的結果不可能小於 −1。</p><p>而且 <span class='eq'>a ＞ b</span>，所以 <span class='eq'>a−b</span> 根本是<strong>正的</strong>。</p>"]},
+ 4:{ans:"C",
+  A:["丁比甲大","<p>從圖上看，丁的圓<strong>明顯比甲大</strong>（甲是最小的那個點），所以丁的細菌數要<strong>比甲的 4.4×10<sup>5</sup> 多</strong>。</p><p><span class='eq'>1.7×10<sup>5</sup> ＜ 4.4×10<sup>5</sup></span>（指數相同，比前面的數）——太小了。</p>"],
+  B:["丁比乙大","<p>圖上丁的圓比乙大，所以丁要比乙的 <span class='eq'>7.3×10<sup>6</sup></span> 多。</p><p>但 <span class='eq'>1.7×10<sup>6</sup> ＜ 7.3×10<sup>6</sup></span>（指數相同，1.7 ＜ 7.3）——比乙還少。</p>"],
+  C:["對了","<p><strong>第一步：把四個圓按大小排。</strong>從圖上看 <span class='eq'>丙 ＞ 丁 ＞ 乙 ＞ 甲</span>。</p><p><strong>第二步：丁要落在乙和丙之間。</strong><br>乙 ＝ <span class='eq'>7.3×10<sup>6</sup></span>，丙 ＝ <span class='eq'>5.4×10<sup>7</sup></span></p><p><strong>第三步：檢查選項。</strong><span class='eq'>1.7×10<sup>7</sup></span> 的指數是 7，比乙的 6 大、又比丙的 5.4×10<sup>7</sup> 小 ✓</p><p>📌 這題把<strong>看圖</strong>和<strong>比大小</strong>綁在一起——<em>但真正在算的還是那一句：先比指數</em>。</p>"],
+  D:["丁比丙小","<p>圖上丙是<strong>最大</strong>的圓，丁比它小，所以丁要比丙的 <span class='eq'>5.4×10<sup>7</sup></span> 少。</p><p>但 <span class='eq'>1.7×10<sup>8</sup> ＞ 5.4×10<sup>7</sup></span>（指數 8 ＞ 7）——比最大的丙還多了。</p>"]}
+};
+
+/* ══ 進度與解鎖 ══ */
+function qDone(){return Object.keys(state).filter(k=>/^q\d+$/.test(k)).length}
+function paint(){
+  const d=(state.prac||0)+qDone();
+  $("pnum").textContent=d+" / "+TOTAL;
+  $("pfill").style.width=(d/TOTAL*100)+"%";
+}
+function unlock(id){
+  const el=$(id);
+  if(el&&el.classList.contains("locked-zone")){
+    el.classList.remove("locked-zone");el.classList.add("revealed");
+    setTimeout(()=>el.classList.remove("revealed"),700);
+  }
+}
+function gate(){
+  if((state.prac||0)>=PRAC.length){unlock("z4");unlock("z5")}
+  if(state.q0!==undefined){unlock("z5b")}
+  if(state.q1!==undefined){unlock("z5c")}
+  if(state.q2!==undefined){unlock("z5d");drawDist()}
+  if(state.q3!==undefined){unlock("z5e")}
+  if(state.q4!==undefined){unlock("z6")}
+  paint();
+}
+
+document.querySelectorAll(".opts[data-q]").forEach(box=>{
+  const qi=box.dataset.q, ans=box.dataset.ans;
+  box.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      if(box.dataset.locked)return;
+      const k=btn.dataset.k;
+      state["q"+qi]=k; save();
+      reveal(qi,k,ans,box,true); gate();
+    });
+  });
+});
+
+function reveal(qi,k,ans,box,scroll){
+  box.dataset.locked="1";
+  const PCT={
+    "1":{A:"9.68%",B:"6.98%",C:"67.73%",D:"15.45%"},
+    "2":{A:"16.09%",B:"64.00%",C:"12.53%",D:"7.15%"}
+  };
+  box.querySelectorAll(".opt").forEach(b=>{
+    b.classList.add("locked");
+    if(b.dataset.k===k)b.classList.add("picked",k===ans?"right":"wrong");
+    else if(b.dataset.k===ans)b.classList.add("right");
+    if(PCT[qi]&&!b.querySelector(".pct")){
+      const s=document.createElement("span");s.className="pct";s.textContent=PCT[qi][b.dataset.k];b.appendChild(s);
+    }
+  });
+  const f=FB[qi][k], fb=$("fb"+qi);
+  fb.innerHTML="<h4 style='color:"+(k===ans?"var(--green)":"var(--red)")+"'>"+f[0]+"</h4>"+f[1];
+  fb.classList.add("show");
+  if(scroll)setTimeout(()=>fb.scrollIntoView({behavior:"smooth",block:"nearest"}),120);
+}
+
+let distDone=false;
+function drawDist(){
+  if(distDone)return;distDone=true;
+  const rows=[
+    {k:"A",v:16.09,c:"#b03030",t:"以為負指數 ＝ 負數 ── 最多人選的錯誤"},
+    {k:"B",v:64.00,c:"#15803d",t:"正確答案"},
+    {k:"C",v:12.53,c:"#d98b4a",t:"知道是正的，但以為接近 1"},
+    {k:"D",v:7.15,c:"#b5bbb0",t:""}
+  ];
+  $("dist").innerHTML=rows.map(r=>
+    '<div class="dbar"><span class="dk">'+r.k+'</span>'+
+    '<div class="dtrack"><div class="dfill" data-w="'+r.v+'" style="background:'+r.c+'"></div></div>'+
+    '<span class="dv">'+r.v.toFixed(2)+'%</span></div>'+
+    (r.t?'<div style="font-size:12px;color:var(--ink2);margin:-4px 0 10px 30px">'+r.t+'</div>':'<div style="height:6px"></div>')
+  ).join("");
+  setTimeout(()=>{$("dist").querySelectorAll(".dfill").forEach(d=>d.style.width=d.dataset.w+"%")},80);
+}
+
+/* ══ 攤開科學記號：純字串搬小數點，避免浮點誤差 ══ */
+function expand(digits, dot, n){
+  // digits：不含小數點的數字字串；dot：小數點原本在第幾個字元之後；n：指數
+  let p = dot + n;
+  if(p <= 0) return {s:"0."+"0".repeat(-p)+digits, zeros:-p+1};
+  if(p >= digits.length) return {s:digits+"0".repeat(p-digits.length), zeros:0};
+  return {s:digits.slice(0,p)+"."+digits.slice(p), zeros:0};
+}
+function paintPlain(str){
+  // 把前導的 0 和小數點染灰，讓有效數字跳出來
+  let out="", seen=false;
+  for(const ch of str){
+    if(!seen && (ch==="0"||ch===".")) out+='<span class="z">'+ch+'</span>';
+    else{ if(ch!=="."){seen=true;} out+=(seen?'<span class="d">'+ch+'</span>':ch); }
+  }
+  return out;
+}
+
+const s1=$("s1"), s2=$("s2");
+function lab1(){
+  const v=+s1.value, n=+s2.value;
+  const a=(v/100).toFixed(2);
+  $("l1").textContent=a; $("l2").textContent=M(n);
+  $("sci").innerHTML=a+" × 10<sup>"+M(n)+"</sup>";
+  const r=expand(String(v), 1, n);
+  $("plain").innerHTML=paintPlain(r.s);
+  $("signnote").textContent="這個數是正的（比 0 大）";
+  const v1=$("v1");
+  if(n>0){
+    v1.className="verdict";
+    v1.innerHTML="指數是<strong>正的</strong> → 小數點往<strong>右</strong>搬 "+n+" 位 → 數變<strong>大</strong>。<br>"+
+      "整數部分有 "+(String(v).length-1+n>0?1+n:1)+" 位左右——<em>指數愈大，數字愈長</em>。";
+  }else if(n===0){
+    v1.className="verdict";
+    v1.innerHTML="<span class='eq'>10<sup>0</sup> ＝ 1</span>，所以乘了等於沒乘。<strong>科學記號的分界點就在這裡。</strong>";
+  }else{
+    v1.className="verdict warn";
+    v1.innerHTML="指數是<strong>負的</strong> → 小數點往<strong>左</strong>搬 "+(-n)+" 位 → 數變<strong>小</strong>，"+
+      "小數點後要先出現 <strong>"+(r.zeros-1)+" 個 0</strong>，才輪到 "+a[0]+"。<br>"+
+      "🔴 <strong>但它還是正數</strong>——它在數線上 0 的<em>右邊</em>，只是非常靠近 0。";
+  }
+}
+s1.addEventListener("input",lab1); s2.addEventListener("input",lab1); lab1();
+
+/* ══ 實驗二：比大小 ══ */
+const s3=$("s3"), s4=$("s4"), s5=$("s5"), s6=$("s6");
+function lab2(){
+  const aL=(+s3.value/10), nL=+s4.value, aR=(+s5.value/10), nR=+s6.value;
+  $("l3").textContent=aL.toFixed(1); $("l4").textContent=M(nL);
+  $("l5").textContent=aR.toFixed(1); $("l6").textContent=M(nR);
+  $("ctL").innerHTML=aL.toFixed(1)+" × 10<sup>"+M(nL)+"</sup>";
+  $("ctR").innerHTML=aR.toFixed(1)+" × 10<sup>"+M(nR)+"</sup>";
+  $("cpL").innerHTML=paintPlain(expand(String(+s3.value),1,nL).s);
+  $("cpR").innerHTML=paintPlain(expand(String(+s5.value),1,nR).s);
+  const L=aL*Math.pow(10,nL), R=aR*Math.pow(10,nR);
+  const bigger = (nL!==nR) ? (nL>nR?"L":"R") : (Math.abs(aL-aR)<1e-9 ? "=" : (aL>aR?"L":"R"));
+  $("cL").className="cmpbox"+(bigger==="L"?" win":"");
+  $("cR").className="cmpbox"+(bigger==="R"?" win":"");
+  $("csign").textContent = bigger==="=" ? "＝" : (bigger==="L" ? "＞" : "＜");
+  const v=$("v2");
+  if(bigger==="="){
+    v.className="verdict";
+    v.innerHTML="兩邊完全一樣。";
+  }else if(nL!==nR){
+    v.className="verdict good";
+    v.innerHTML="<strong>指數不同 → 指數說了算。</strong>"+M(Math.max(nL,nR))+" ＞ "+M(Math.min(nL,nR))+
+      "，所以<strong>"+(bigger==="L"?"左":"右")+"邊</strong>比較大。<br>"+
+      ((bigger==="L"&&aL<aR)||(bigger==="R"&&aR<aL)
+        ? "⚠️ <em>注意：贏的這一邊，前面的數反而比較小</em>——這就是最容易騙到人的情況。"
+        : "前面的數也剛好比較大，這一次不會被騙到。");
+  }else{
+    v.className="verdict";
+    v.innerHTML="<strong>指數一樣（都是 "+M(nL)+"）→ 這時候才輪到前面的數。</strong>"+
+      Math.max(aL,aR).toFixed(1)+" ＞ "+Math.min(aL,aR).toFixed(1)+"，所以<strong>"+(bigger==="L"?"左":"右")+"邊</strong>比較大。";
+  }
+}
+[s3,s4,s5,s6].forEach(s=>s.addEventListener("input",lab2)); lab2();
+
+/* ══ 還原進度 ══ */
+if(pDone>0 && pDone<PRAC.length) pi=pDone;
+else if(pDone>=PRAC.length) pi=PRAC.length-1;
+pRender();
+document.querySelectorAll(".opts[data-q]").forEach(box=>{
+  const qi=box.dataset.q, saved=state["q"+qi];
+  if(saved!==undefined)reveal(qi,saved,box.dataset.ans,box,false);
+});
+gate();
+
+$("rst").addEventListener("click",()=>{
+  try{localStorage.removeItem(KEY)}catch(e){}
+  location.reload();
+});
+})();
+</script>
+</body>
+</html>

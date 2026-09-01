@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>整數的乘方｜七上 1-4</title>
+<style>
+:root{
+  --paper:#f7f8f5; --ink:#20261f; --ink2:#525c50; --line:#d8ded4;
+  --accent:#15803d; --accent-soft:#e9f5ec;
+  --teal:#0f6b63; --teal-soft:#e6f2f0;
+  --blue:#1d5b79; --blue-soft:#e8f1f5;
+  --green:#15803d; --green-soft:#e9f5ec;
+  --red:#b03030; --red-soft:#fdeeee;
+  --shadow:0 1px 2px rgba(32,38,31,.06),0 8px 24px rgba(32,38,31,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  font-size:17px;line-height:1.85;letter-spacing:.01em}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px 120px}
+
+header{padding:56px 0 28px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+.kicker{font-size:13px;letter-spacing:.22em;color:var(--accent);font-weight:700;margin-bottom:14px}
+h1{font-size:34px;line-height:1.3;margin:0 0 14px;letter-spacing:-.01em}
+.sub{color:var(--ink2);font-size:15px;margin:0}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.tag{font-size:12px;padding:4px 11px;border:1px solid var(--line);border-radius:99px;color:var(--ink2);background:#fff}
+
+.bar{position:sticky;top:0;z-index:50;background:rgba(247,248,245,.95);
+  border-bottom:1px solid var(--line);margin:0 -20px 0;padding:10px 20px}
+.bar-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.track{flex:1;height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.bar b{font-size:12px;color:var(--ink2);font-weight:600;font-variant-numeric:tabular-nums}
+
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.step{font-size:12px;letter-spacing:.2em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.step .n{display:inline-block;background:var(--accent);color:#fff;border-radius:50%;
+  width:20px;height:20px;line-height:20px;text-align:center;margin-right:8px;letter-spacing:0}
+h2{font-size:25px;line-height:1.4;margin:0 0 20px;letter-spacing:-.01em}
+h3{font-size:19px;margin:34px 0 12px}
+h4{font-size:16.5px;margin:24px 0 8px;color:var(--teal)}
+p{margin:0 0 18px}
+.lead{font-size:19px;line-height:1.9}
+.dim{color:var(--ink2)}
+.big{font-size:22px;font-weight:700;line-height:1.6;margin:26px 0}
+em{font-style:normal;background:linear-gradient(transparent 62%,#bfe6c9 62%);font-weight:600;padding:0 1px}
+.eq{font-family:"Cambria","Times New Roman",Georgia,serif;font-size:1.06em;font-variant-numeric:tabular-nums}
+.eq sup{font-size:.68em;vertical-align:super;line-height:0}
+.eq.blk{display:block;text-align:center;font-size:21px;margin:20px 0}
+.hl{background:#fff3c4;border-radius:3px;padding:0 3px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin:24px 0;box-shadow:var(--shadow)}
+.quote{border-left:3px solid var(--accent);background:var(--accent-soft);padding:18px 20px;border-radius:0 10px 10px 0;margin:24px 0}
+.quote p:last-child{margin:0}
+.note{background:var(--blue-soft);border:1px solid #cfe0e8;border-radius:12px;padding:18px 20px;margin:24px 0;font-size:16px}
+.note p:last-child{margin:0}
+.note b{color:var(--blue)}
+.aside{background:#fdf8e8;border:1px dashed #e3d5a4;border-radius:12px;padding:16px 18px;margin:24px 0;font-size:15px;color:#5c4d20}
+.aside p:last-child{margin:0}
+
+.fcard{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:20px;margin:16px 0;box-shadow:var(--shadow)}
+.fcard.warn{border-color:var(--red)}
+.fcard .fname{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.fcard.warn .fname{color:var(--red)}
+.fcard .fbody{font-size:21px;text-align:center;margin:10px 0 14px;font-family:"Cambria",Georgia,serif}
+.fcard .fsay{font-size:15.5px;color:var(--ink2);line-height:1.75;margin:0}
+.fcard .fsay strong{color:var(--ink)}
+
+.q{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow)}
+.q-src{font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:12px}
+.q-body{font-size:16.5px;line-height:1.9;margin-bottom:20px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:12px;align-items:center;padding:14px 16px;border:1.5px solid var(--line);
+  border-radius:11px;cursor:pointer;background:#fff;font-size:16px;line-height:1.7;
+  transition:border-color .15s,background .15s;text-align:left;width:100%;font-family:inherit;color:inherit}
+.opt:hover:not(.locked){border-color:var(--ink2);background:#fbfcfa}
+.opt .k{font-weight:700;flex-shrink:0;width:22px;color:var(--ink2)}
+.opt.picked{border-color:var(--ink);border-width:2px}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.right .k{color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt.wrong .k{color:var(--red)}
+.opt.locked{cursor:default}
+.opt .pct{margin-left:auto;font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink2);
+  flex-shrink:0;padding-left:10px;font-weight:600}
+.fb{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);font-size:16px;display:none}
+.fb.show{display:block;animation:rise .45s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fb h4{margin:0 0 8px;font-size:15px;letter-spacing:.06em;color:inherit}
+.fb p:last-child{margin:0}
+
+.locked-zone{opacity:.3;pointer-events:none;filter:blur(4px) saturate(.2);user-select:none}
+.revealed{animation:reveal .6s ease both}
+@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.prac{background:#fff;border:2px solid var(--teal);border-radius:16px;padding:22px;margin:26px 0;box-shadow:var(--shadow)}
+.prac-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;
+  font-size:13px;color:var(--ink2);font-weight:600;gap:10px;flex-wrap:wrap}
+.prac-top .src{color:var(--teal);letter-spacing:.08em}
+.dots{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap}
+.dot{width:22px;height:6px;border-radius:99px;background:var(--line);transition:background .3s}
+.dot.done{background:var(--green)}
+.dot.now{background:var(--teal)}
+.prac-q{font-size:17.5px;line-height:2;margin-bottom:8px}
+.prac-hint{font-size:14.5px;color:var(--ink2);margin-bottom:16px;line-height:1.7}
+.prac-fb{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:15.5px;line-height:1.8;display:none}
+.prac-fb.show{display:block;animation:rise .3s ease}
+.prac-fb.ok{background:var(--green-soft);border:1px solid #b7ddc3}
+.prac-fb.no{background:var(--red-soft);border:1px solid #edc4c4}
+
+.btn{padding:9px 18px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;
+  border-radius:99px;cursor:pointer;font-size:14.5px;font-family:inherit;font-weight:600;transition:opacity .15s}
+.btn:hover{opacity:.86}
+.btn.ghost{background:#fff;color:var(--accent)}
+.btn:disabled{opacity:.35;cursor:default}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+.lab{background:linear-gradient(#fff,#fbfcfa);border:1px solid var(--line);border-radius:16px;
+  padding:22px;margin:26px 0;box-shadow:var(--shadow)}
+.lab-t{font-size:12px;letter-spacing:.18em;color:var(--blue);font-weight:700;margin-bottom:16px}
+input[type=range]{width:100%;accent-color:var(--accent);height:26px}
+.slider-lab{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin:6px 0 2px}
+.readout{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.pill{flex:1;min-width:106px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.pill .lb{font-size:12.5px;color:var(--ink2)}
+.pill .vl{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.pill.hi{background:var(--accent-soft);border-color:#b7ddc3}
+.pill.hi .vl{color:var(--accent)}
+.verdict{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:15px;line-height:1.7;
+  background:var(--blue-soft);border:1px solid #cfe0e8}
+.verdict.good{background:var(--green-soft);border-color:#b7ddc3}
+.verdict.warn{background:#fdf8e8;border-color:#e3d5a4}
+
+.dist{margin:18px 0}
+.dbar{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:14px}
+.dbar .dk{width:20px;font-weight:700;flex-shrink:0}
+.dtrack{flex:1;height:26px;background:#eceee9;border-radius:6px;overflow:hidden}
+.dfill{height:100%;border-radius:6px;width:0;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.dbar .dv{width:52px;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink2);flex-shrink:0;font-weight:600}
+
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:15px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#eef1eb;font-weight:700;font-size:13.5px;letter-spacing:.04em}
+tr:last-child td{border-bottom:none}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px -20px;padding:0 20px}
+.scroll table{margin:0;min-width:460px}
+
+.flow{counter-reset:s;list-style:none;padding:0;margin:14px 0 0}
+.flow li{counter-increment:s;position:relative;padding:7px 0 7px 40px;font-size:15.5px;line-height:1.7}
+.flow li::before{content:counter(s);position:absolute;left:0;top:8px;width:25px;height:25px;
+  background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:12.5px;font-weight:700}
+details.pre{background:#fff;border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden}
+details.pre summary{padding:13px 16px;cursor:pointer;font-size:16px;font-weight:600;list-style:none;
+  display:flex;align-items:center;gap:10px}
+details.pre summary::-webkit-details-marker{display:none}
+details.pre summary::before{content:"?";flex-shrink:0;width:22px;height:22px;border-radius:50%;
+  background:var(--line);color:var(--ink2);display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;font-weight:700}
+details.pre[open] summary::before{content:"\2713";background:var(--green);color:#fff}
+details.pre[open] summary{border-bottom:1px solid var(--line)}
+details.pre .bd{padding:14px 16px;font-size:15.5px;line-height:1.8;color:var(--ink2)}
+details.pre .bd strong{color:var(--ink)}
+details.pre .bd p{margin:0 0 10px}
+details.pre .bd p:last-child{margin:0}
+
+.done{text-align:center;padding:52px 0 20px}
+.done h2{font-size:27px}
+.reset{background:none;border:1px solid var(--line);color:var(--ink2);padding:9px 18px;
+  border-radius:99px;cursor:pointer;font-size:13px;font-family:inherit;margin-top:28px}
+footer{padding:36px 0;color:var(--ink2);font-size:13px;line-height:1.9;text-align:center}
+svg{max-width:100%;height:auto;display:block}
+
+.dl{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:20px 22px;margin:24px 0;text-align:left}
+.dl h4{margin:0 0 8px;font-size:17px;color:var(--ink)}
+.dl p{font-size:15px;line-height:1.8;margin:0 0 14px;color:var(--ink2)}
+.dl a.get{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;
+  text-decoration:none;padding:11px 20px;border-radius:99px;font-size:15px;font-weight:700;
+  transition:opacity .15s}
+.dl a.get:hover{opacity:.86}
+.dl .meta{font-size:13px;color:var(--ink2);margin:10px 0 0}
+
+/* 乘方展開器 */
+.expand{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin:14px 0;
+  font-family:"Cambria",Georgia,serif;font-size:16px;text-align:center;line-height:2;word-break:break-all}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.vsbox{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 12px;text-align:center}
+.vsbox .vt{font-family:"Cambria",Georgia,serif;font-size:19px;font-weight:700;margin-bottom:4px}
+.vsbox .vv{font-family:"Cambria",Georgia,serif;font-size:22px;font-weight:700}
+.vsbox .vn{font-size:12px;color:var(--ink2);margin-top:4px;line-height:1.5}
+.vsbox.pos{border-color:#b7ddc3;background:var(--green-soft)} .vsbox.pos .vv{color:var(--green)}
+.vsbox.neg{border-color:#edc4c4;background:var(--red-soft)} .vsbox.neg .vv{color:var(--red)}
+.samev{margin-top:10px;padding:10px 14px;border-radius:9px;font-size:14.5px;text-align:center;font-weight:700}
+.samev.same{background:#fdf8e8;border:1px solid #e3d5a4;color:#8a6d1f}
+.samev.diff{background:var(--blue-soft);border:1px solid #cfe0e8;color:var(--blue)}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-inner">
+  <b id="pnum">0 / 11</b>
+  <div class="track"><div class="fill" id="pfill"></div></div>
+</div></div>
+
+<div class="wrap">
+
+<header>
+  <div class="kicker">七年級上 · 第一章 1-4 指數記法與科學記號 · 主題 1</div>
+  <h1>整數的乘方</h1>
+  <p class="sub">同一個數乘很多次，寫成右上角一個小小的數字。<br><strong>整節最容易錯的只有一件事：那個負號，有沒有被括號包起來。</strong></p>
+  <div class="meta">
+    <span class="tag">課本 p.68–70</span>
+    <span class="tag">課本練習 8 題</span>
+    <span class="tag">會考挑戰 3 題</span>
+    <span class="tag">約 30 分鐘</span>
+  </div>
+</header>
+
+<!-- ══ 開始之前 ══ -->
+<section>
+  <div class="step">開始之前</div>
+  <h2>這一課會怎麼走</h2>
+
+  <div class="card">
+    <ol class="flow">
+      <li><strong>先把記法認熟</strong>：底數、指數，還有幾個特別的情形</li>
+      <li>這個寫法從哪來——<strong>在它出現以前，每一個次方都要一個新符號</strong></li>
+      <li><strong>用課本的例題和隨堂練習動手做</strong>（8 題，重點全在括號）</li>
+      <li>重點整理：把整個主題收成一張表</li>
+      <li>最後是<strong>會考挑戰</strong>——3 題，含一題「指數成長長什麼樣子」</li>
+    </ol>
+  </div>
+
+  <h3>先確認你知道這些</h3>
+  <details class="pre"><summary>1-3 的乘法規則，還記得嗎？</summary><div class="bd">
+    <p><strong>同號得正、異號得負</strong>；好幾個數連乘的時候，<strong>數負號的個數：奇數個 → 負，偶數個 → 正</strong>。</p>
+    <p>📌 這一課整個就是那條規則的延伸——因為 <span class="eq">(−3)<sup>4</sup></span> 就是<em>四個 −3 連乘</em>。忘了可以回<a href="arith.html" style="color:var(--accent);font-weight:700">上一課（1-3）</a>。</p>
+  </div></details>
+  <details class="pre"><summary>「乘方」是什麼意思？</summary><div class="bd">
+    <p>就是<strong>同一個數乘好幾次</strong>。</p>
+    <p>國小學過：<span class="eq">5＋5＋5＋5＋5＋5</span>（6 個 5 相加）可以簡寫成 <span class="eq">5×6</span>。<br>
+    現在換成乘：<span class="eq">5×5×5×5</span>（4 個 5 相乘）可以簡寫成 <span class="eq">5<sup>4</sup></span>。</p>
+    <p><em>加法有簡寫，乘法也要有簡寫</em>——就是這麼簡單的動機。</p>
+  </div></details>
+  <details class="pre"><summary>括號在數學裡代表什麼？</summary><div class="bd">
+    <p><strong>括號代表「這裡面是一整包，要一起處理」。</strong></p>
+    <p>這一課裡，括號決定了一件生死大事：<span class="eq">(−3)<sup>2</sup></span> 是「<em>−3 這一整包</em>乘兩次」，而 <span class="eq">−3<sup>2</sup></span> 是「<em>3 乘兩次之後，前面再加一個負號</em>」。</p>
+    <p>📌 <strong>兩者長得很像，意思完全不同。</strong>這是整節唯一的難點。</p>
+  </div></details>
+</section>
+
+<!-- ══ 1 概念 ══ -->
+<section>
+  <div class="step"><span class="n">1</span>這一節在教什麼</div>
+  <h2>一個寫法，兩個名字，一個陷阱</h2>
+
+  <div class="fcard">
+    <div class="fname">① 乘方的記法（課本 p.68）</div>
+    <div class="fbody">
+      <svg viewBox="0 0 260 90" style="max-width:250px;margin:0 auto">
+        <text x="105" y="56" font-size="42" font-family="Cambria,Georgia,serif" font-weight="700" fill="#20261f">a</text>
+        <text x="132" y="34" font-size="26" font-family="Cambria,Georgia,serif" font-weight="700" fill="#b03030">n</text>
+        <line x1="145" y1="26" x2="180" y2="20" stroke="#b03030" stroke-width="1.3"/>
+        <text x="184" y="24" font-size="13" fill="#b03030">指數（乘幾次）</text>
+        <line x1="108" y1="66" x2="90" y2="80" stroke="#15803d" stroke-width="1.3"/>
+        <text x="86" y="86" font-size="13" fill="#15803d" text-anchor="end">底數（誰在乘）</text>
+      </svg>
+    </div>
+    <p class="fsay"><span class="eq">a<sup>n</sup></span> 讀作「<strong>a 的 n 次方</strong>」，意思是 <strong>n 個 a 連乘</strong>。<br>
+    例：<span class="eq">5<sup>4</sup> ＝ 5×5×5×5 ＝ 625</span><br>
+    <span class="eq">a<sup>2</sup></span> 也可以讀成「a 的<strong>平方</strong>」，<span class="eq">a<sup>3</sup></span> 讀成「a 的<strong>立方</strong>」。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">② 三個特別的情形（課本 p.68）</div>
+    <div class="fbody" style="font-size:18px;line-height:2.1">
+      a<sup>1</sup> ＝ a　（指數是 1 通常不寫）<br>
+      0<sup>n</sup> ＝ 0　（幾個 0 相乘都還是 0）<br>
+      1<sup>n</sup> ＝ 1　（幾個 1 相乘都還是 1）
+    </div>
+    <p class="fsay">這三個不用背，<em>把它們展開念一遍就懂了</em>。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">③ 負數的乘方（課本 p.70 Key point）</div>
+    <div class="fbody">偶數次方 → 正　　奇數次方 → 負</div>
+    <p class="fsay">因為 <span class="eq">(−3)<sup>4</sup></span> 就是<strong>四個 −3 連乘</strong>——這正是 1-3 學過的「數負號個數」。<br>
+    4 個負號（偶數）→ 正的；3 個負號（奇數）→ 負的。<br>
+    <em>沒有新規則，只是換一個寫法。</em></p>
+  </div>
+
+  <div class="fcard warn">
+    <div class="fname">④ ⚠️ 整節唯一的陷阱（課本 p.69 Hint）</div>
+    <div class="fbody">(−3)<sup>2</sup> ＝ 9　　但　−3<sup>2</sup> ＝ −9</div>
+    <p class="fsay"><span class="eq">(−3)<sup>2</sup></span>：括號把負號<strong>包進去了</strong> → 兩個 <span class="eq">−3</span> 相乘 → <span class="eq">＋9</span><br>
+    <span class="eq">−3<sup>2</sup></span>：負號<strong>在外面</strong> → 先算 <span class="eq">3<sup>2</sup>＝9</span>，再加負號 → <span class="eq">−9</span><br><br>
+    📌 <strong>次方只吃緊貼著它的那個數。</strong>負號沒有被括號綁上去，就吃不到。</p>
+  </div>
+
+  <h3>先玩一下：把它展開來看</h3>
+  <p>下面可以同時看到 <span class="eq">(a)<sup>n</sup></span> 和 <span class="eq">−a<sup>n</sup></span> 的差別。<strong>試著把指數在奇數和偶數之間切換</strong>，注意兩邊什麼時候一樣、什麼時候不一樣。</p>
+
+  <div class="lab">
+    <div class="lab-t">實驗一 ── 括號內外，差在哪</div>
+
+    <div class="slider-lab"><span>底數（被連乘的那個數）</span><span id="l1">−3</span></div>
+    <input type="range" id="s1" min="-6" max="6" step="1" value="-3">
+    <div class="slider-lab"><span>指數（乘幾次）</span><span id="l2">2</span></div>
+    <input type="range" id="s2" min="1" max="6" step="1" value="2">
+
+    <div class="expand" id="exp"></div>
+
+    <div class="vs">
+      <div class="vsbox" id="boxA">
+        <div class="vt" id="titleA"></div>
+        <div class="vv" id="valA"></div>
+        <div class="vn">負號<strong>在括號裡</strong>，被次方吃進去</div>
+      </div>
+      <div class="vsbox" id="boxB">
+        <div class="vt" id="titleB"></div>
+        <div class="vv" id="valB"></div>
+        <div class="vn">負號<strong>在括號外</strong>，最後才加上去</div>
+      </div>
+    </div>
+    <div class="samev" id="samev"></div>
+    <div class="verdict" id="v1"></div>
+  </div>
+</section>
+
+<!-- ══ 2 歷史 ══ -->
+<section>
+  <div class="step"><span class="n">2</span>這個寫法從哪來</div>
+  <h2>在右上角寫一個小數字，是誰想到的</h2>
+
+  <p class="lead"><span class="eq">a<sup>n</sup></span> 這個寫法太自然了，自然到你可能覺得它一直都在。<br><strong>其實它只有不到 400 年的歷史。</strong></p>
+
+  <h3>在它出現以前：每個次方都要一個新符號</h3>
+
+  <p>十六世紀的代數書是這樣寫的：<strong>「平方」有一個專用符號，「立方」有另一個專用符號，「四次方」再另一個</strong>——每多一個次方，就要再發明一個新記號。</p>
+
+  <div class="quote">
+    <p>這代表什麼？</p>
+    <p><strong>只要次方超過符號表的範圍，那個東西就寫不出來。</strong></p>
+    <p>沒有人能寫出「x 的 20 次方」，因為<em>根本沒有那個符號</em>。更別說去想「x 的 n 次方」了——<strong>連想都想不到，因為沒有語言可以裝它。</strong></p>
+  </div>
+
+  <h3>1637 年，笛卡兒把它縮成一個小數字</h3>
+
+  <p>法國數學家<strong>笛卡兒</strong>（就是那句「我思故我在」的笛卡兒）在 1637 年出版的《幾何學》裡，開始把次數寫成<strong>右上角一個小小的數字</strong>：</p>
+
+  <p class="eq blk">a<sup>3</sup>　　a<sup>4</sup>　　a<sup>20</sup>　　a<sup>n</sup></p>
+
+  <p>這個改動看起來只是「換個寫法」，但它做到了一件很大的事：</p>
+
+  <p class="big">次方的次數，<br>從此變成一個可以被計算的東西。</p>
+
+  <p>因為它現在只是一個<em>普通的數字</em>，放在右上角。既然是數字，就可以相加、可以是變數 <span class="eq">n</span>、可以問「如果它是 0 呢」、「如果它是負的呢」、「如果它是 <span class="eq">1/2</span> 呢」。</p>
+
+  <div class="note">
+    <p><b>後來的發展，全都是這個小數字打開的門：</b></p>
+    <p><span class="eq">a<sup>0</sup> ＝ 1</span>（八年級）　<span class="eq">a<sup>−n</sup></span> ＝ 倒數（八年級）　<span class="eq">a<sup>1/2</sup></span> ＝ 平方根（八年級）</p>
+    <p><em>如果次方還停留在「每個都要一個新符號」，這些問題根本不會被問出來。</em></p>
+  </div>
+
+  <h3>順帶一提：括號也是後來才發明的</h3>
+
+  <p>你這一課最容易錯的地方是 <span class="eq">(−3)<sup>2</sup></span> 和 <span class="eq">−3<sup>2</sup></span> 的差別——<strong>而括號本身，也是十六、十七世紀才慢慢普及的東西</strong>。</p>
+
+  <p>在那之前，數學家要表達「這一整包」只能用文字描述，或在式子上面畫一條長橫線把它蓋起來。</p>
+
+  <div class="aside">
+    <p>📌 所以你現在覺得「括號在不在」很煩、很容易看錯——</p>
+    <p><strong>那是因為括號是一個很年輕的發明</strong>，人類自己也是花了很久才習慣它的。</p>
+  </div>
+
+  <p class="dim">數學史上有一個一再出現的規律：<em>一個好的寫法，會讓原本想不到的東西變得想得到。</em>你這一課學的不只是「怎麼算」，而是人類用了兩千年才發明出來的一種<strong>記錄方式</strong>。</p>
+</section>
+
+<!-- ══ 3 課本練習 ══ -->
+<section>
+  <div class="step"><span class="n">3</span>動手練</div>
+  <h2>照課本的順序，一題一題來</h2>
+
+  <p>下面 8 題<strong>全部出自課本 1-4 主題 1 的例題與隨堂練習</strong>。<br>
+  前兩題是記法，中間五題全部圍繞那個括號，最後一題是課本的動動腦。</p>
+
+  <div class="prac">
+    <div class="prac-top"><span class="src" id="pSrc">課本 隨堂練習</span><span id="pNo">第 1 題 / 共 8 題</span></div>
+    <div class="dots" id="pDots"></div>
+    <div class="prac-q" id="pQ"></div>
+    <div class="prac-hint" id="pHint"></div>
+    <div class="opts" id="pOpts"></div>
+    <div class="prac-fb" id="pFb"></div>
+    <div class="btnrow"><button class="btn" id="pNext" disabled>下一題</button></div>
+  </div>
+</section>
+
+<!-- ══ 4 重點整理 ══ -->
+<section class="locked-zone" id="z4">
+  <div class="step"><span class="n">4</span>重點整理</div>
+  <h2>整個主題 1 收成一張表</h2>
+
+  <div class="scroll">
+  <table>
+    <tr><th style="width:76px">課本位置</th><th>先備知識</th><th>新學的</th></tr>
+    <tr>
+      <td><b>p.68</b><br>記法</td>
+      <td>國小：連加可以簡寫成乘法</td>
+      <td><span class="eq">a<sup>n</sup></span> ＝ n 個 a 連乘<br><strong>底數</strong>（誰在乘）、<strong>指數</strong>（乘幾次）<br><span class="eq">a<sup>1</sup>＝a</span>、<span class="eq">0<sup>n</sup>＝0</span>、<span class="eq">1<sup>n</sup>＝1</span></td>
+    </tr>
+    <tr>
+      <td><b>p.69–70</b><br>負數的乘方</td>
+      <td>1-3：連乘時數負號的個數<br>奇數個 → 負、偶數個 → 正</td>
+      <td>負數的<strong>偶數</strong>次方是正數<br>負數的<strong>奇數</strong>次方是負數<br><em>其實就是同一條規則換個寫法</em></td>
+    </tr>
+    <tr>
+      <td><b>p.69 Hint</b><br>括號</td>
+      <td>括號 ＝ 一整包</td>
+      <td><span class="eq">(−a)<sup>n</sup></span>：負號被次方<strong>吃進去</strong><br><span class="eq">−a<sup>n</sup></span>：負號<strong>留在外面</strong></td>
+    </tr>
+  </table>
+  </div>
+
+  <h3>把括號的規則收成兩句話</h3>
+
+  <div class="card">
+    <p><strong>指數是偶數 → 兩個答案<span style="color:var(--red)">不一樣</span></strong></p>
+    <p style="margin-bottom:0"><span class="eq">(−3)<sup>2</sup> ＝ 9</span>　但　<span class="eq">−3<sup>2</sup> ＝ −9</span><br>
+    <span class="dim">（一個是正的，一個是負的。）</span></p>
+  </div>
+
+  <div class="card">
+    <p><strong>指數是奇數 → 兩個答案<span style="color:var(--green)">一樣</span></strong></p>
+    <p style="margin-bottom:0"><span class="eq">(−6)<sup>3</sup> ＝ −216</span>　而　<span class="eq">−6<sup>3</sup> ＝ −216</span><br>
+    <span class="dim">（意義還是不同，但算出來剛好相同——因為奇數次方本來就是負的。）</span></p>
+  </div>
+
+  <div class="note">
+    <p><b>考試的時候怎麼快速判斷？</b></p>
+    <p>看到有次方的算式，先問自己兩個問題：<br>
+    ① <strong>負號在括號裡面還是外面？</strong><br>
+    ② <strong>指數是奇數還是偶數？</strong></p>
+    <p><em>兩個問題答完，符號就定了，剩下的只是數字部分。</em></p>
+  </div>
+</section>
+
+<!-- ══ 5 會考挑戰 ══ -->
+<section class="locked-zone" id="z5">
+  <div class="step"><span class="n">5</span>會考挑戰</div>
+  <h2>同樣的東西，考場上怎麼問</h2>
+
+  <div class="q">
+    <div class="q-src">會考 112 年 第 1 題　·　通過率 89.39%</div>
+    <div class="q-body">算式 <span class="eq"><b>(−3)<sup>3</sup></b></span> 之值為何？</div>
+    <div class="opts" data-q="0" data-ans="A">
+      <button class="opt" data-k="A"><span class="k">A</span><span class="eq">−27</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span class="eq">−9</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span class="eq">9</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span class="eq">27</span></button>
+    </div>
+    <div class="fb" id="fb0"></div>
+  </div>
+
+  <div class="locked-zone" id="z5b">
+  <h3>這一題有官方數據</h3>
+  <p>112 年這一題全國有 <strong>89.39%</strong> 的人答對，是七上第 1 章<strong>最簡單的一題</strong>。</p>
+  <div class="dist" id="dist"></div>
+  <div class="note">
+    <p><b>但注意鑑別度只有 0.40</b>——是這一章最低的。</p>
+    <p>意思是：<em>會的人和不會的人，在這一題上分不太出來</em>。因為它太基本了，幾乎所有人都會。</p>
+    <p>📌 <strong>所以這種題目不是拿來拉分的，是拿來「不能掉」的。</strong>錯了就是純粹丟分。</p>
+  </div>
+
+  <div class="q">
+    <div class="q-src">會考 104 年 第 4 題　·　跨 1-3 和 1-4</div>
+    <div class="q-body">算式 <span class="eq"><b>(−3)<sup>4</sup> − 7<sup>2</sup> − <span style="display:inline-block;text-align:center;vertical-align:middle;font-size:.85em;line-height:1.2"><span style="display:block;border-bottom:1.3px solid currentColor;padding:0 4px">2<sup>6</sup></span><span style="display:block">(−2)<sup>3</sup></span></span></b></span> 之值為何？</div>
+    <div class="opts" data-q="1" data-ans="D">
+      <button class="opt" data-k="A"><span class="k">A</span><span class="eq">−138</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span class="eq">−122</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span class="eq">24</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span class="eq">40</span></button>
+    </div>
+    <div class="fb" id="fb1"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="z5c">
+  <h3>最後一題：指數長在生活裡的樣子</h3>
+  <p>前面兩題都在算數字。<strong>這一題不用算</strong>——它要你判斷「一個東西每年成長 2.5%」該寫成什麼式子。</p>
+
+  <div class="q">
+    <div class="q-src">會考 115 年 第 17 題</div>
+    <div class="q-body">某國政府公布 <b>2023 年</b>的全國用電量為 <b>2700 億度</b>，並預估 2024～2030 年的全國用電量逐年增加，且<strong>每年增加的用電量為其前一年的 2.5%</strong>。根據預估，該國 <b>2030 年</b>的全國用電量為多少億度？</div>
+    <div class="opts" data-q="2" data-ans="A">
+      <button class="opt" data-k="A"><span class="k">A</span><span class="eq">2700 × (1.025)<sup>7</sup></span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span class="eq">2700 × (1.025)<sup>8</sup></span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span class="eq">2700 ＋ 7 × 2700 × 0.025</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span class="eq">2700 ＋ 8 × 2700 × 0.025</span></button>
+    </div>
+    <div class="fb" id="fb2"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="z5d">
+  <h3>差多少？自己拉一次</h3>
+  <p><strong>C 選項（每年加固定的量）和 A 選項（每年乘 1.025）</strong>，前幾年看起來差不多。<br>把年數拉大，就會看到它們分開。</p>
+
+  <div class="lab">
+    <div class="lab-t">實驗二 ── 一直乘，和一直加，差在哪</div>
+    <div class="slider-lab"><span>經過幾年</span><span id="l3">7 年</span></div>
+    <input type="range" id="s3" min="1" max="40" step="1" value="7">
+    <div class="readout">
+      <div class="pill hi"><div class="lb">每年乘 1.025（正確）</div><div class="vl" id="gexp">—</div></div>
+      <div class="pill"><div class="lb">每年加 67.5（選項 C）</div><div class="vl" id="glin">—</div></div>
+      <div class="pill"><div class="lb">差距</div><div class="vl" id="gdiff">—</div></div>
+    </div>
+    <svg viewBox="0 0 320 130" style="margin:14px auto 0;max-width:320px">
+      <line x1="26" y1="112" x2="312" y2="112" stroke="#d8ded4"/>
+      <line x1="26" y1="8" x2="26" y2="112" stroke="#d8ded4"/>
+      <path id="curveL" d="" fill="none" stroke="#8b8694" stroke-width="2" stroke-dasharray="4 3"/>
+      <path id="curveE" d="" fill="none" stroke="#15803d" stroke-width="2.4"/>
+      <text x="300" y="124" font-size="10" fill="#8b8694" text-anchor="end">年</text>
+    </svg>
+    <div class="verdict" id="v2"></div>
+  </div>
+  </div>
+</section>
+
+<!-- ══ 結案 ══ -->
+<section class="locked-zone" id="z6">
+  <div class="done">
+    <h2>主題 1 走完了</h2>
+    <p class="dim">記法、負數的乘方、還有那個括號——整節最容易錯的地方，你已經練過五次。</p>
+  </div>
+
+  <div class="quote">
+    <p><strong>如果只能記一句話帶走：</strong></p>
+    <p class="eq" style="font-size:19px;margin:0"><strong>次方只吃緊貼著它的那個數。</strong></p>
+  </div>
+
+  <div class="dl">
+    <h4>📄 這一節的會考原題（PDF）</h4>
+    <p>上面 3 題在網頁上是重新排版過的。這份 PDF 是<strong>原本考卷上的樣子</strong>——官方排版、原始選項。</p>
+    <a class="get" href="pdf/power_exam.pdf" download>下載原始考題 PDF</a>
+    <p class="meta">3 題 · 112-01、104-04、115-17 · 取自國中教育會考正式試題</p>
+  </div>
+
+  <div class="card">
+    <p><strong>下一課（照課本順序）：</strong><span style="color:var(--accent);font-weight:700">10 的次方</span>（1-4 主題 2）<br>
+    <span style="color:var(--ink2)">這一段的課本照片還沒拍到（p.71–72），做好會出現在首頁。</span></p>
+    <p style="margin-bottom:0">再下一個是 <a href="scinot.html" style="color:var(--accent);font-weight:700">1-4 主題 3 科學記號</a>——13 年考 7 題，而且<strong>16% 的人以為 <span class="eq">10<sup>−6</sup></span> 是負數</strong>。</p>
+  </div>
+
+  <div class="btnrow" style="justify-content:center;margin-top:26px">
+    <a class="btn ghost" href="index.html" style="text-decoration:none">回到單元列表</a>
+  </div>
+  <div style="text-align:center"><button class="reset" id="rst">清除這一課的進度，重新做一次</button></div>
+</section>
+
+<footer>
+  國中數學七上自學站 · 第一章 1-4 主題 1 整數的乘方<br>
+  課本例題與隨堂練習取自康軒版第一冊；會考題與官方數據取自國中教育會考正式試題及試題分析<br>
+  <a href="index.html" style="color:var(--accent)">單元列表</a> ·
+  <a href="https://yingsioul-art.github.io/jhs8-math/" style="color:var(--accent)">八上數學</a> ·
+  <a href="https://yingsioul-art.github.io/jhs8-science/" style="color:var(--accent)">八上自然</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+const KEY="jhs7-power-v1", TOTAL=11;
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){state={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+const $=(id)=>document.getElementById(id);
+const M=(n)=>String(n).replace(/-/g,"−");
+
+/* ══ 課本練習 8 題 ══ */
+const PRAC=[
+ {src:"課本 隨堂練習（指數記法）",
+  q:"用指數的形式簡記 <b class='eq'>8×8×8×8×8</b>",
+  hint:"底數是被乘的那個數，指數是乘的次數——數一數有幾個 8。",
+  o:["8<sup>5</sup>","5<sup>8</sup>","8×5","8<sup>4</sup>"], a:0,
+  why:"一共 <b>5 個 8</b> 相乘，所以寫成 <span class='eq'>8<sup>5</sup></span>。<br>📌 <b>底數是 8（誰在乘），指數是 5（乘幾次）</b>——寫反了會變成 5 個 8 相乘 vs 8 個 5 相乘，完全不同。"},
+
+ {src:"課本 隨堂練習（指數記法）",
+  q:"用指數的形式簡記 <b class='eq'>(−5)×(−5)×(−5)×(−5)</b>",
+  hint:"底數是 −5 這一整包，所以要用括號包起來。",
+  o:["(−5)<sup>4</sup>","−5<sup>4</sup>","(−5)×4","(−4)<sup>5</sup>"], a:0,
+  why:"底數是 <b>−5</b>（連負號一起），乘了 4 次 → <span class='eq'>(−5)<sup>4</sup></span>。<br>⚠️ 寫成 <span class='eq'>−5<sup>4</sup></span> 就<b>錯了</b>——那代表「5 乘 4 次之後再加負號」，值是 −625，但正確答案是 ＋625。"},
+
+ {src:"課本 例 1（指數為偶數）",
+  q:"計算 <b class='eq'>3<sup>2</sup></b>",
+  hint:"兩個 3 相乘。",
+  o:["9","6","3","1"], a:0,
+  why:"<span class='eq'>3<sup>2</sup> ＝ 3×3 ＝ 9</span>。<br>⚠️ 不是 3×2＝6——<b>指數是「乘幾次」，不是「乘以幾」</b>。這是初學最常見的誤會。"},
+
+ {src:"課本 例 1（指數為偶數）",
+  q:"計算 <b class='eq'>(−3)<sup>2</sup></b>",
+  hint:"底數是 −3 這一整包，乘兩次。兩個負數相乘會得到什麼？",
+  o:["9","−9","6","−6"], a:0,
+  why:"<span class='eq'>(−3)<sup>2</sup> ＝ (−3)×(−3) ＝ ＋9</span><br>兩個負號（偶數個）→ 正的。<br>📌 <b>負數的偶數次方一定是正的。</b>"},
+
+ {src:"課本 例 1（🔴 整節最容易錯的一題）",
+  q:"計算 <b class='eq'>−3<sup>2</sup></b>　<span class='dim'>（注意：這次<b>沒有括號</b>）</span>",
+  hint:"次方只吃緊貼著它的那個數。緊貼著 2 的是誰——是 3，還是 −3？",
+  o:["−9","9","−6","6"], a:0,
+  why:"沒有括號，所以次方<b>只吃到 3</b>：<br><span class='eq'>−3<sup>2</sup> ＝ −(3<sup>2</sup>) ＝ −(3×3) ＝ −9</span><br>📌 和上一題比一比：<b><span class='eq'>(−3)<sup>2</sup>＝9</span>，<span class='eq'>−3<sup>2</sup>＝−9</span></b>——<em>差一個括號，差一個負號</em>。<br>回去用實驗一拖一次，把指數設成 2 就會同時看到兩邊。"},
+
+ {src:"課本 例 2（指數為奇數）",
+  q:"計算 <b class='eq'>(−6)<sup>3</sup></b>",
+  hint:"三個 −6 相乘。三是奇數還是偶數？",
+  o:["−216","216","−18","18"], a:0,
+  why:"<span class='eq'>(−6)<sup>3</sup> ＝ (−6)×(−6)×(−6) ＝ −216</span><br>三個負號（奇數個）→ 負的。<br>📌 <b>負數的奇數次方一定是負的。</b>"},
+
+ {src:"課本 例 2（和上一題比一比）",
+  q:"計算 <b class='eq'>−6<sup>3</sup></b>　<span class='dim'>（一樣<b>沒有括號</b>）</span>",
+  hint:"先算 6 的三次方，最後才加上前面那個負號。",
+  o:["−216","216","−18","−36"], a:0,
+  why:"<span class='eq'>−6<sup>3</sup> ＝ −(6<sup>3</sup>) ＝ −(6×6×6) ＝ −216</span><br>📌 <b>這次兩個答案一樣！</b><span class='eq'>(−6)<sup>3</sup></span> 和 <span class='eq'>−6<sup>3</sup></span> 都是 −216。<br><b>為什麼？</b>因為指數是<b>奇數</b>，本來結果就是負的，加不加括號都一樣。<br>⚠️ 但<b>意義還是不同</b>——只是這一次剛好算出同一個數。指數換成偶數，馬上就分開了。"},
+
+ {src:"課本 動動腦",
+  q:"若 <b class='eq'>n</b> 是<b>奇數</b>，那麼 <b class='eq'>(−1)<sup>n</sup></b> 等於多少？",
+  hint:"不管幾個 1 相乘都是 1，所以只要判斷符號。奇數個負號 → ？",
+  o:["−1","1","n","−n"], a:0,
+  why:"數字部分永遠是 1（幾個 1 相乘都是 1），所以只看符號。<br><b>n 個負號、n 是奇數 → 負的</b> → <span class='eq'>(−1)<sup>n</sup> ＝ −1</span>。<br>📌 相對的，<b>n 是偶數時 <span class='eq'>(−1)<sup>n</sup> ＝ 1</span></b>。<br><span class='eq'>(−1)<sup>n</sup></span> 就像一個開關，<em>在 ＋1 和 −1 之間跳來跳去</em>——高中會常常用到它。<br><b>八題做完了。</b>"}
+];
+
+/* 打散選項順序 —— 正解不會永遠在同一個位置（每次開啟都重洗） */
+PRAC.forEach(function(P){
+  var pairs=P.o.map(function(t,i){return {t:t, ok:(i===P.a)};});
+  for(var i=pairs.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1)), tmp=pairs[i]; pairs[i]=pairs[j]; pairs[j]=tmp;
+  }
+  P.o=pairs.map(function(x){return x.t;});
+  P.a=pairs.findIndex(function(x){return x.ok;});
+});
+
+let pi=0, pDone=(state.prac||0);
+function pDots(){
+  $("pDots").innerHTML=PRAC.map((_,i)=>
+    '<span class="dot'+(i<pDone?" done":(i===pi?" now":""))+'"></span>').join("");
+}
+function pRender(){
+  const P=PRAC[pi];
+  $("pSrc").textContent=P.src;
+  $("pNo").textContent="第 "+(pi+1)+" 題 / 共 "+PRAC.length+" 題";
+  $("pQ").innerHTML=P.q;
+  $("pHint").innerHTML=P.hint;
+  pDots();
+  const solved = pi<pDone;
+  $("pOpts").innerHTML=P.o.map((t,i)=>
+    '<button class="opt'+(solved&&i===P.a?" right locked":(solved?" locked":""))+'" data-i="'+i+'">'+
+    '<span class="k">'+"ABCD"[i]+'</span><span class="eq">'+t+'</span></button>').join("");
+  const fb=$("pFb");
+  if(solved){fb.className="prac-fb show ok";fb.innerHTML="<b>答對了</b>　"+P.why;$("pNext").disabled=false}
+  else{fb.className="prac-fb";fb.innerHTML="";$("pNext").disabled=true}
+  $("pNext").textContent = pi>=PRAC.length-1 ? "完成，進入重點整理" : "下一題";
+  $("pOpts").querySelectorAll(".opt").forEach(b=>{
+    b.addEventListener("click",()=>{
+      if(b.classList.contains("locked"))return;
+      const i=+b.dataset.i, P=PRAC[pi], fb=$("pFb");
+      if(i===P.a){
+        b.classList.add("right","locked");
+        $("pOpts").querySelectorAll(".opt").forEach(x=>x.classList.add("locked"));
+        fb.className="prac-fb show ok"; fb.innerHTML="<b>答對了</b>　"+P.why;
+        if(pi>=pDone){pDone=pi+1;state.prac=pDone;save();paint();gate()}
+        $("pNext").disabled=false; pDots();
+      }else{
+        b.classList.add("wrong");
+        fb.className="prac-fb show no";
+        fb.innerHTML="<b>再想一次</b>　"+P.hint+"<br><span style='color:var(--ink2)'>選錯不扣分，直接再選一個。</span>";
+      }
+    });
+  });
+}
+$("pNext").addEventListener("click",()=>{
+  if(pi<PRAC.length-1){pi++;pRender();
+    document.querySelector(".prac").scrollIntoView({behavior:"smooth",block:"start"})}
+  else{unlock("z4");unlock("z5");$("z4").scrollIntoView({behavior:"smooth",block:"start"})}
+});
+
+/* ══ 會考挑戰回饋 ══ */
+const FB={
+ 0:{ans:"A",
+  A:["對了","<p><span class='eq'>(−3)<sup>3</sup> ＝ (−3)×(−3)×(−3) ＝ −27</span></p><p>三個負號（<strong>奇數個</strong>）→ 負的；數字部分 3×3×3 ＝ 27。</p><p>往下看：這一題全國有多少人答對。</p>"],
+  B:["指數被當成乘法了 ── 這是最多人選的錯誤","<p>−9 通常來自把 <span class='eq'>(−3)<sup>3</sup></span> 算成 <span class='eq'>(−3)×3</span>。</p><p><strong>指數是「乘幾次」，不是「乘以幾」</strong>：<span class='eq'>(−3)<sup>3</sup> ＝ (−3)×(−3)×(−3)</span>，是<em>三個 −3 連乘</em>，不是 −3 乘以 3。</p><p>回去用實驗一把指數拖到 3，會看到它整個展開的樣子。</p>"],
+  C:["這是 (−3) 的<b>平方</b>","<p>9 是 <span class='eq'>(−3)<sup>2</sup></span> 的答案（<strong>兩個</strong>負數相乘 → 正的）。</p><p>但題目是 <span class='eq'>(−3)<sup>3</sup></span>——<strong>三個</strong>：<span class='eq'>(−3)×(−3)×(−3) ＝ −27</span>，<em>奇數個負號 → 負的</em>。</p>"],
+  D:["符號錯了","<p>數字部分 27 是對的，問題在符號。</p><p><span class='eq'>(−3)<sup>3</sup></span> 是<strong>三個</strong> −3 相乘，3 是<strong>奇數</strong> → 結果是<strong>負的</strong>。</p><p>📌 只有<em>偶數</em>次方才會變成正的。</p>"]},
+ 1:{ans:"D",
+  A:["除法那一項的符號錯了","<p>−138 通常來自把 <span class='eq'>2<sup>6</sup>÷(−2)<sup>3</sup></span> 算成 ＋8 之後又減掉。</p><p>照順序做：<br>① <span class='eq'>(−3)<sup>4</sup> ＝ 81</span>（偶數次方 → 正）<br>② <span class='eq'>7<sup>2</sup> ＝ 49</span><br>③ <span class='eq'>2<sup>6</sup> ＝ 64</span>、<span class='eq'>(−2)<sup>3</sup> ＝ −8</span> → <span class='eq'>64÷(−8) ＝ −8</span><br>④ <span class='eq'>81 − 49 − (−8) ＝ 81 − 49 ＋ 8 ＝ 40</span></p><p>⚠️ 最後那一步是<strong>減去一個負數</strong>，要變成加。</p>"],
+  B:["第一項的括號被忽略了","<p>−122 通常來自把 <span class='eq'>(−3)<sup>4</sup></span> 算成 <span class='eq'>−81</span>。</p><p>但括號把負號包進去了，而 <strong>4 是偶數</strong> → <span class='eq'>(−3)<sup>4</sup> ＝ ＋81</span>。</p><p><em>如果題目寫的是 <span class='eq'>−3<sup>4</sup></span>（沒有括號），那才是 −81。</em></p>"],
+  C:["最後一步的減號沒有翻","<p>24 ＝ <span class='eq'>81 − 49 − 8</span>——你把 <span class='eq'>2<sup>6</sup>÷(−2)<sup>3</sup></span> 的結果當成 ＋8 了。</p><p>但 <span class='eq'>(−2)<sup>3</sup> ＝ −8</span>（奇數次方 → 負），所以 <span class='eq'>64÷(−8) ＝ −8</span>，而 <span class='eq'>81−49−(−8) ＝ 81−49＋8 ＝ 40</span>。</p>"],
+  D:["對了，而且你四個地方都沒踩到","<p>① <span class='eq'>(−3)<sup>4</sup> ＝ 81</span>（括號內、偶數次方 → 正）<br>② <span class='eq'>7<sup>2</sup> ＝ 49</span><br>③ <span class='eq'>2<sup>6</sup> ÷ (−2)<sup>3</sup> ＝ 64 ÷ (−8) ＝ −8</span>（奇數次方 → 負）<br>④ <span class='eq'>81 − 49 − (−8) ＝ 81 − 49 ＋ 8 ＝ <strong>40</strong></span></p><p>📌 這一題把<strong>括號、奇偶次方、除法符號、減去負數</strong>四個坑排在一起——<em>1-3 和 1-4 全部都要會</em>。</p>"]},
+ 2:{ans:"A",
+  A:["對了","<p><strong>「增加前一年的 2.5%」＝ 每年變成前一年的 1.025 倍。</strong><br>（原本的 1 倍 ＋ 增加的 0.025 倍 ＝ 1.025 倍）</p><p><strong>算年數：</strong>2023 → 2030，中間經過 <span class='eq'>2030 − 2023 ＝ 7</span> 年，所以要乘 7 次。</p><p class='eq'>2700 × (1.025)<sup>7</sup></p><p>往下拉一次滑桿，看看「一直乘」和「一直加」差多少。</p>"],
+  B:["年數多算了一年","<p>式子的形狀是對的，你已經看出這是<strong>連乘</strong>而不是連加——這是這題最重要的一步。</p><p>問題只在次數：<span class='eq'>2030 − 2023 ＝ 7</span>，不是 8。</p><p>📌 <em>算「經過幾年」用減的，不要用數的</em>（2024、2025⋯⋯很容易多數一年）。</p>"],
+  C:["這是「每年加固定的量」","<p>C 的意思是：<em>每年都增加 2700 的 2.5%</em>（每年固定加 67.5）。</p><p>但題目說的是<strong>「前一年的 2.5%」</strong>——基準每年都在變大，所以增加的量也一年比一年多。</p><p>這是<strong>連乘</strong>，不是連加。往下拉滑桿看看兩者差多少。</p>"],
+  D:["兩個地方都要改","<p>① 這是<strong>連乘</strong>不是連加（見下面的實驗）<br>② 年數是 <span class='eq'>2030−2023 ＝ 7</span>，不是 8</p><p>正確式子是 <span class='eq'>2700 × (1.025)<sup>7</sup></span>。</p>"]}
+};
+
+/* ══ 進度與解鎖 ══ */
+function qDone(){return Object.keys(state).filter(k=>/^q\d+$/.test(k)).length}
+function paint(){
+  const d=(state.prac||0)+qDone();
+  $("pnum").textContent=d+" / "+TOTAL;
+  $("pfill").style.width=(d/TOTAL*100)+"%";
+}
+function unlock(id){
+  const el=$(id);
+  if(el&&el.classList.contains("locked-zone")){
+    el.classList.remove("locked-zone");el.classList.add("revealed");
+    setTimeout(()=>el.classList.remove("revealed"),700);
+  }
+}
+function gate(){
+  if((state.prac||0)>=PRAC.length){unlock("z4");unlock("z5")}
+  if(state.q0!==undefined){unlock("z5b");drawDist()}
+  if(state.q1!==undefined){unlock("z5c")}
+  if(state.q2!==undefined){unlock("z5d");unlock("z6")}
+  paint();
+}
+
+document.querySelectorAll(".opts[data-q]").forEach(box=>{
+  const qi=box.dataset.q, ans=box.dataset.ans;
+  box.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      if(box.dataset.locked)return;
+      const k=btn.dataset.k;
+      state["q"+qi]=k; save();
+      reveal(qi,k,ans,box,true); gate();
+    });
+  });
+});
+
+function reveal(qi,k,ans,box,scroll){
+  box.dataset.locked="1";
+  const PCT={A:"89.39%",B:"4.60%",C:"2.68%",D:"3.22%"};
+  box.querySelectorAll(".opt").forEach(b=>{
+    b.classList.add("locked");
+    if(b.dataset.k===k)b.classList.add("picked",k===ans?"right":"wrong");
+    else if(b.dataset.k===ans)b.classList.add("right");
+    if(qi==="0"&&!b.querySelector(".pct")){
+      const s=document.createElement("span");s.className="pct";s.textContent=PCT[b.dataset.k];b.appendChild(s);
+    }
+  });
+  const f=FB[qi][k], fb=$("fb"+qi);
+  fb.innerHTML="<h4 style='color:"+(k===ans?"var(--green)":"var(--red)")+"'>"+f[0]+"</h4>"+f[1];
+  fb.classList.add("show");
+  if(scroll)setTimeout(()=>fb.scrollIntoView({behavior:"smooth",block:"nearest"}),120);
+}
+
+let distDone=false;
+function drawDist(){
+  if(distDone)return;distDone=true;
+  const rows=[
+    {k:"A",v:89.39,c:"#15803d",t:"正確答案 −27"},
+    {k:"B",v:4.60,c:"#b03030",t:"−9 ── 把指數當成乘法（最多人選的錯誤）"},
+    {k:"C",v:2.68,c:"#b5bbb0",t:"9 ── 算成平方了"},
+    {k:"D",v:3.22,c:"#b5bbb0",t:"27 ── 符號錯"}
+  ];
+  $("dist").innerHTML=rows.map(r=>
+    '<div class="dbar"><span class="dk">'+r.k+'</span>'+
+    '<div class="dtrack"><div class="dfill" data-w="'+r.v+'" style="background:'+r.c+'"></div></div>'+
+    '<span class="dv">'+r.v.toFixed(2)+'%</span></div>'+
+    (r.t?'<div style="font-size:12px;color:var(--ink2);margin:-4px 0 10px 30px">'+r.t+'</div>':'<div style="height:6px"></div>')
+  ).join("");
+  setTimeout(()=>{$("dist").querySelectorAll(".dfill").forEach(d=>d.style.width=d.dataset.w+"%")},80);
+}
+
+/* ══ 實驗一：括號內外 ══ */
+const s1=$("s1"), s2=$("s2");
+function lab1(){
+  const a=+s1.value, n=+s2.value;
+  $("l1").textContent=M(a); $("l2").textContent=n;
+  const fa = a<0 ? "("+M(a)+")" : String(a);
+  const parts=[]; for(let i=0;i<n;i++) parts.push(fa);
+  const vA = Math.pow(a,n);                       // (a)^n
+  const vB = -Math.pow(Math.abs(a),n);            // −|a|^n
+  $("exp").innerHTML = fa+"<sup>"+n+"</sup> ＝ "+parts.join(" × ")+" ＝ <b>"+M(vA)+"</b>";
+  $("titleA").innerHTML = fa+"<sup>"+n+"</sup>";
+  $("valA").textContent = M(vA);
+  $("titleB").innerHTML = "−"+Math.abs(a)+"<sup>"+n+"</sup>";
+  $("valB").textContent = M(vB);
+  $("boxA").className = "vsbox "+(vA<0?"neg":"pos");
+  $("boxB").className = "vsbox "+(vB<0?"neg":"pos");
+  const same = (vA===vB);
+  const sv=$("samev");
+  sv.className = "samev "+(same?"same":"diff");
+  sv.textContent = same ? "這一次兩邊算出來一樣" : "這一次兩邊算出來不一樣";
+  const v=$("v1");
+  if(a===0){
+    v.className="verdict";
+    v.innerHTML="底數是 0，<strong>幾個 0 相乘都還是 0</strong>。";
+  }else if(a>0){
+    v.className="verdict";
+    v.innerHTML="底數是正的，所以左邊一定是正的；右邊前面有一個負號，所以一定是負的。<br><em>把底數拖到負的那一邊，才看得到這一課真正的重點。</em>";
+  }else if(n%2===0){
+    v.className="verdict good";
+    v.innerHTML="<strong>指數是偶數（"+n+"）→ 兩邊不一樣。</strong><br>"+
+      "左邊：括號把負號包進去，"+n+" 個負號相乘（偶數個）→ <strong>正的</strong>。<br>"+
+      "右邊：負號在外面，先算 "+Math.abs(a)+"<sup>"+n+"</sup> ＝ "+Math.abs(vB)+"，最後才加負號 → <strong>負的</strong>。";
+  }else{
+    v.className="verdict warn";
+    v.innerHTML="<strong>指數是奇數（"+n+"）→ 兩邊剛好一樣。</strong><br>"+
+      "因為負數的奇數次方本來就是負的，所以加不加括號，算出來都是 "+M(vA)+"。<br>"+
+      "⚠️ <em>但意義還是不同</em>——把指數改成偶數，馬上就分開了。";
+  }
+}
+s1.addEventListener("input",lab1); s2.addEventListener("input",lab1); lab1();
+
+/* ══ 實驗二：連乘 vs 連加 ══ */
+const s3=$("s3");
+function fmtNum(x){
+  return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
+}
+function lab2(){
+  const n=+s3.value;
+  $("l3").textContent=n+" 年";
+  const e=2700*Math.pow(1.025,n), l=2700+n*2700*0.025;
+  $("gexp").textContent=fmtNum(e);
+  $("glin").textContent=fmtNum(l);
+  $("gdiff").textContent=fmtNum(e-l);
+  // 畫兩條線（以 40 年為橫軸滿格、以 40 年的指數值為縱軸滿格）
+  const maxY=2700*Math.pow(1.025,40);
+  const px=(i)=>26+(i/40)*284, py=(val)=>112-((val-2700)/(maxY-2700))*100;
+  let pe="M", pl="M";
+  for(let i=0;i<=n;i++){
+    pe+=(i?" L":"")+px(i).toFixed(1)+" "+py(2700*Math.pow(1.025,i)).toFixed(1);
+    pl+=(i?" L":"")+px(i).toFixed(1)+" "+py(2700+i*2700*0.025).toFixed(1);
+  }
+  $("curveE").setAttribute("d",pe); $("curveL").setAttribute("d",pl);
+  const v=$("v2");
+  const gap=e-l;
+  if(n<=7){
+    v.className="verdict";
+    v.innerHTML="第 "+n+" 年，兩條線差 <strong>"+fmtNum(gap)+" 億度</strong>——<em>看起來差不多</em>。<br>"+
+      "這就是為什麼選項 C 很有迷惑性：<strong>前幾年真的差不多。</strong>";
+  }else if(n<=20){
+    v.className="verdict warn";
+    v.innerHTML="第 "+n+" 年，差距拉開到 <strong>"+fmtNum(gap)+" 億度</strong>。<br>"+
+      "綠色的線（每年<em>乘</em> 1.025）開始往上彎，灰色虛線（每年<em>加</em>固定的量）還是直的。";
+  }else{
+    v.className="verdict good";
+    v.innerHTML="第 "+n+" 年，差距已經是 <strong>"+fmtNum(gap)+" 億度</strong>。<br>"+
+      "📌 <strong>這就是「指數成長」和「直線成長」的差別</strong>——<em>一開始幾乎看不出來，久了就是天差地遠</em>。<br>"+
+      "利息、人口、病毒傳播、社群媒體的追蹤數，走的都是綠色那條線。";
+  }
+}
+s3.addEventListener("input",lab2); lab2();
+
+/* ══ 還原進度 ══ */
+if(pDone>0 && pDone<PRAC.length) pi=pDone;
+else if(pDone>=PRAC.length) pi=PRAC.length-1;
+pRender();
+document.querySelectorAll(".opts[data-q]").forEach(box=>{
+  const qi=box.dataset.q, saved=state["q"+qi];
+  if(saved!==undefined)reveal(qi,saved,box.dataset.ans,box,false);
+});
+gate();
+
+$("rst").addEventListener("click",()=>{
+  try{localStorage.removeItem(KEY)}catch(e){}
+  location.reload();
+});
+})();
+</script>
+</body>
+</html>
