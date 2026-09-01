@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>整數的加減｜七上 1-2</title>
+<style>
+:root{
+  --paper:#f7f8f5; --ink:#20261f; --ink2:#525c50; --line:#d8ded4;
+  --accent:#15803d; --accent-soft:#e9f5ec;
+  --teal:#0f6b63; --teal-soft:#e6f2f0;
+  --blue:#1d5b79; --blue-soft:#e8f1f5;
+  --green:#15803d; --green-soft:#e9f5ec;
+  --red:#b03030; --red-soft:#fdeeee;
+  --shadow:0 1px 2px rgba(32,38,31,.06),0 8px 24px rgba(32,38,31,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  font-size:17px;line-height:1.85;letter-spacing:.01em}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px 120px}
+
+header{padding:56px 0 28px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+.kicker{font-size:13px;letter-spacing:.22em;color:var(--accent);font-weight:700;margin-bottom:14px}
+h1{font-size:34px;line-height:1.3;margin:0 0 14px;letter-spacing:-.01em}
+.sub{color:var(--ink2);font-size:15px;margin:0}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.tag{font-size:12px;padding:4px 11px;border:1px solid var(--line);border-radius:99px;color:var(--ink2);background:#fff}
+
+.bar{position:sticky;top:0;z-index:50;background:rgba(247,248,245,.95);
+  border-bottom:1px solid var(--line);margin:0 -20px 0;padding:10px 20px}
+.bar-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.track{flex:1;height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.bar b{font-size:12px;color:var(--ink2);font-weight:600;font-variant-numeric:tabular-nums}
+
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.step{font-size:12px;letter-spacing:.2em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.step .n{display:inline-block;background:var(--accent);color:#fff;border-radius:50%;
+  width:20px;height:20px;line-height:20px;text-align:center;margin-right:8px;letter-spacing:0}
+h2{font-size:25px;line-height:1.4;margin:0 0 20px;letter-spacing:-.01em}
+h3{font-size:19px;margin:34px 0 12px}
+h4{font-size:16.5px;margin:24px 0 8px;color:var(--teal)}
+p{margin:0 0 18px}
+.lead{font-size:19px;line-height:1.9}
+.dim{color:var(--ink2)}
+.big{font-size:22px;font-weight:700;line-height:1.6;margin:26px 0}
+em{font-style:normal;background:linear-gradient(transparent 62%,#bfe6c9 62%);font-weight:600;padding:0 1px}
+.eq{font-family:"Cambria","Times New Roman",Georgia,serif;font-size:1.06em;font-variant-numeric:tabular-nums}
+.eq sup{font-size:.68em;vertical-align:super;line-height:0}
+.eq.blk{display:block;text-align:center;font-size:21px;margin:20px 0}
+.hl{background:#fff3c4;border-radius:3px;padding:0 3px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin:24px 0;box-shadow:var(--shadow)}
+.quote{border-left:3px solid var(--accent);background:var(--accent-soft);padding:18px 20px;border-radius:0 10px 10px 0;margin:24px 0}
+.quote p:last-child{margin:0}
+.note{background:var(--blue-soft);border:1px solid #cfe0e8;border-radius:12px;padding:18px 20px;margin:24px 0;font-size:16px}
+.note p:last-child{margin:0}
+.note b{color:var(--blue)}
+.aside{background:#fdf8e8;border:1px dashed #e3d5a4;border-radius:12px;padding:16px 18px;margin:24px 0;font-size:15px;color:#5c4d20}
+.aside p:last-child{margin:0}
+
+.fcard{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:20px;margin:16px 0;box-shadow:var(--shadow)}
+.fcard .fname{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.fcard .fbody{font-size:21px;text-align:center;margin:10px 0 14px;font-family:"Cambria",Georgia,serif}
+.fcard .fsay{font-size:15.5px;color:var(--ink2);line-height:1.75;margin:0}
+.fcard .fsay strong{color:var(--ink)}
+
+.q{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow)}
+.q-src{font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:12px}
+.q-body{font-size:16.5px;line-height:1.9;margin-bottom:20px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:12px;align-items:center;padding:14px 16px;border:1.5px solid var(--line);
+  border-radius:11px;cursor:pointer;background:#fff;font-size:16px;line-height:1.7;
+  transition:border-color .15s,background .15s;text-align:left;width:100%;font-family:inherit;color:inherit}
+.opt:hover:not(.locked){border-color:var(--ink2);background:#fbfcfa}
+.opt .k{font-weight:700;flex-shrink:0;width:22px;color:var(--ink2)}
+.opt.picked{border-color:var(--ink);border-width:2px}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.right .k{color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt.wrong .k{color:var(--red)}
+.opt.locked{cursor:default}
+.fb{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);font-size:16px;display:none}
+.fb.show{display:block;animation:rise .45s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fb h4{margin:0 0 8px;font-size:15px;letter-spacing:.06em;color:inherit}
+.fb p:last-child{margin:0}
+
+.locked-zone{opacity:.3;pointer-events:none;filter:blur(4px) saturate(.2);user-select:none}
+.revealed{animation:reveal .6s ease both}
+@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.prac{background:#fff;border:2px solid var(--teal);border-radius:16px;padding:22px;margin:26px 0;box-shadow:var(--shadow)}
+.prac-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;
+  font-size:13px;color:var(--ink2);font-weight:600;gap:10px;flex-wrap:wrap}
+.prac-top .src{color:var(--teal);letter-spacing:.08em}
+.dots{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap}
+.dot{width:22px;height:6px;border-radius:99px;background:var(--line);transition:background .3s}
+.dot.done{background:var(--green)}
+.dot.now{background:var(--teal)}
+.prac-q{font-size:17.5px;line-height:2;margin-bottom:8px}
+.prac-hint{font-size:14.5px;color:var(--ink2);margin-bottom:16px;line-height:1.7}
+.prac-fb{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:15.5px;line-height:1.8;display:none}
+.prac-fb.show{display:block;animation:rise .3s ease}
+.prac-fb.ok{background:var(--green-soft);border:1px solid #b7ddc3}
+.prac-fb.no{background:var(--red-soft);border:1px solid #edc4c4}
+
+.btn{padding:9px 18px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;
+  border-radius:99px;cursor:pointer;font-size:14.5px;font-family:inherit;font-weight:600;transition:opacity .15s}
+.btn:hover{opacity:.86}
+.btn.ghost{background:#fff;color:var(--accent)}
+.btn:disabled{opacity:.35;cursor:default}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+.lab{background:linear-gradient(#fff,#fbfcfa);border:1px solid var(--line);border-radius:16px;
+  padding:22px;margin:26px 0;box-shadow:var(--shadow)}
+.lab-t{font-size:12px;letter-spacing:.18em;color:var(--blue);font-weight:700;margin-bottom:16px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{padding:7px 14px;border:1.5px solid var(--line);background:#fff;border-radius:99px;
+  cursor:pointer;font-size:14px;font-family:inherit;color:var(--ink2);transition:all .15s}
+.chip:hover{border-color:var(--ink2)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--accent);height:26px}
+.slider-lab{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin:6px 0 2px}
+.readout{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.pill{flex:1;min-width:106px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.pill .lb{font-size:12.5px;color:var(--ink2)}
+.pill .vl{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.pill.hi{background:var(--accent-soft);border-color:#b7ddc3}
+.pill.hi .vl{color:var(--accent)}
+.verdict{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:15px;line-height:1.7;
+  background:var(--blue-soft);border:1px solid #cfe0e8}
+.verdict.good{background:var(--green-soft);border-color:#b7ddc3}
+.verdict.warn{background:#fdf8e8;border-color:#e3d5a4}
+
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:15px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#eef1eb;font-weight:700;font-size:13.5px;letter-spacing:.04em}
+tr:last-child td{border-bottom:none}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px -20px;padding:0 20px}
+.scroll table{margin:0;min-width:460px}
+
+.flow{counter-reset:s;list-style:none;padding:0;margin:14px 0 0}
+.flow li{counter-increment:s;position:relative;padding:7px 0 7px 40px;font-size:15.5px;line-height:1.7}
+.flow li::before{content:counter(s);position:absolute;left:0;top:8px;width:25px;height:25px;
+  background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:12.5px;font-weight:700}
+details.pre{background:#fff;border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden}
+details.pre summary{padding:13px 16px;cursor:pointer;font-size:16px;font-weight:600;list-style:none;
+  display:flex;align-items:center;gap:10px}
+details.pre summary::-webkit-details-marker{display:none}
+details.pre summary::before{content:"?";flex-shrink:0;width:22px;height:22px;border-radius:50%;
+  background:var(--line);color:var(--ink2);display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;font-weight:700}
+details.pre[open] summary::before{content:"\2713";background:var(--green);color:#fff}
+details.pre[open] summary{border-bottom:1px solid var(--line)}
+details.pre .bd{padding:14px 16px;font-size:15.5px;line-height:1.8;color:var(--ink2)}
+details.pre .bd strong{color:var(--ink)}
+details.pre .bd p{margin:0 0 10px}
+details.pre .bd p:last-child{margin:0}
+
+.done{text-align:center;padding:52px 0 20px}
+.done h2{font-size:27px}
+.reset{background:none;border:1px solid var(--line);color:var(--ink2);padding:9px 18px;
+  border-radius:99px;cursor:pointer;font-size:13px;font-family:inherit;margin-top:28px}
+footer{padding:36px 0;color:var(--ink2);font-size:13px;line-height:1.9;text-align:center}
+svg{max-width:100%;height:auto;display:block}
+
+/* 原始考題下載 */
+.dl{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:20px 22px;margin:24px 0;text-align:left}
+.dl h4{margin:0 0 8px;font-size:17px;color:var(--ink)}
+.dl p{font-size:15px;line-height:1.8;margin:0 0 14px;color:var(--ink2)}
+.dl a.get{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;
+  text-decoration:none;padding:11px 20px;border-radius:99px;font-size:15px;font-weight:700;
+  transition:opacity .15s}
+.dl a.get:hover{opacity:.86}
+.dl .meta{font-size:13px;color:var(--ink2);margin:10px 0 0}
+
+/* 完整解法步驟 */
+.sol{margin:20px 0}
+.sstep{display:flex;gap:14px;margin-bottom:20px}
+.sn{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-top:2px}
+.sb{flex:1;min-width:0}
+.sb h4{margin:2px 0 8px;font-size:17px;color:var(--ink)}
+.sb p{font-size:15.5px;line-height:1.85;margin:0 0 10px}
+.sb p:last-child{margin:0}
+.sb p.warn{background:#fdf8e8;border-left:3px solid #e3d5a4;padding:8px 12px;border-radius:0 8px 8px 0;font-size:14.5px}
+
+/* 溫度計實驗室 */
+.thermo{display:flex;gap:18px;align-items:flex-start;margin:16px 0 4px}
+.thermo .tsvg{flex-shrink:0}
+.tinfo{flex:1;min-width:0;font-size:15px;line-height:1.9}
+.tinfo .row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.tinfo .row:last-child{border-bottom:none}
+.tinfo .row span:last-child{font-family:"Cambria",Georgia,serif;font-weight:700;font-variant-numeric:tabular-nums}
+.samesign{display:inline-block;font-size:12.5px;padding:3px 10px;border-radius:99px;font-weight:700;letter-spacing:.05em}
+.samesign.same{background:var(--green-soft);color:var(--green);border:1px solid #b7ddc3}
+.samesign.diff{background:#fdf8e8;color:#8a6d1f;border:1px solid #e3d5a4}
+
+/* 減法翻牌 */
+.flip{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:18px 0}
+.flipbox{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 10px;text-align:center}
+.flipbox .fl{font-size:12px;color:var(--ink2);margin-bottom:5px}
+.flipbox .fv{font-family:"Cambria",Georgia,serif;font-size:20px;font-weight:700}
+.flipbox.to{border-color:var(--accent);background:var(--accent-soft)}
+.flipar{font-size:22px;color:var(--accent);font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-inner">
+  <b id="pnum">0 / 10</b>
+  <div class="track"><div class="fill" id="pfill"></div></div>
+</div></div>
+
+<div class="wrap">
+
+<header>
+  <div class="kicker">七年級上 · 第一章 1-2 整數的加減</div>
+  <h1>整數的加減</h1>
+  <p class="sub">上一課學會了「負數住在哪裡」。<br><strong>這一課要讓負數動起來——加它、減它，會跑到哪去。</strong></p>
+  <div class="meta">
+    <span class="tag">課本 p.26–47</span>
+    <span class="tag">課本練習 8 題</span>
+    <span class="tag">會考挑戰 2 題</span>
+    <span class="tag">約 30 分鐘</span>
+  </div>
+</header>
+
+<!-- ══ 開始之前 ══ -->
+<section>
+  <div class="step">開始之前</div>
+  <h2>這一課會怎麼走</h2>
+
+  <div class="card">
+    <ol class="flow">
+      <li><strong>先把四條規則認熟</strong>：同號相加、異號相加、減法變加法、去括號</li>
+      <li>這些規則從哪來——<strong>一千八百年前，中國人用紅色和黑色的小棍子算負數</strong></li>
+      <li><strong>用課本的例題和隨堂練習動手做</strong>（8 題，由淺入深）</li>
+      <li>重點整理：把整節收成一張表</li>
+      <li>最後是<strong>會考挑戰</strong>——這一節在考題裡長什麼樣子</li>
+    </ol>
+  </div>
+
+  <h3>先確認你知道這些</h3>
+  <details class="pre"><summary>什麼是「絕對值」？（1-1 學過）</summary><div class="bd">
+    <p><strong>一個數離 0 有多遠</strong>，寫成兩條直線包起來：<span class="eq">|−7| ＝ 7</span>、<span class="eq">|5| ＝ 5</span>。</p>
+    <p>因為是距離，所以<strong>絕對值一定是 0 或正數</strong>。</p>
+    <p>📌 這一課會一直說「數字部分」——<em>「數字部分」講的就是絕對值</em>，也就是把正負號蓋起來以後剩下的那個數。</p>
+  </div></details>
+  <details class="pre"><summary>什麼是「相反數」？（1-1 學過）</summary><div class="bd">
+    <p>兩個數<strong>相加剛好等於 0</strong>，就互為相反數。例如 7 和 −7、−3 和 3。</p>
+    <p>在數線上，它們在 0 的<strong>兩邊、一樣遠</strong>。</p>
+    <p>📌 這一課的減法規則整條都靠它，等一下第 ③ 張卡片會用到。</p>
+  </div></details>
+  <details class="pre"><summary>數線上「往右」和「往左」是什麼意思？</summary><div class="bd">
+    <p><strong>往右 ＝ 加一個正數（變大）；往左 ＝ 加一個負數（變小）。</strong></p>
+    <p>這一課會把每一個算式都畫成數線上的兩段箭頭：先走一段，再走一段，看最後停在哪。</p>
+  </div></details>
+  <details class="pre"><summary>這一課有新的名詞嗎？</summary><div class="bd">
+    <p>有兩個：<strong>交換律</strong>和<strong>結合律</strong>。</p>
+    <p>聽起來很嚇人，其實只是說「<em>順序可以換</em>」和「<em>要先算哪兩個都可以</em>」。你在國小算 3+5+7 的時候早就在用了，只是那時候沒有名字。</p>
+  </div></details>
+</section>
+
+<!-- ══ 1 概念 ══ -->
+<section>
+  <div class="step"><span class="n">1</span>這一節在教什麼</div>
+  <h2>四條規則，先認熟</h2>
+
+  <p class="lead">整節 1-2 就是這四條。<strong>先看過去，等一下每一條都會親手練到。</strong></p>
+
+  <div class="fcard">
+    <div class="fname">① 同號數相加（課本 p.28）</div>
+    <div class="fbody">(−9) ＋ (−7) ＝ −(9＋7) ＝ −16</div>
+    <p class="fsay"><strong>兩個數同號（都正、或都負）</strong>：<br>
+    數字部分<strong>相加</strong>，符號<strong>照抄</strong>。<br>
+    像是欠了 9 元又欠 7 元，總共欠 16 元——<em>還是欠</em>。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">② 異號數相加（課本 p.30）</div>
+    <div class="fbody">13 ＋ (−4) ＝ ＋(13−4) ＝ 9</div>
+    <p class="fsay"><strong>兩個數異號（一正一負）</strong>：<br>
+    數字部分<strong>大的減小的</strong>，符號跟<strong>數字大的那個</strong>走。<br>
+    像是有 13 元卻要付 4 元，剩下 9 元——<em>因為錢比較多，所以還是有錢</em>。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">③ 減法變加法（課本 p.37）</div>
+    <div class="fbody">a − b ＝ a ＋ (−b)</div>
+    <p class="fsay"><strong>減去一個數，等於加上它的相反數。</strong><br>
+    這條規則的價值是：<em>學會這一條，就再也不用學減法了</em>——<br>
+    所有的減法都可以先變成加法，再用 ① ② 兩條規則做完。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">④ 去括號（課本 p.40）</div>
+    <div class="fbody">−(a＋b) ＝ −a−b　　−(a−b) ＝ −a＋b</div>
+    <p class="fsay"><strong>括號前面是減號的時候，括號裡每一項的符號都要換。</strong><br>
+    只換一半是最常見的錯誤：<em>把 −(4−6) 寫成 −4−6</em>。</p>
+  </div>
+
+  <div class="note">
+    <p><b>還有兩條「可以偷懶」的規則</b>（課本 p.33）：</p>
+    <p><strong>交換律</strong> <span class="eq">a＋b ＝ b＋a</span>——順序可以換。<br>
+    <strong>結合律</strong> <span class="eq">a＋b＋c ＝ (a＋b)＋c ＝ a＋(b＋c)</span>——先算哪兩個都行。</p>
+    <p>這兩條不是拿來背的，是拿來<em>把難算的式子重新排成好算的樣子</em>。第 8 題你會親眼看到它省下多少力氣。</p>
+  </div>
+
+  <h3>先玩一下：兩次調整溫度</h3>
+  <p>課本用「冷凍庫調溫」帶出整節 1-2。<strong>調高記成正數、調低記成負數</strong>，兩次調整合起來就是一個加法算式。</p>
+
+  <div class="lab">
+    <div class="lab-t">實驗一 ── 兩次調整，總共變化多少</div>
+
+    <div class="slider-lab"><span>第一次調整</span><span id="l1">＋5 度</span></div>
+    <input type="range" id="s1" min="-9" max="9" step="1" value="5">
+    <div class="slider-lab"><span>第二次調整</span><span id="l2">−3 度</span></div>
+    <input type="range" id="s2" min="-9" max="9" step="1" value="-3">
+
+    <svg viewBox="0 0 340 96" style="margin:14px auto 6px;max-width:340px">
+      <line x1="10" y1="66" x2="330" y2="66" stroke="#20261f" stroke-width="1.6"/>
+      <path d="M322 61 L332 66 L322 71" fill="none" stroke="#20261f" stroke-width="1.6"/>
+      <g id="ticks" font-size="10" text-anchor="middle" fill="#525c50" font-family="Cambria,Georgia,serif"></g>
+      <path id="arr1" d="" fill="none" stroke="#b03030" stroke-width="2"/>
+      <path id="arr2" d="" fill="none" stroke="#1d5b79" stroke-width="2"/>
+      <text id="t1" x="0" y="26" font-size="11" text-anchor="middle" fill="#b03030" font-weight="700"></text>
+      <text id="t2" x="0" y="12" font-size="11" text-anchor="middle" fill="#1d5b79" font-weight="700"></text>
+      <circle id="endpt" cx="170" cy="66" r="4.5" fill="#15803d"/>
+    </svg>
+
+    <div class="readout">
+      <div class="pill"><div class="lb">算式</div><div class="vl" id="rf" style="font-size:16px">(＋5)＋(−3)</div></div>
+      <div class="pill hi"><div class="lb">總變化</div><div class="vl" id="rv">＋2</div></div>
+    </div>
+    <div class="verdict" id="rv2"></div>
+  </div>
+
+  <h3>再玩一下：減法怎麼變成加法</h3>
+  <p>課本用冷凍庫「<strong>原來幾度 → 後來幾度</strong>」導出減法。這裡把它拆給你看：<em>不管哪一種，減法都可以翻成加法</em>。</p>
+
+  <div class="lab">
+    <div class="lab-t">實驗二 ── 把減號翻過來</div>
+
+    <div class="slider-lab"><span>被減數 a</span><span id="l3">8</span></div>
+    <input type="range" id="s3" min="-12" max="12" step="1" value="8">
+    <div class="slider-lab"><span>減數 b</span><span id="l4">−5</span></div>
+    <input type="range" id="s4" min="-12" max="12" step="1" value="-5">
+
+    <div class="flip">
+      <div class="flipbox"><div class="fl">原本的樣子</div><div class="fv" id="fA">8 − (−5)</div></div>
+      <div class="flipar">→</div>
+      <div class="flipbox to"><div class="fl">翻成加法</div><div class="fv" id="fB">8 ＋ 5</div></div>
+    </div>
+    <div class="readout">
+      <div class="pill"><div class="lb">b 的相反數</div><div class="vl" id="fC">5</div></div>
+      <div class="pill hi"><div class="lb">答案</div><div class="vl" id="fD">13</div></div>
+    </div>
+    <div class="verdict" id="fV"></div>
+  </div>
+</section>
+
+<!-- ══ 2 歷史 ══ -->
+<section>
+  <div class="step"><span class="n">2</span>這些規則從哪來</div>
+  <h2>紅色的棍子和黑色的棍子</h2>
+
+  <p class="lead">你剛剛用的那些規則，不是誰隨便訂的。<br><strong>它們最早被寫下來的地方，是一千八百年前的中國。</strong></p>
+
+  <h3>問題是這樣開始的</h3>
+
+  <p>西元一世紀左右，中國有一本書叫《<strong>九章算術</strong>》，裡面收了兩百多個實際會遇到的計算問題：分田地、算工錢、算糧食。</p>
+
+  <p>其中有一章叫「方程」，處理的是<strong>好幾個條件要同時滿足</strong>的問題。算的時候會一直出現同一種狀況——</p>
+
+  <div class="quote">
+    <p><strong>算到一半，發現「不夠減」。</strong></p>
+    <p>比如手上只有 3，卻要拿走 5。在當時的世界觀裡，這通常就代表「這題無解」或「題目出錯了」。</p>
+  </div>
+
+  <p>但中國的算學家沒有停在這裡。他們做了一件在當時很大膽的事：<em>那就讓它可以減下去，並且給那個結果一個記法。</em></p>
+
+  <h3>怎麼記？用顏色</h3>
+
+  <p>當時算數學不是用筆寫，是用「<strong>算籌</strong>」——一根一根像小竹棍的東西，排在桌上代表數字。</p>
+
+  <div class="note">
+    <p><b>問題來了：</b>小棍子上沒辦法寫負號。</p>
+    <p>所以他們用<strong>顏色</strong>來分：</p>
+    <p class="eq blk" style="font-size:19px">正算赤，負算黑</p>
+    <p>紅色的算籌代表<strong>正數</strong>，黑色的算籌代表<strong>負數</strong>。（也有另一種做法：把棍子斜著擺表示負數。）</p>
+  </div>
+
+  <p class="big">「−」這個符號，是很久以後才發明的另一種「顏色」。</p>
+
+  <h3>誰把規則寫下來的</h3>
+
+  <p><strong>劉徽</strong>（約西元 225～295 年，三國時代的數學家）替《九章算術》寫了一份很有名的注解。在裡面，他把正負數的加減規則整理成一段叫「<strong>正負術</strong>」的文字。</p>
+
+  <p>那段文字翻成白話，講的就是你剛剛在做的事：</p>
+
+  <div class="card">
+    <p style="margin-bottom:10px"><strong>「同名相除，異名相益」</strong>——</p>
+    <p style="margin:0">兩個<strong>同號</strong>的數要合起來時，數字部分相加；<br>
+    兩個<strong>異號</strong>的數要合起來時，數字部分相減。</p>
+  </div>
+
+  <p>這就是你第 ① ② 張卡片上的那兩條規則。<em>一千八百年，一個字都沒有改。</em></p>
+
+  <h3>那時候的其他地方呢</h3>
+
+  <div class="scroll">
+  <table>
+    <tr><th>時間</th><th>地方</th><th>發生了什麼</th></tr>
+    <tr><td>約 1 世紀</td><td>中國</td><td>《九章算術》「方程」章已經在用負數</td></tr>
+    <tr><td>約 263 年</td><td>中國</td><td><strong>劉徽寫下「正負術」</strong>——目前所知<strong>最早的正負數加減法則</strong></td></tr>
+    <tr><td>628 年</td><td>印度</td><td>婆羅摩笈多寫下負數的完整運算規則（比劉徽晚約 400 年）</td></tr>
+    <tr><td>1544 年</td><td>德國</td><td>數學家史提菲爾把負數稱為「<strong>荒謬的數</strong>」</td></tr>
+    <tr><td>17 世紀</td><td>法國</td><td>巴斯卡認為「<strong>0 減掉 4 什麼也不是</strong>」，拒絕承認負數</td></tr>
+  </table>
+  </div>
+
+  <div class="aside">
+    <p>📌 <strong>看一下最後兩列的年份。</strong></p>
+    <p>當歐洲最頂尖的數學家還在爭論「比 0 小的數到底存不存在」的時候，中國的算學家已經用紅黑棍子算了<strong>一千五百年</strong>。</p>
+  </div>
+
+  <p class="big">你今天覺得 (−6)−4 ＝ −10 理所當然，<br>是因為人類為了這件事吵了一千五百年。</p>
+
+  <p class="dim">所以如果你現在覺得負號很煩、常常搞錯符號——那不是你笨。<em>這件事本來就難，難到全世界最聰明的一群人吵了一千多年。</em>你只是在幾節課裡走完他們走了十五個世紀的路。</p>
+</section>
+
+<!-- ══ 3 課本練習 ══ -->
+<section>
+  <div class="step"><span class="n">3</span>動手練</div>
+  <h2>照課本的順序，一題一題來</h2>
+
+  <p>下面 8 題<strong>全部出自課本 1-2 的例題和隨堂練習</strong>，順序也照課本。<br>
+  答錯不扣分，可以一直選到對為止——<em>重點是每一題的回饋，不是分數</em>。</p>
+
+  <div class="prac">
+    <div class="prac-top"><span class="src" id="pSrc">課本 例 2</span><span id="pNo">第 1 題 / 共 8 題</span></div>
+    <div class="dots" id="pDots"></div>
+    <div class="prac-q" id="pQ"></div>
+    <div class="prac-hint" id="pHint"></div>
+    <div class="opts" id="pOpts"></div>
+    <div class="prac-fb" id="pFb"></div>
+    <div class="btnrow"><button class="btn" id="pNext" disabled>下一題</button></div>
+  </div>
+</section>
+
+<!-- ══ 4 重點整理 ══ -->
+<section class="locked-zone" id="z4">
+  <div class="step"><span class="n">4</span>重點整理</div>
+  <h2>整節 1-2 收成一張表</h2>
+
+  <p>依課本的順序排。<strong>左邊是先備知識（1-1 學過的），右邊是這一節新學的。</strong></p>
+
+  <div class="scroll">
+  <table>
+    <tr><th style="width:76px">課本位置</th><th>先備知識（1-1）</th><th>1-2 新學的</th></tr>
+    <tr>
+      <td><b>主題 1</b><br>p.26–33<br>加法</td>
+      <td>絕對值＝離 0 多遠<br>數線往右變大、往左變小</td>
+      <td><strong>同號相加</strong>：數字相加，符號照抄<br><strong>異號相加</strong>：數字大減小，符號跟大的走<br><strong>交換律、結合律</strong></td>
+    </tr>
+    <tr>
+      <td><b>主題 2</b><br>p.34–37<br>減法</td>
+      <td><strong>相反數</strong>：相加等於 0</td>
+      <td><span class="eq">a − b ＝ a ＋ (−b)</span><br>減去一個數 ＝ 加上它的相反數<br><em>減法從此可以全部丟掉</em></td>
+    </tr>
+    <tr>
+      <td><b>主題 3</b><br>p.38–41<br>加減混合</td>
+      <td>由左而右依序計算</td>
+      <td>先把減法<strong>全部翻成加法</strong>，再用交換律、結合律重排<br><strong>去括號</strong>：<span class="eq">−(a＋b) ＝ −a−b</span>、<span class="eq">−(a−b) ＝ −a＋b</span></td>
+    </tr>
+  </table>
+  </div>
+
+  <h3>三個最容易錯的地方</h3>
+
+  <div class="card">
+    <p><strong>① 異號相加時，符號取錯</strong></p>
+    <p style="margin-bottom:0"><span class="eq">(−8)＋6</span>：數字是 8 比 6 大，8 那一邊是負的 → 答案是 <strong>−2</strong>，不是 ＋2。<br>
+    <span class="dim">口訣：<em>誰的數字大，就聽誰的</em>。</span></p>
+  </div>
+
+  <div class="card">
+    <p><strong>② 去括號只換一半</strong></p>
+    <p style="margin-bottom:0"><span class="eq">−(4−6)</span> 要寫成 <span class="eq">−4＋6</span>，<strong>兩項都要換</strong>。<br>
+    寫成 <span class="eq">−4−6</span> 就錯了——那是 <span class="eq">−(4＋6)</span> 的答案。</p>
+  </div>
+
+  <div class="card">
+    <p><strong>③ 忘了可以重排</strong></p>
+    <p style="margin-bottom:0"><span class="eq">(−198)−25−(−199)</span> 硬算要算很久；<br>
+    但先翻成加法後把 <span class="eq">−198</span> 和 <span class="eq">199</span> 湊在一起，馬上剩下 <span class="eq">1＋(−25)</span>。<br>
+    <em>會不會看出這種結構，是這一章真正在分高下的地方。</em></p>
+  </div>
+
+  <div class="note">
+    <p><b>順帶一提：</b>去括號的規則（<span class="eq">−(a＋b) ＝ −a−b</span>）到了<strong>八年級上學期的多項式加減</strong>還會再用一次，一模一樣。</p>
+    <p>那時候括號裡裝的不是數字，是 <span class="eq">3x²＋2x−5</span> 這種東西——但規則完全沒變。<em>今天弄懂，明年省一次力氣。</em></p>
+  </div>
+</section>
+
+<!-- ══ 5 會考挑戰 ══ -->
+<section class="locked-zone" id="z5">
+  <div class="step"><span class="n">5</span>會考挑戰</div>
+  <h2>這一節在考題裡長什麼樣子</h2>
+
+  <div class="aside">
+    <p>⚠️ <strong>先說清楚一件事：會考不會單獨考 1-2。</strong></p>
+    <p>103 到 115 年，十三年來<strong>沒有一題只考整數的加減</strong>。<br>
+    加減永遠被包在<strong>下一節（1-3）的四則運算</strong>裡——但每一題的<em>最後一步</em>，幾乎都是這一節的內容。</p>
+    <p>所以下面兩題會這樣處理：<strong>下一節才教的乘法，我先幫你算好</strong>，你只要把<em>加減那一步</em>做對。</p>
+    <p>📌 第二題還會用到 1-1 的絕對值——<strong>會考很少只考一節</strong>，這就是它真正的樣子。</p>
+  </div>
+
+  <div class="q">
+    <div class="q-src">會考 110 年 第 2 題（拆給你做）</div>
+    <div class="q-body">
+      <p style="margin-bottom:14px">原題是：計算 <span class="eq"><b>−8 ＋ (−2) × (−3)</b></span> 的值。</p>
+      <p style="margin-bottom:14px"><strong>第一步（下一節才教，先給你）：</strong><br>
+      <span class="eq">(−2) × (−3) ＝ 6</span>　<span class="dim">（負乘負會變成正的）</span></p>
+      <p style="margin:0"><strong>第二步（換你）：</strong>那麼 <span class="eq"><b>−8 ＋ 6</b></span> 等於多少？</p>
+    </div>
+    <div class="opts" data-q="0" data-ans="A">
+      <button class="opt" data-k="A"><span class="k">A</span><span class="eq">−2</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span class="eq">2</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span class="eq">−14</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span class="eq">14</span></button>
+    </div>
+    <div class="fb" id="fb0"></div>
+  </div>
+
+  <div class="locked-zone" id="z5b">
+  <div class="q">
+    <div class="q-src">會考 106 年 第 1 題（拆給你做）</div>
+    <div class="q-body">
+      <p style="margin-bottom:14px">原題是：計算 <span class="eq"><b>(−2) × |−5| − |−3|</b></span> 的值。</p>
+      <p style="margin-bottom:14px"><strong>第一步（1-1 學過的絕對值）：</strong><br>
+      <span class="eq">|−5| ＝ 5</span>、<span class="eq">|−3| ＝ 3</span>　<span class="dim">（絕對值＝離 0 多遠，一定是正的）</span><br>
+      式子就變成 <span class="eq">(−2) × 5 − 3</span></p>
+      <p style="margin-bottom:14px"><strong>第二步（下一節才教，先給你）：</strong><br>
+      <span class="eq">(−2) × 5 ＝ −10</span>　<span class="dim">（負乘正是負的）</span></p>
+      <p style="margin:0"><strong>第三步（換你）：</strong>那麼 <span class="eq"><b>−10 − 3</b></span> 等於多少？</p>
+    </div>
+    <div class="opts" data-q="1" data-ans="C">
+      <button class="opt" data-k="A"><span class="k">A</span><span class="eq">−7</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span class="eq">7</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span class="eq">−13</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span class="eq">13</span></button>
+    </div>
+    <div class="fb" id="fb1"></div>
+  </div>
+  </div>
+</section>
+
+<!-- ══ 結案 ══ -->
+<section class="locked-zone" id="z6">
+  <div class="done">
+    <h2>1-2 走完了</h2>
+    <p class="dim">同號相加、異號相加、減法變加法、去括號——四條規則都親手用過。</p>
+  </div>
+
+  <div class="dl">
+    <h4>📄 用得到 1-2 的會考原題（PDF）</h4>
+    <p>上面兩題被我拆成幾個步驟來練。這份 PDF 是<strong>原本考卷上的樣子</strong>——完整題目、原始選項、沒有拆解。</p>
+    <p>建議：印出來，<strong>從頭到尾自己算一次</strong>。等你學完下一節的乘除，再回頭做一次會更順。</p>
+    <a class="get" href="pdf/addsub_exam.pdf" download>下載原始考題 PDF</a>
+    <p class="meta">2 題 · 110 年第 2 題、106 年第 1 題 · 取自國中教育會考正式試題</p>
+  </div>
+
+  <div class="card">
+    <p><strong>下一課（照課本順序）：</strong><span style="color:var(--accent);font-weight:700">整數的乘除與四則運算</span>（第 1 章 1-3）<br>
+    負負為什麼會得正？這一節在會考裡有<strong>7 題</strong>，是整章考最多的一節。<br>
+    而且你剛剛已經先用過它的答案兩次了。</p>
+  </div>
+
+  <div class="btnrow" style="justify-content:center;margin-top:26px">
+    <a class="btn ghost" href="index.html" style="text-decoration:none">回到單元列表</a>
+  </div>
+  <div style="text-align:center"><button class="reset" id="rst">清除這一課的進度，重新做一次</button></div>
+</section>
+
+<footer>
+  國中數學七上自學站 · 第一章 1-2 整數的加減<br>
+  課本例題與隨堂練習取自康軒版第一冊；會考題取自國中教育會考正式試題<br>
+  <a href="index.html" style="color:var(--accent)">單元列表</a> ·
+  <a href="https://yingsioul-art.github.io/jhs8-math/" style="color:var(--accent)">八上數學</a> ·
+  <a href="https://yingsioul-art.github.io/jhs8-science/" style="color:var(--accent)">八上自然</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+const KEY="jhs7-addsub-v1", TOTAL=10;
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){state={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+const $=(id)=>document.getElementById(id);
+const M=(n)=>String(n).replace("-","−");
+const S=(n)=>(n<0?"−"+Math.abs(n):"＋"+n);
+
+/* ══ 課本練習 8 題 ══ */
+const PRAC=[
+ {src:"課本 例 2（同號數相加）",
+  q:"計算 <b class='eq'>(−9) ＋ (−7)</b>",
+  hint:"兩個都是負的（同號）。數字部分要相加還是相減？符號呢？",
+  o:["−16","16","−2","2"], a:0,
+  why:"兩個都是負數 → <b>數字部分相加</b> 9＋7＝16，<b>符號照抄</b>（負的）。<br><span class='eq'>(−9)＋(−7) ＝ −(9＋7) ＝ −16</span><br>📌 想成「欠 9 元又欠 7 元」，總共欠 16 元。"},
+
+ {src:"課本 隨堂練習（同號數相加）",
+  q:"計算 <b class='eq'>(−16) ＋ (−8)</b>",
+  hint:"和上一題同一條規則。",
+  o:["−24","24","−8","8"], a:0,
+  why:"<span class='eq'>(−16)＋(−8) ＝ −(16＋8) ＝ −24</span><br>同號相加，數字愈加愈大，但<b>方向不會變</b>——負的加負的，只會更負。"},
+
+ {src:"課本 例 4（異號數相加）",
+  q:"計算 <b class='eq'>13 ＋ (−4)</b>",
+  hint:"一正一負（異號）。這時候數字部分是大的減小的，符號跟誰走？",
+  o:["9","−9","17","−17"], a:0,
+  why:"異號相加 → <b>數字部分大減小</b> 13−4＝9；13 比 4 大，而 13 是<b>正的</b>，所以答案是正的。<br><span class='eq'>13＋(−4) ＝ ＋(13−4) ＝ 9</span>"},
+
+ {src:"課本 例 4（異號數相加）",
+  q:"計算 <b class='eq'>(−15) ＋ 9</b>",
+  hint:"⚠️ 這次數字大的那一個是負的。",
+  o:["−6","6","−24","24"], a:0,
+  why:"數字部分 15−9＝6；15 比 9 大，而 15 是<b>負的</b>，所以答案是負的。<br><span class='eq'>(−15)＋9 ＝ −(15−9) ＝ −6</span><br>📌 這一題和上一題數字部分算法一樣，<b>差別只在符號跟誰走</b>——這就是最多人錯的地方。"},
+
+ {src:"課本 例 6（減法運算）",
+  q:"計算 <b class='eq'>14 − 23</b>",
+  hint:"先把減法翻成加法：減去 23 就是加上 −23。",
+  o:["−9","9","37","−37"], a:0,
+  why:"<span class='eq'>14−23 ＝ 14＋(−23)</span>，變成異號相加 → 數字 23−14＝9，23 是負的那邊 → <b>−9</b>。<br>📌 <b>「小的減大的」不會沒有答案，只會得到負數。</b>這就是負數存在的理由。"},
+
+ {src:"課本 例 6（減法運算）",
+  q:"計算 <b class='eq'>125 − (−25)</b>",
+  hint:"減去 −25，就是加上 −25 的相反數。−25 的相反數是什麼？",
+  o:["150","100","−150","−100"], a:0,
+  why:"<span class='eq'>125−(−25) ＝ 125＋25 ＝ 150</span><br>📌 <b>減去一個負數，反而會變大。</b>這聽起來很怪，但想成「本來要扣你 25 分，結果不扣了」——你當然比較高分。"},
+
+ {src:"課本 例 6（減法運算）",
+  q:"計算 <b class='eq'>(−133) − (−13)</b>",
+  hint:"兩個負號分開處理：先把「−(−13)」翻成「＋13」，再做異號相加。",
+  o:["−120","−146","120","146"], a:0,
+  why:"<span class='eq'>(−133)−(−13) ＝ (−133)＋13</span>，異號相加 → 數字 133−13＝120，133 是負的那邊 → <b>−120</b>。<br>⚠️ 選 −146 的話，是把它當成同號相加（133＋13）了——<b>翻牌以後要重新看一次是同號還是異號</b>。"},
+
+ {src:"課本 例 7（加減混合 ── 最重要的一題）",
+  q:"計算 <b class='eq'>(−198) − 25 − (−199)</b>",
+  hint:"別急著從左邊算。先全部翻成加法，再看看哪兩個數湊在一起最好算。",
+  o:["−24","−422","24","422"], a:0,
+  why:"<b>第一步：全部翻成加法</b><br><span class='eq'>(−198)＋(−25)＋199</span><br><b>第二步：用交換律重排</b>，把 −198 和 199 湊一起<br><span class='eq'>＝ (−198)＋199＋(−25) ＝ 1＋(−25) ＝ −24</span><br>📌 如果從左邊硬算：−198−25 ＝ −223，再 −223＋199 ＝ −24——<b>答案一樣，但難算很多</b>。<br><b>八題做完了。</b>你已經把課本 1-2 的四條規則全部用過一次。"}
+];
+
+/* 打散選項順序 —— 正解不會永遠在同一個位置（每次開啟都重洗） */
+PRAC.forEach(function(P){
+  var pairs=P.o.map(function(t,i){return {t:t, ok:(i===P.a)};});
+  for(var i=pairs.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1)), tmp=pairs[i]; pairs[i]=pairs[j]; pairs[j]=tmp;
+  }
+  P.o=pairs.map(function(x){return x.t;});
+  P.a=pairs.findIndex(function(x){return x.ok;});
+});
+
+let pi=0, pDone=(state.prac||0);
+function pDots(){
+  $("pDots").innerHTML=PRAC.map((_,i)=>
+    '<span class="dot'+(i<pDone?" done":(i===pi?" now":""))+'"></span>').join("");
+}
+function pRender(){
+  const P=PRAC[pi];
+  $("pSrc").textContent=P.src;
+  $("pNo").textContent="第 "+(pi+1)+" 題 / 共 "+PRAC.length+" 題";
+  $("pQ").innerHTML=P.q;
+  $("pHint").innerHTML=P.hint;
+  pDots();
+  const solved = pi<pDone;
+  $("pOpts").innerHTML=P.o.map((t,i)=>
+    '<button class="opt'+(solved&&i===P.a?" right locked":(solved?" locked":""))+'" data-i="'+i+'">'+
+    '<span class="k">'+"ABCD"[i]+'</span><span class="eq">'+t+'</span></button>').join("");
+  const fb=$("pFb");
+  if(solved){fb.className="prac-fb show ok";fb.innerHTML="<b>答對了</b>　"+P.why;$("pNext").disabled=false}
+  else{fb.className="prac-fb";fb.innerHTML="";$("pNext").disabled=true}
+  $("pNext").textContent = pi>=PRAC.length-1 ? "完成，進入重點整理" : "下一題";
+  $("pOpts").querySelectorAll(".opt").forEach(b=>{
+    b.addEventListener("click",()=>{
+      if(b.classList.contains("locked"))return;
+      const i=+b.dataset.i, P=PRAC[pi], fb=$("pFb");
+      if(i===P.a){
+        b.classList.add("right","locked");
+        $("pOpts").querySelectorAll(".opt").forEach(x=>x.classList.add("locked"));
+        fb.className="prac-fb show ok"; fb.innerHTML="<b>答對了</b>　"+P.why;
+        if(pi>=pDone){pDone=pi+1;state.prac=pDone;save();paint();gate()}
+        $("pNext").disabled=false; pDots();
+      }else{
+        b.classList.add("wrong");
+        fb.className="prac-fb show no";
+        fb.innerHTML="<b>再想一次</b>　"+P.hint+"<br><span style='color:var(--ink2)'>選錯不扣分，直接再選一個。</span>";
+      }
+    });
+  });
+}
+$("pNext").addEventListener("click",()=>{
+  if(pi<PRAC.length-1){pi++;pRender();
+    document.querySelector(".prac").scrollIntoView({behavior:"smooth",block:"start"})}
+  else{unlock("z4");unlock("z5");$("z4").scrollIntoView({behavior:"smooth",block:"start"})}
+});
+
+/* ══ 會考挑戰回饋 ══ */
+const FB={
+ 0:{ans:"A",
+  A:["對了","<p><span class='eq'>−8＋6</span> 是<strong>異號相加</strong>：數字部分 8−6＝2，而 8 是負的那一邊 → <strong>−2</strong>。</p><p>接回原題：<span class='eq'>−8＋(−2)×(−3) ＝ −8＋6 ＝ −2</span>，會考的答案就是這個。</p><p>📌 注意整題真正難的地方<em>不是乘法</em>，是最後這一步的<strong>符號</strong>。</p>"],
+  B:["符號取反了","<p>數字部分 8−6＝2 是對的，但符號跟錯人了。</p><p><strong>符號要跟數字大的那一個走</strong>：8 比 6 大，而 8 那一邊是<strong>負的</strong>，所以答案是 <span class='eq'>−2</span>。</p><p>回去用實驗一拖一次：第一次調 −8 度、第二次調 ＋6 度，溫度計最後停在 0 的哪一邊？</p>"],
+  C:["這是把異號當成同號了","<p><span class='eq'>−8＋6</span> 是一負一正（<strong>異號</strong>），數字部分要<strong>相減</strong>，不是相加。</p><p>如果是 <span class='eq'>−8＋(−6)</span> 才會得到 −14。</p><p>⚠️ 這一步很常錯：<em>乘法算完得到 ＋6 之後，就變成異號相加了</em>——要重新看一次符號。</p>"],
+  D:["兩個地方都反了","<p>數字部分做成相加（8＋6＝14），符號又取成正的。</p><p>先確認一件事：<span class='eq'>−8</span> 和 <span class='eq'>＋6</span> 是<strong>異號</strong> → 數字大減小 8−6＝2 → 符號跟 8 走 → <span class='eq'>−2</span>。</p>"]},
+ 1:{ans:"C",
+  A:["這是把它當成異號相加了","<p>翻成加法之後是 <span class='eq'>(−10)＋(−3)</span>——<strong>兩個都是負的（同號）</strong>，數字部分要<strong>相加</strong>：10＋3＝13。</p><p>得到 −7 的話，是把數字部分做成相減（10−3）了。</p><p>📌 「−10 減 3」不是「往回走」，是<em>再往負的方向走 3 格</em>。</p>"],
+  B:["方向反了","<p>從 <span class='eq'>−10</span> 出發再減掉 3，只會離 0 更遠，<strong>不可能變成正數</strong>。</p><p>先翻牌：<span class='eq'>−10−3 ＝ (−10)＋(−3)</span>，同號相加 → <span class='eq'>−(10＋3) ＝ −13</span>。</p>"],
+  C:["對了","<p><span class='eq'>−10−3 ＝ (−10)＋(−3)</span>，兩個都是負的（<strong>同號</strong>）→ 數字部分相加 10＋3＝13，符號照抄 → <strong>−13</strong>。</p><p>接回原題：<span class='eq'>(−2)×|−5|−|−3| ＝ (−2)×5−3 ＝ −10−3 ＝ −13</span>，會考的答案就是這個。</p><p>📌 這一題把 <strong>1-1 的絕對值</strong>和 <strong>1-2 的減法</strong>綁在一起考——<em>這就是會考典型的出題方式：不會只考一節</em>。</p>"],
+  D:["兩個地方都反了","<p>數字部分算對了（13），但符號取成正的。</p><p>照順序做：① <span class='eq'>|−5|＝5</span>、<span class='eq'>|−3|＝3</span>　② <span class='eq'>(−2)×5＝−10</span>　③ <span class='eq'>−10−3 ＝ (−10)＋(−3) ＝ −13</span>。</p><p>⚠️ 選 13 的人通常是把 <span class='eq'>|−3|</span> 前面的減號和 −3 的負號<em>互相抵消</em>了——但那個 −3 的負號<strong>已經被絕對值吃掉了</strong>，剩下的是單純的「減 3」。</p>"]}
+};
+
+/* ══ 進度與解鎖 ══ */
+function qDone(){return Object.keys(state).filter(k=>/^q\d+$/.test(k)).length}
+function paint(){
+  const d=(state.prac||0)+qDone();
+  $("pnum").textContent=d+" / "+TOTAL;
+  $("pfill").style.width=(d/TOTAL*100)+"%";
+}
+function unlock(id){
+  const el=$(id);
+  if(el&&el.classList.contains("locked-zone")){
+    el.classList.remove("locked-zone");el.classList.add("revealed");
+    setTimeout(()=>el.classList.remove("revealed"),700);
+  }
+}
+function gate(){
+  if((state.prac||0)>=PRAC.length){unlock("z4");unlock("z5")}
+  if(state.q0!==undefined){unlock("z5b")}
+  if(state.q1!==undefined){unlock("z6")}
+  paint();
+}
+
+document.querySelectorAll(".opts[data-q]").forEach(box=>{
+  const qi=box.dataset.q, ans=box.dataset.ans;
+  box.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      if(box.dataset.locked)return;
+      const k=btn.dataset.k;
+      state["q"+qi]=k; save();
+      reveal(qi,k,ans,box,true); gate();
+    });
+  });
+});
+
+function reveal(qi,k,ans,box,scroll){
+  box.dataset.locked="1";
+  box.querySelectorAll(".opt").forEach(b=>{
+    b.classList.add("locked");
+    if(b.dataset.k===k)b.classList.add("picked",k===ans?"right":"wrong");
+    else if(b.dataset.k===ans)b.classList.add("right");
+  });
+  const f=FB[qi][k], fb=$("fb"+qi);
+  fb.innerHTML="<h4 style='color:"+(k===ans?"var(--green)":"var(--red)")+"'>"+f[0]+"</h4>"+f[1];
+  fb.classList.add("show");
+  if(scroll)setTimeout(()=>fb.scrollIntoView({behavior:"smooth",block:"nearest"}),120);
+}
+
+/* ══ 實驗一：兩次調整溫度 ══ */
+const X0=170, U=16;
+(function(){
+  const t=[]; for(let v=-9;v<=9;v+=3){
+    const x=X0+v*U;
+    t.push('<line x1="'+x+'" y1="62" x2="'+x+'" y2="70" stroke="'+(v===0?"#15803d":"#525c50")+'" stroke-width="'+(v===0?2:1)+'"/>');
+    t.push('<text x="'+x+'" y="84" '+(v===0?'fill="#15803d" font-weight="700"':'')+'>'+M(v)+'</text>');
+  }
+  $("ticks").innerHTML=t.join("");
+})();
+const s1=$("s1"), s2=$("s2");
+function lab1(){
+  const a=+s1.value, b=+s2.value, sum=a+b;
+  $("l1").textContent=S(a)+" 度"; $("l2").textContent=S(b)+" 度";
+  const x0=X0, x1=X0+a*U, x2=X0+(a+b)*U;
+  $("arr1").setAttribute("d", a===0?"":"M"+x0+" 44 L"+x1+" 44");
+  $("arr2").setAttribute("d", b===0?"":"M"+x1+" 30 L"+x2+" 30");
+  $("t1").setAttribute("x",(x0+x1)/2); $("t1").textContent = a===0?"":S(a);
+  $("t2").setAttribute("x",(x1+x2)/2); $("t2").textContent = b===0?"":S(b);
+  $("endpt").setAttribute("cx",x2);
+  $("rf").textContent="("+S(a)+")＋("+S(b)+")";
+  $("rv").textContent=S(sum).replace("＋0","0");
+  const v=$("rv2");
+  const same = (a>0&&b>0)||(a<0&&b<0);
+  if(a===0||b===0){
+    v.className="verdict";
+    v.innerHTML="有一次沒有調整（0 度）。<strong>加 0 等於什麼都沒發生</strong>——溫度停在另外那一次調整的地方。";
+  }else if(same){
+    v.className="verdict good";
+    v.innerHTML="<span class='samesign same'>同號</span>　兩次都往同一邊調，所以<strong>數字部分相加</strong>："+
+      Math.abs(a)+"＋"+Math.abs(b)+"＝"+Math.abs(sum)+"，符號和原來一樣。<br>"+
+      "<span class='eq'>("+S(a)+")＋("+S(b)+") ＝ "+(a<0?"−":"＋")+"("+Math.abs(a)+"＋"+Math.abs(b)+") ＝ "+M(sum)+"</span>";
+  }else{
+    const bigA=Math.abs(a)>Math.abs(b);
+    v.className="verdict warn";
+    v.innerHTML="<span class='samesign diff'>異號</span>　一次調高、一次調低，兩段箭頭方向相反，會<strong>互相抵消</strong>，所以<strong>數字部分大的減小的</strong>："+
+      Math.max(Math.abs(a),Math.abs(b))+"−"+Math.min(Math.abs(a),Math.abs(b))+"＝"+Math.abs(sum)+"。<br>"+
+      (Math.abs(a)===Math.abs(b)
+        ? "這一次兩邊<strong>剛好一樣長</strong>，完全抵消 → 答案是 <strong>0</strong>。這兩個數互為<em>相反數</em>。"
+        : "符號跟<strong>數字大的那一個</strong>（"+(bigA?S(a):S(b))+"）走 → <strong>"+M(sum)+"</strong>。");
+  }
+}
+s1.addEventListener("input",lab1); s2.addEventListener("input",lab1); lab1();
+
+/* ══ 實驗二：減法翻成加法 ══ */
+const s3=$("s3"), s4=$("s4");
+function lab2(){
+  const a=+s3.value, b=+s4.value, ans=a-b;
+  $("l3").textContent=M(a); $("l4").textContent=M(b);
+  $("fA").innerHTML=M(a)+" − "+(b<0?"("+M(b)+")":b);
+  $("fB").innerHTML=M(a)+" ＋ "+(-b<0?"("+M(-b)+")":M(-b));
+  $("fC").textContent=M(-b);
+  $("fD").textContent=M(ans);
+  const v=$("fV");
+  if(b===0){
+    v.className="verdict";
+    v.innerHTML="減掉 0 等於沒減。<strong>0 的相反數還是 0</strong>。";
+  }else if(b<0){
+    v.className="verdict good";
+    v.innerHTML="減數是<strong>負的</strong>，它的相反數是<strong>正的</strong> → 減號翻過來以後變成<strong>加上一個正數</strong>。<br>"+
+      "所以答案比原本的 <span class='eq'>"+M(a)+"</span> <strong>還大</strong>（"+M(a)+" → "+M(ans)+"）。<br>"+
+      "📌 <em>減去一個負數會變大</em>——就是「本來要扣分，結果不扣了」。";
+  }else{
+    v.className="verdict";
+    v.innerHTML="減數是<strong>正的</strong>，它的相反數是<strong>負的</strong> → 翻過來以後變成<strong>加上一個負數</strong>。<br>"+
+      "所以答案比原本的 <span class='eq'>"+M(a)+"</span> <strong>小</strong>（"+M(a)+" → "+M(ans)+"）。<br>"+
+      "翻成加法之後，就可以用剛才學的同號／異號規則做完。";
+  }
+}
+s3.addEventListener("input",lab2); s4.addEventListener("input",lab2); lab2();
+
+/* ══ 還原進度 ══ */
+if(pDone>0 && pDone<PRAC.length) pi=pDone;
+else if(pDone>=PRAC.length) pi=PRAC.length-1;
+pRender();
+document.querySelectorAll(".opts[data-q]").forEach(box=>{
+  const qi=box.dataset.q, saved=state["q"+qi];
+  if(saved!==undefined)reveal(qi,saved,box.dataset.ans,box,false);
+});
+gate();
+
+$("rst").addEventListener("click",()=>{
+  try{localStorage.removeItem(KEY)}catch(e){}
+  location.reload();
+});
+})();
+</script>
+</body>
+</html>
