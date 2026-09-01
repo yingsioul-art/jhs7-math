@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你把 Q 放錯邊了｜負數與數線</title>
+<style>
+:root{
+  --paper:#f7f8f5; --ink:#20261f; --ink2:#525c50; --line:#d8ded4;
+  --accent:#15803d; --accent-soft:#e9f5ec;
+  --blue:#1d5b79; --blue-soft:#e8f1f5;
+  --green:#15803d; --green-soft:#e9f5ec;
+  --red:#b03030; --red-soft:#fdeeee;
+  --shadow:0 1px 2px rgba(32,38,31,.06),0 8px 24px rgba(32,38,31,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  font-size:17px;line-height:1.85;letter-spacing:.01em}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px 120px}
+
+header{padding:56px 0 28px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+.kicker{font-size:13px;letter-spacing:.22em;color:var(--accent);font-weight:700;margin-bottom:14px}
+h1{font-size:34px;line-height:1.3;margin:0 0 14px;letter-spacing:-.01em}
+.sub{color:var(--ink2);font-size:15px;margin:0}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.tag{font-size:12px;padding:4px 11px;border:1px solid var(--line);border-radius:99px;color:var(--ink2);background:#fff}
+
+.bar{position:sticky;top:0;z-index:50;background:rgba(247,248,245,.94);
+  border-bottom:1px solid var(--line);margin:0 -20px 0;padding:10px 20px}
+.bar-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.track{flex:1;height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.bar b{font-size:12px;color:var(--ink2);font-weight:600;font-variant-numeric:tabular-nums}
+
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.step{font-size:12px;letter-spacing:.2em;color:var(--accent);font-weight:700;margin-bottom:10px}
+h2{font-size:25px;line-height:1.4;margin:0 0 20px;letter-spacing:-.01em}
+h3{font-size:19px;margin:34px 0 12px}
+p{margin:0 0 18px}
+.lead{font-size:19px;line-height:1.9}
+.dim{color:var(--ink2)}
+.big{font-size:22px;font-weight:700;line-height:1.6;margin:26px 0}
+em{font-style:normal;background:linear-gradient(transparent 62%,#bfe6c9 62%);font-weight:600;padding:0 1px}
+.eq{font-family:"Cambria","Times New Roman",Georgia,serif;font-size:1.06em;font-variant-numeric:tabular-nums}
+.eq.blk{display:block;text-align:center;font-size:21px;margin:20px 0}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;
+  font-size:.82em;line-height:1.15;margin:0 2px}
+.frac span:first-child{border-bottom:1.3px solid currentColor;padding:0 4px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin:24px 0;box-shadow:var(--shadow)}
+.quote{border-left:3px solid var(--accent);background:var(--accent-soft);padding:18px 20px;border-radius:0 10px 10px 0;margin:24px 0}
+.quote p:last-child{margin:0}
+.note{background:var(--blue-soft);border:1px solid #cfe0e8;border-radius:12px;padding:18px 20px;margin:24px 0;font-size:16px}
+.note p:last-child{margin:0}
+.note b{color:var(--blue)}
+.aside{background:#fdf8e8;border:1px dashed #e3d5a4;border-radius:12px;padding:16px 18px;margin:24px 0;font-size:15px;color:#5c4d20}
+.aside p:last-child{margin:0}
+
+.q{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow)}
+.q-src{font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:12px}
+.q-body{font-size:16.5px;line-height:1.9;margin-bottom:20px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:12px;align-items:center;padding:14px 16px;border:1.5px solid var(--line);
+  border-radius:11px;cursor:pointer;background:#fff;font-size:16px;line-height:1.7;
+  transition:border-color .15s,background .15s;text-align:left;width:100%;font-family:inherit;color:inherit}
+.opt:hover:not(.locked){border-color:var(--ink2);background:#fbfcfa}
+.opt .k{font-weight:700;flex-shrink:0;width:22px;color:var(--ink2)}
+.opt.picked{border-color:var(--ink);border-width:2px}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.right .k{color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt.wrong .k{color:var(--red)}
+.opt.locked{cursor:default}
+.opt .pct{margin-left:auto;font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink2);
+  flex-shrink:0;padding-left:10px;font-weight:600}
+.fb{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);font-size:16px;display:none}
+.fb.show{display:block;animation:rise .45s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fb h4{margin:0 0 8px;font-size:15px;letter-spacing:.06em}
+.fb p:last-child{margin:0}
+
+.locked-zone{opacity:.3;pointer-events:none;filter:blur(4px) saturate(.2);user-select:none}
+.revealed{animation:reveal .6s ease both}
+@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.lab{background:linear-gradient(#fff,#fbfcfa);border:1px solid var(--line);border-radius:16px;
+  padding:22px;margin:26px 0;box-shadow:var(--shadow)}
+.lab-t{font-size:12px;letter-spacing:.18em;color:var(--blue);font-weight:700;margin-bottom:16px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{padding:7px 14px;border:1.5px solid var(--line);background:#fff;border-radius:99px;
+  cursor:pointer;font-size:14px;font-family:inherit;color:var(--ink2);transition:all .15s}
+.chip:hover{border-color:var(--ink2)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--accent);height:26px}
+.slider-lab{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin:6px 0 2px}
+.readout{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.pill{flex:1;min-width:110px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.pill .lb{font-size:12.5px;color:var(--ink2)}
+.pill .vl{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.pill.hi{background:var(--accent-soft);border-color:#b7ddc3}
+.pill.hi .vl{color:var(--accent)}
+.verdict{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:15px;line-height:1.7;
+  background:var(--blue-soft);border:1px solid #cfe0e8}
+.verdict.good{background:var(--green-soft);border-color:#b7ddc3}
+.verdict.warn{background:#fdf8e8;border-color:#e3d5a4}
+
+.dist{margin:18px 0}
+.dbar{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:14px}
+.dbar .dk{width:20px;font-weight:700;flex-shrink:0}
+.dtrack{flex:1;height:26px;background:#eceee9;border-radius:6px;overflow:hidden}
+.dfill{height:100%;border-radius:6px;width:0;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.dbar .dv{width:52px;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink2);flex-shrink:0;font-weight:600}
+
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:15px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#eef1eb;font-weight:700;font-size:13.5px;letter-spacing:.04em}
+tr:last-child td{border-bottom:none}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px -20px;padding:0 20px}
+.scroll table{margin:0;min-width:460px}
+
+.done{text-align:center;padding:52px 0 20px}
+.done h2{font-size:27px}
+.reset{background:none;border:1px solid var(--line);color:var(--ink2);padding:9px 18px;
+  border-radius:99px;cursor:pointer;font-size:13px;font-family:inherit;margin-top:28px}
+footer{padding:36px 0;color:var(--ink2);font-size:13px;line-height:1.9;text-align:center}
+svg{max-width:100%;height:auto;display:block}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-inner">
+  <b id="pnum">0 / 5</b>
+  <div class="track"><div class="fill" id="pfill"></div></div>
+</div></div>
+
+<div class="wrap">
+
+<header>
+  <div class="kicker">七年級上 · 第一章 1-1 負數與數線</div>
+  <h1>你把 Q 放錯邊了</h1>
+  <p class="sub">一個負數的倒數，會跑到數線的哪一邊？<br>將近四成的考生，讓它跳到了另一半。</p>
+  <div class="meta">
+    <span class="tag">會考 113-19</span>
+    <span class="tag">通過率 51.6%</span>
+    <span class="tag">七上第 1 章最難</span>
+  </div>
+</header>
+
+<!-- ══ 0 案發 ══ -->
+<section>
+  <div class="step">案發現場</div>
+  <h2>P 往左跑，Q 去了哪裡？</h2>
+
+  <p class="lead">數線上有三個已知的點：<span class="eq">A(−2)</span>、<span class="eq">O(0)</span>、<span class="eq">B(2)</span>。</p>
+
+  <div class="card">
+    <svg viewBox="-14 -22 348 92" role="img" aria-label="數線上的 A、O、B 三點">
+      <line x1="0" y1="34" x2="320" y2="34" stroke="#20261f" stroke-width="1.6"/>
+      <path d="M312 29 L322 34 L312 39" fill="none" stroke="#20261f" stroke-width="1.6"/>
+      <g font-size="13" text-anchor="middle">
+        <circle cx="80" cy="34" r="4" fill="#20261f"/><text x="80" y="18" font-weight="700">A</text><text x="80" y="54">−2</text>
+        <circle cx="160" cy="34" r="4" fill="#20261f"/><text x="160" y="18" font-weight="700">O</text><text x="160" y="54">0</text>
+        <circle cx="240" cy="34" r="4" fill="#20261f"/><text x="240" y="18" font-weight="700">B</text><text x="240" y="54">2</text>
+      </g>
+    </svg>
+  </div>
+
+  <p>現在要在這條線上再標兩個點：<span class="eq">P(p)</span> 和 <span class="eq">Q(q)</span>。已知兩件事——</p>
+  <div class="quote">
+    <p><strong>①</strong> <span class="eq">p</span> 和 <span class="eq">q</span> <em>互為倒數</em>（也就是 <span class="eq">p × q ＝ 1</span>）。</p>
+    <p style="margin-top:10px"><strong>②</strong> <span class="eq">P</span> 在 <span class="eq">A</span> 的<strong>左側</strong>。</p>
+  </div>
+
+  <p class="big">那麼 Q 在哪裡？</p>
+  <p class="dim">先自己在腦中放放看。這題不需要任何計算——但它是七上第 1 章十三年來最難的一題。</p>
+</section>
+
+<!-- ══ 1 押注 ══ -->
+<section>
+  <div class="step">STEP 1　先押注</div>
+  <h2>選一個，然後我們一起看全國怎麼選</h2>
+
+  <div class="q" id="q0">
+    <div class="q-src">113 年會考數學科 第 19 題（原題）</div>
+    <div class="q-body">數線上有 <span class="eq">A(−2)</span>、<span class="eq">O(0)</span>、<span class="eq">B(2)</span> 三點。今打算在此數線上標示 <span class="eq">P(p)</span>、<span class="eq">Q(q)</span> 兩點，且 <span class="eq">p</span>、<span class="eq">q</span> 互為倒數，若 <span class="eq">P</span> 在 <span class="eq">A</span> 的左側，則下列敘述何者正確？</div>
+    <div class="opts" data-q="0" data-ans="B">
+      <button class="opt" data-k="A"><span class="k">A</span><span>Q 在 <span class="eq">AO</span> 上，且 <span class="eq">AQ ＜ QO</span></span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span>Q 在 <span class="eq">AO</span> 上，且 <span class="eq">AQ ＞ QO</span></span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span>Q 在 <span class="eq">OB</span> 上，且 <span class="eq">OQ ＜ QB</span></span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span>Q 在 <span class="eq">OB</span> 上，且 <span class="eq">OQ ＞ QB</span></span></button>
+    </div>
+    <div class="fb" id="fb0"></div>
+  </div>
+</section>
+
+<!-- ══ 2 全台 ══ -->
+<section class="locked-zone" id="z2">
+  <div class="step">STEP 2　全國怎麼選</div>
+  <h2>把 C 和 D 加起來，看看發生了什麼</h2>
+
+  <div class="card">
+    <div class="dist" id="dist"></div>
+    <p class="dim" style="font-size:14px;margin:14px 0 0">
+      資料：國家教育研究院 113 年會考數學科官方試題分析（通過率 0.5155、鑑別度 0.58）。
+    </p>
+  </div>
+
+  <div class="note">
+    <p><b>注意 C 和 D 這兩個選項的共同點：</b>它們都說「<strong>Q 在 OB 上</strong>」——也就是 <em>Q 在數線的右半邊，是個正數</em>。</p>
+    <p style="margin-top:10px;font-size:19px">16.79% ＋ 21.84% ＝ <strong>38.63%</strong></p>
+    <p style="margin-top:10px">將近<strong>四成的考生，讓一個負數的倒數跳到了數線的另一邊</strong>。</p>
+    <p style="margin-top:10px">這不是粗心。它是一個很深的直覺：<em>「倒數」聽起來就像把東西翻過來，那負號是不是也跟著翻掉了？</em></p>
+  </div>
+
+  <p>與其我告訴你不會，不如你自己把 P 拖一遍。</p>
+</section>
+
+<!-- ══ 3 互動 ══ -->
+<section class="locked-zone" id="z3">
+  <div class="step">STEP 3　自己拖一次</div>
+  <h2>P 動，Q 跟著動</h2>
+
+  <p>下面這條數線上，<strong style="color:#b03030">P（紅點）</strong>由你控制，<strong style="color:#15803d">Q（綠點）</strong>是它的倒數，會自動跑到該去的位置。</p>
+  <p>先把 P 拖到 <span class="eq">A(−2)</span> 的左邊，然後<em>盯著綠點</em>。</p>
+
+  <div class="lab">
+    <div class="lab-t">實驗室 A ── 倒數會跑到哪一邊</div>
+    <div class="chips">
+      <button class="chip on" data-sign="-1">P 是負數</button>
+      <button class="chip" data-sign="1">P 是正數</button>
+    </div>
+    <svg viewBox="-14 -34 348 116" role="img" aria-label="可拖曳的數線與倒數位置">
+      <line x1="0" y1="46" x2="320" y2="46" stroke="#20261f" stroke-width="1.6"/>
+      <path d="M312 41 L322 46 L312 51" fill="none" stroke="#20261f" stroke-width="1.6"/>
+      <g font-size="11.5" text-anchor="middle" fill="#525c50">
+        <line x1="48" y1="42" x2="48" y2="50" stroke="#525c50"/><text x="48" y="64">−4</text>
+        <line x1="104" y1="42" x2="104" y2="50" stroke="#525c50"/><text x="104" y="64">−2</text>
+        <line x1="160" y1="42" x2="160" y2="50" stroke="#525c50"/><text x="160" y="64">0</text>
+        <line x1="216" y1="42" x2="216" y2="50" stroke="#525c50"/><text x="216" y="64">2</text>
+        <line x1="272" y1="42" x2="272" y2="50" stroke="#525c50"/><text x="272" y="64">4</text>
+      </g>
+      <g font-size="12" text-anchor="middle" font-weight="700">
+        <text x="104" y="30" fill="#525c50">A</text>
+        <text x="160" y="30" fill="#525c50">O</text>
+        <text x="216" y="30" fill="#525c50">B</text>
+      </g>
+      <circle id="ptP" cx="48" cy="46" r="6.5" fill="#b03030"/>
+      <text id="labP" x="48" y="-14" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b03030">P</text>
+      <text id="valP" x="48" y="0" text-anchor="middle" font-size="11.5" fill="#b03030">−4</text>
+      <circle id="ptQ" cx="146" cy="46" r="6.5" fill="#15803d"/>
+      <text id="labQ" x="146" y="-14" text-anchor="middle" font-size="12.5" font-weight="700" fill="#15803d">Q</text>
+      <text id="valQ" x="146" y="0" text-anchor="middle" font-size="11.5" fill="#15803d">−0.25</text>
+    </svg>
+    <div class="slider-lab"><span>離 0 很近</span><span>離 0 很遠</span></div>
+    <input type="range" id="sl" min="3" max="50" value="40" aria-label="P 與 0 的距離">
+    <div class="readout">
+      <div class="pill"><div class="lb">P 的座標 p</div><div class="vl" id="vp">−4</div></div>
+      <div class="pill"><div class="lb">Q 的座標 <span class="eq">q ＝ 1 ÷ p</span></div><div class="vl" id="vq">−0.25</div></div>
+      <div class="pill hi"><div class="lb">兩點在同一邊嗎</div><div class="vl" id="vs">是</div></div>
+    </div>
+    <div class="verdict" id="labv"></div>
+  </div>
+
+  <div class="q" id="q1">
+    <div class="q-body">你拖了一輪之後——<strong>有沒有任何一個時刻，P 和 Q 分別站在 0 的兩邊？</strong></div>
+    <div class="opts" data-q="1" data-ans="C">
+      <button class="opt" data-k="A"><span class="k">A</span><span>有，P 是負數的時候 Q 就會變正</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span>有，當 P 離 0 很近的時候</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span>沒有，它們永遠在同一邊</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span>不一定，要看 P 是整數還是小數</span></button>
+    </div>
+    <div class="fb" id="fb1"></div>
+  </div>
+
+  <div class="locked-zone" id="z3b">
+  <div class="q" id="q2">
+    <div class="q-body">再看一次滑桿：當 <strong>P 離 0 越來越遠</strong>（往左邊跑），Q 會怎麼動？</div>
+    <div class="opts" data-q="2" data-ans="B">
+      <button class="opt" data-k="A"><span class="k">A</span><span>Q 也跟著往左跑，越來越遠</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span>Q 往 0 靠過去，但永遠碰不到 0</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span>Q 停在 −1 不動</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span>Q 越過 0 跑到右邊去</span></button>
+    </div>
+    <div class="fb" id="fb2"></div>
+  </div>
+  </div>
+</section>
+
+<!-- ══ 4 命名 ══ -->
+<section class="locked-zone" id="z4">
+  <div class="step">STEP 4　現在來說為什麼</div>
+  <h2>不是規定，是躲不掉</h2>
+
+  <p>倒數的定義只有一句話：</p>
+  <div class="card">
+    <div class="eq blk" style="margin:6px 0 12px">p × q ＝ 1</div>
+    <p style="margin:0">兩個數<strong>乘起來等於 1</strong>，就互為倒數。</p>
+  </div>
+
+  <div class="note">
+    <p><b>關鍵在等號右邊那個 1 ——它是正的。</b></p>
+    <p style="margin-top:10px">負 × 負 ＝ 正　　正 × 正 ＝ 正　　<strong>負 × 正 ＝ 負</strong></p>
+    <p style="margin-top:10px">如果 p 是負數、q 是正數，兩個乘起來會是<em>負的</em>，不可能等於 +1。</p>
+    <p style="margin-top:10px">所以 <strong>p 和 q 一定同號</strong>。這不是誰規定的，是「乘起來要等於 1」這件事<em>逼出來的</em>。</p>
+  </div>
+
+  <h3>回到那題：Q 到底在哪</h3>
+  <div class="scroll">
+  <table>
+    <tr><th>已知</th><th>推出</th></tr>
+    <tr><td>P 在 A(−2) 左側</td><td><span class="eq">p ＜ −2</span>（例如 −4、−10）</td></tr>
+    <tr><td><span class="eq">q ＝ 1 ÷ p</span>，且同號</td><td>q 是<strong>負數</strong>，而且絕對值 <span class="eq">＜ <span class="frac"><span>1</span><span>2</span></span></span></td></tr>
+    <tr><td>所以 q 落在</td><td><span class="eq">−0.5 ＜ q ＜ 0</span> → <strong>在 A 和 O 之間，且非常靠近 O</strong></td></tr>
+    <tr><td>比長度</td><td><span class="eq">AQ</span> 有 1.5 以上，<span class="eq">QO</span> 不到 0.5 → <strong><span class="eq">AQ ＞ QO</span></strong></td></tr>
+  </table>
+  </div>
+  <p>對照選項：Q 在 <span class="eq">AO</span> 上、且 <span class="eq">AQ ＞ QO</span> —— 就是 <strong>B</strong>。</p>
+
+  <div class="quote">
+    <p><strong>那 38.63% 選 C 或 D 的人，錯在哪？</strong></p>
+    <p style="margin-top:10px">他們多半答對了一半：知道「倒數會讓數字變小」（<span class="eq">1 ÷ 4 ＝ 0.25</span>），所以把 Q 放在靠近 0 的地方——<em>這是對的</em>。</p>
+    <p style="margin-top:10px">但他們把 Q 放到了 <strong>0 的右邊</strong>。因為在腦中做 <span class="eq">1 ÷ 4</span> 的時候，那個負號被丟掉了。</p>
+  </div>
+
+  <div class="aside">
+    <p><strong>順手記一個特別的地方：</strong>有兩個數的倒數就是它自己——<span class="eq">1</span> 和 <span class="eq">−1</span>。<br>
+    回去把滑桿拉到 P ＝ −1 看看，兩個點會疊在一起。（而 <span class="eq">0</span> 沒有倒數，因為沒有任何數乘 0 會等於 1。）</p>
+  </div>
+</section>
+
+<!-- ══ 5 變形 ══ -->
+<section class="locked-zone" id="z5">
+  <div class="step">STEP 5　變形：同樣是數線，換一種問法</div>
+  <h2>這次不給座標，只給「等距」</h2>
+
+  <p>這題是 114 年的，通過率 0.5958，是那年數線題裡最難的一題。它連數字都不給你——只告訴你五個點<strong>等距</strong>。</p>
+
+  <div class="card">
+    <p style="margin:0 0 14px">數線上由左至右有 <span class="eq">A(a)</span>、<span class="eq">B(b)</span>、<span class="eq">C(c)</span>、<span class="eq">D(d)</span>、<span class="eq">E(e)</span> 五點，且 <span class="eq">AB ＝ BC ＝ CD ＝ DE</span>。<br>
+    已知原點在 <span class="eq">AE</span> 上，且 <span class="eq">|a| ＋ |b| ＝ |e|</span>。<strong>原點在哪裡？</strong></p>
+  </div>
+
+  <p>硬解要設未知數、拆絕對值、分情況討論。但你可以<em>直接把原點拖過去試</em>——這就是數線的好處。</p>
+
+  <div class="lab">
+    <div class="lab-t">實驗室 B ── 把原點拖到對的位置</div>
+    <svg viewBox="-14 -30 348 120" role="img" aria-label="五個等距點與可移動的原點">
+      <line x1="0" y1="50" x2="320" y2="50" stroke="#20261f" stroke-width="1.6"/>
+      <path d="M312 45 L322 50 L312 55" fill="none" stroke="#20261f" stroke-width="1.6"/>
+      <g font-size="13" text-anchor="middle" font-weight="700">
+        <circle cx="50" cy="50" r="4.5" fill="#20261f"/><text x="50" y="34">A</text>
+        <circle cx="110" cy="50" r="4.5" fill="#20261f"/><text x="110" y="34">B</text>
+        <circle cx="170" cy="50" r="4.5" fill="#20261f"/><text x="170" y="34">C</text>
+        <circle cx="230" cy="50" r="4.5" fill="#20261f"/><text x="230" y="34">D</text>
+        <circle cx="290" cy="50" r="4.5" fill="#20261f"/><text x="290" y="34">E</text>
+      </g>
+      <g id="orig">
+        <line x1="50" y1="36" x2="50" y2="64" stroke="#15803d" stroke-width="2.5"/>
+        <text x="50" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">原點 0</text>
+      </g>
+    </svg>
+    <div class="slider-lab"><span>原點在 A</span><span>原點在 E</span></div>
+    <input type="range" id="sl2" min="0" max="400" value="0" aria-label="原點位置">
+    <div class="readout">
+      <div class="pill"><div class="lb"><span class="eq">|a| ＋ |b|</span></div><div class="vl" id="v1">0.00</div></div>
+      <div class="pill"><div class="lb"><span class="eq">|e|</span></div><div class="vl" id="v2">4.00</div></div>
+      <div class="pill hi"><div class="lb">兩邊差距</div><div class="vl" id="v3">4.00</div></div>
+    </div>
+    <div class="verdict" id="labv2">拖動滑桿，讓「兩邊差距」變成 0。（單位：一格 ＝ 相鄰兩點的距離）</div>
+  </div>
+
+  <div class="q" id="q3">
+    <div class="q-src">114 年會考數學科 第 15 題（原題）</div>
+    <div class="q-body">關於原點位置的敘述，何者正確？</div>
+    <div class="opts" data-q="3" data-ans="B">
+      <button class="opt" data-k="A"><span class="k">A</span><span>在 <span class="eq">BC</span> 上且較接近 <strong>B</strong> 點</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span>在 <span class="eq">BC</span> 上且較接近 <strong>C</strong> 點</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span>在 <span class="eq">CD</span> 上且較接近 <strong>C</strong> 點</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span>在 <span class="eq">CD</span> 上且較接近 <strong>D</strong> 點</span></button>
+    </div>
+    <div class="fb" id="fb3"></div>
+  </div>
+</section>
+
+<!-- ══ 6 來源 ══ -->
+<section class="locked-zone" id="z6">
+  <div class="step">STEP 6　這條線從哪裡來</div>
+  <h2>負數花了兩千年，才找到地方站</h2>
+
+  <p class="lead">你今天覺得「負數在左邊、正數在右邊」是理所當然的。<br>但這件事在人類歷史上，<strong>一直到 1685 年才被講清楚</strong>。</p>
+
+  <div class="card">
+    <p style="margin:0 0 6px;font-size:13px;letter-spacing:.14em;color:var(--accent)">約 2000 年前 · 中國</p>
+    <p style="margin:0 0 6px;font-size:18px;font-weight:700">紅籌與黑籌</p>
+    <p style="margin:0">《九章算術》裡有一章叫「正負術」，明確寫出正負數的加減規則。當時用<strong>算籌</strong>計算，<em>紅色代表正、黑色代表負</em>——負數在中國，兩千年前就是一種可以拿在手上的東西。</p>
+  </div>
+
+  <div class="card">
+    <p style="margin:0 0 6px;font-size:13px;letter-spacing:.14em;color:var(--accent)">約 1400 年前 · 印度</p>
+    <p style="margin:0 0 6px;font-size:18px;font-weight:700">財產與債務</p>
+    <p style="margin:0">婆羅摩笈多（Brahmagupta，628 年）用<strong>財產和債務</strong>來解釋：財產是正的、債務是負的。<br>
+    「兩筆債務相乘會得到財產」——這就是<em>負負得正</em>最早的白話說明。</p>
+  </div>
+
+  <div class="card">
+    <p style="margin:0 0 6px;font-size:13px;letter-spacing:.14em;color:var(--accent)">約 400 年前 · 歐洲</p>
+    <p style="margin:0 0 6px;font-size:18px;font-weight:700">「這是荒謬的數」</p>
+    <p style="margin:0">歐洲卻抗拒了很久。負數被稱為 <em>numeri absurdi</em>（荒謬的數）、「假數」。<br>
+    帕斯卡認為 <span class="eq">0 − 4</span> 根本沒有意義：<strong>「什麼都沒有的東西，怎麼還能再拿走四個？」</strong><br>
+    笛卡兒把方程式的負根叫做「假根」，算出來也不算數。</p>
+  </div>
+
+  <div class="quote">
+    <p><strong>轉捩點是一條線。</strong></p>
+    <p style="margin-top:10px">1685 年，英國數學家<strong>沃利斯</strong>（John Wallis）提出：把數畫成一條線，往右走是正、<em>往左走就是負</em>。</p>
+    <p style="margin-top:10px">負數突然變得可以想像了——它不是「比什麼都沒有還少」的怪東西，它只是<strong>站在另一個方向</strong>。</p>
+  </div>
+
+  <div class="note">
+    <p><b>所以，那 38.63% 把 Q 放錯邊的人，其實重演了歐洲數學家一千年的困難。</b></p>
+    <p style="margin-top:10px">他們在腦中做 <span class="eq">1 ÷ 4</span> 的那一瞬間，負號消失了——就像帕斯卡覺得負數應該要消失一樣。</p>
+    <p style="margin-top:10px">而你剛剛只花了幾秒，<strong>拖一下滑桿就看見了</strong>。差別不在聰明，在你手上有一條他們沒有的線。</p>
+  </div>
+
+  <div class="q" id="q4">
+    <div class="q-body">看完這段，你覺得數線最重要的功能是什麼？<span class="dim">（這題沒有標準答案的感覺，但有一個最貼近這一節的說法）</span></div>
+    <div class="opts" data-q="4" data-ans="C">
+      <button class="opt" data-k="A"><span class="k">A</span><span>方便畫圖，讓題目看起來比較好看</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span>把數字排整齊，比較不會抄錯</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span>把「看不見的規則」變成看得見的位置與方向</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span>用來測量長度</span></button>
+    </div>
+    <div class="fb" id="fb4"></div>
+  </div>
+</section>
+
+<!-- ══ 收束 ══ -->
+<section class="locked-zone" id="z7">
+  <div class="done">
+    <div class="step">結案</div>
+    <h2>負號不會被倒數吃掉</h2>
+    <p style="text-align:left">因為 <span class="eq">p × q</span> 必須等於 <strong>＋1</strong>，而一正一負乘起來是負的——所以 P 和 Q 永遠站在同一邊。這不是要背的規定，是躲不掉的結果。</p>
+    <p style="text-align:left">如果只留一句話帶走：</p>
+    <p class="big" style="text-align:left">遇到負數，先在數線上找它的位置，再開始想。</p>
+    <p style="text-align:left" class="dim">帕斯卡沒有這條線，所以他想不通。你有。</p>
+    <div style="text-align:left">
+      <div class="aside">
+        <p><strong>下一個單元預告：</strong>科學記號比大小。<br>
+        13 年考了 6 題，全部都是「哪個最大／最小」——而且<strong>沒有一題需要你把數字寫出來</strong>。先比指數，指數一樣才比前面那個數。</p>
+      </div>
+    </div>
+    <button class="reset" id="rst">清除進度，重新開始</button>
+  </div>
+</section>
+
+<footer>
+  題目、通過率、鑑別度與選項百分比引自國家教育研究院歷年國中教育會考數學科試題及官方試題分析。<br>
+  題目為原題文字重排，未使用課本內容。<br>
+  <span style="color:#9aa396">為自學而做 · 2026</span>
+</footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+const KEY="jhs7-numberline-v1", TOTAL=5;
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){state={}}
+
+const FB={
+ 0:{ans:"B",
+  A:["方向對了，長度反了","<p>你把 Q 放在 <span class='eq'>AO</span> 之間——<strong>這是對的</strong>，比六成的人強。</p><p>但你認為 <span class='eq'>AQ ＜ QO</span>，也就是 Q 比較靠近 A（靠近 −2）。等一下拖滑桿會看到：Q 其實<em>非常靠近 0</em>，貼著 O 那一邊。</p>"],
+  B:["答對了，而且你避開了最大的坑","<p>Q 在 <span class='eq'>AO</span> 之間，而且緊貼著 O，所以 <span class='eq'>AQ ＞ QO</span>。</p><p>先別走——等一下你會看到，<strong>將近四成的人把 Q 放到了數線的另一半</strong>。確認一下你是真的看出來，還是猜對的。</p>"],
+  C:["Q 跑到右邊去了","<p>你選的是「Q 在 <span class='eq'>OB</span> 上」，也就是 <strong>Q 是正數</strong>。</p><p>你答對了另一半：Q 確實很靠近 0（<span class='eq'>OQ ＜ QB</span>）。問題只出在<em>邊</em>——一個負數的倒數，會不會變成正的？</p><p>這正是這一節要處理的事。往下拖一次滑桿就知道了。</p>"],
+  D:["這是最多人選的錯誤答案","<p>21.84% 的人和你一樣。加上選 C 的，<strong>總共 38.63% 把 Q 放到了 0 的右邊</strong>。</p><p>這個直覺很自然：「倒數」聽起來就像把東西翻過來，好像連負號都一起翻掉了。</p><p>但等一下你自己拖一次就會看到——<em>負號不會被翻掉</em>。</p>"]},
+ 1:{ans:"C",
+  A:["再拖一次，這次盯著兩個點的左右關係","<p>P 是負數的時候，Q 也一直待在 0 的左邊，沒有跳過去過。</p><p>如果 Q 真的變成正數，那 <span class='eq'>p × q</span> 會是<strong>負的</strong>，不可能等於 1。</p>"],
+  B:["靠近 0 的時候更明顯","<p>當 P 靠近 0（例如 −0.3），Q 會被甩到很遠的地方（−3.3）——但<strong>還是在左邊</strong>。</p><p>兩個點會一起跑得很開，但從來沒有分家過。</p>"],
+  C:["對，永遠同一邊","<p>不論 P 拖到哪裡，Q 一定跟它在 0 的同一側。</p><p>原因等一下會講——先記住這個你<em>親眼看到</em>的事實：<strong>倒數不會把數字送到對面去。</strong></p>"],
+  D:["和整數小數沒有關係","<p>整數、小數、分數都試試看，結果都一樣。決定 Q 在哪一邊的，只有 P 的<strong>正負</strong>。</p>"]},
+ 2:{ans:"B",
+  A:["方向相反了","<p>P 往左跑代表 <span class='eq'>|p|</span> 變大。而 <span class='eq'>q ＝ 1 ÷ p</span>——<strong>除以一個越來越大的數，結果越來越小</strong>。</p><p>所以 Q 不是跟著跑遠，而是往 0 靠。</p>"],
+  B:["對，而且它永遠碰不到 0","<p><span class='eq'>1 ÷ 10 ＝ 0.1</span>、<span class='eq'>1 ÷ 100 ＝ 0.01</span>、<span class='eq'>1 ÷ 1000 ＝ 0.001</span>⋯⋯永遠有東西剩下來，<strong>永遠不會真的變成 0</strong>。</p><p>這就是為什麼 Q 會「貼著 O 但不等於 O」——也就是原題裡 <span class='eq'>QO</span> 那段永遠很短的原因。</p>"],
+  C:["只有一個位置會這樣","<p>只有 <span class='eq'>P ＝ −1</span> 的時候 Q 才停在 −1（因為 −1 的倒數是它自己）。其他位置 Q 都會動。</p>"],
+  D:["它沒有越過 0","<p>你剛剛在上一題已經確認過了：兩點永遠同一邊。<strong>Q 只會往 0 靠近，不會穿過去。</strong></p>"]},
+ 3:{ans:"B",
+  A:["在 BC 上是對的，但偏向錯了","<p>你可以用滑桿驗證：把差距調到 0 時，綠線會停在 B 和 C 之間，<strong>比較靠近 C</strong>（大約在 B 往右 0.67 格的位置）。</p>"],
+  B:["正確，而且你可以用滑桿驗證","<p>把間距當成 1 格：原點落在 A 右邊 <span class='eq'><span class='frac'><span>5</span><span>3</span></span></span> 格 ≈ 1.67 格處，也就是 <strong>B 和 C 之間、離 C 只有 0.33 格</strong>。</p><p>代數解法是設原點在 A 右方 t 格，解 <span class='eq'>t ＋ |1−t| ＝ 4−t</span> 得 <span class='eq'>t ＝ 5/3</span>。<em>但你其實用拖的就找到了。</em></p>"],
+  C:["超過了","<p>在 <span class='eq'>CD</span> 上的話，<span class='eq'>|a|＋|b|</span> 會比 <span class='eq'>|e|</span> 大太多。拖滑桿過去看看差距變成多少。</p>"],
+  D:["更遠了","<p>原點越往右，<span class='eq'>|a|</span> 和 <span class='eq'>|b|</span> 越大、<span class='eq'>|e|</span> 越小，兩邊差距只會拉開。</p><p>把滑桿往左拉，找差距變成 0 的地方。</p>"]},
+ 4:{ans:"C",
+  A:["它確實好看，但那不是重點","<p>如果只是為了好看，帕斯卡不會因為沒有它就想不通負數。</p>"],
+  B:["抄不抄錯是次要的","<p>數線真正做的事，是讓<em>看不見的東西有地方站</em>。</p>"],
+  C:["對","<p>「負數是什麼」講一百遍也很抽象；但「站在 0 的左邊」馬上就懂了。</p><p>你今天做的每一件事都是同一招：<strong>把規則變成位置</strong>——倒數變成兩個點的相對位置，絕對值變成到 0 的距離，等距變成一格一格。</p><p>沃利斯 1685 年做的，就是這件事。</p>"],
+  D:["那是尺，不是數線","<p>尺只有正的長度。數線比尺多了一樣東西：<strong>方向</strong>——而方向正是負數需要的。</p>"]}
+};
+
+function done(){return Object.keys(state).filter(k=>/^q\d+$/.test(k)).length}
+function paint(){
+  document.getElementById("pnum").textContent=done()+" / "+TOTAL;
+  document.getElementById("pfill").style.width=(done()/TOTAL*100)+"%";
+}
+function unlock(id){
+  const el=document.getElementById(id);
+  if(el&&el.classList.contains("locked-zone")){
+    el.classList.remove("locked-zone");el.classList.add("revealed");
+    setTimeout(()=>el.classList.remove("revealed"),700);
+  }
+}
+function gate(){
+  if(state.q0!==undefined){unlock("z2");unlock("z3");drawDist()}
+  if(state.q1!==undefined){unlock("z3b")}
+  if(state.q2!==undefined){unlock("z4");unlock("z5")}
+  if(state.q3!==undefined){unlock("z6")}
+  if(state.q4!==undefined){unlock("z7")}
+  paint();
+}
+
+document.querySelectorAll(".opts").forEach(box=>{
+  const qi=box.dataset.q, ans=box.dataset.ans;
+  box.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      if(box.dataset.locked)return;
+      const k=btn.dataset.k;
+      state["q"+qi]=k;
+      try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
+      reveal(qi,k,ans,box,true);gate();
+    });
+  });
+});
+
+function reveal(qi,k,ans,box,scroll){
+  box.dataset.locked="1";
+  const PCT={A:"9.55%",B:"51.55%",C:"16.79%",D:"21.84%"};
+  box.querySelectorAll(".opt").forEach(b=>{
+    b.classList.add("locked");
+    if(b.dataset.k===k)b.classList.add("picked",k===ans?"right":"wrong");
+    else if(b.dataset.k===ans)b.classList.add("right");
+    if(qi==="0"&&!b.querySelector(".pct")){
+      const s=document.createElement("span");s.className="pct";s.textContent=PCT[b.dataset.k];b.appendChild(s);
+    }
+  });
+  const f=FB[qi][k], fb=document.getElementById("fb"+qi);
+  fb.innerHTML="<h4 style='color:"+(k===ans?"var(--green)":"var(--red)")+"'>"+f[0]+"</h4>"+f[1];
+  fb.classList.add("show");
+  if(scroll)setTimeout(()=>fb.scrollIntoView({behavior:"smooth",block:"nearest"}),120);
+}
+
+let distDone=false;
+function drawDist(){
+  if(distDone)return;distDone=true;
+  const box=document.getElementById("dist");
+  const rows=[
+    {k:"A",v:9.55,c:"#b5bbb0",t:""},
+    {k:"B",v:51.55,c:"#15803d",t:"正確答案"},
+    {k:"C",v:16.79,c:"#d98b4a",t:"把 Q 放到右邊了"},
+    {k:"D",v:21.84,c:"#b03030",t:"把 Q 放到右邊了 ── 最多人選"}
+  ];
+  box.innerHTML=rows.map(r=>
+    '<div class="dbar"><span class="dk">'+r.k+'</span>'+
+    '<div class="dtrack"><div class="dfill" data-w="'+r.v+'" style="background:'+r.c+'"></div></div>'+
+    '<span class="dv">'+r.v.toFixed(2)+'%</span></div>'+
+    (r.t?'<div style="font-size:12px;color:var(--ink2);margin:-4px 0 10px 30px">'+r.t+'</div>':'<div style="height:6px"></div>')
+  ).join("");
+  setTimeout(()=>{box.querySelectorAll(".dfill").forEach(d=>d.style.width=d.dataset.w+"%")},80);
+}
+
+/* ── 實驗室 A：倒數數線 ── */
+const X0=160, UNIT=28;               /* 0 的位置、每 1 單位的 px */
+const toX=v=>X0+v*UNIT;
+let sign=-1;
+const sl=document.getElementById("sl");
+function fmt(n){return (Math.round(n*100)/100).toString().replace("-","−")}
+function labA(){
+  const mag=sl.value/10;             /* 0.3 ~ 5.0 */
+  const p=sign*mag, q=1/p;
+  const px=Math.max(6,Math.min(314,toX(p))), qx=Math.max(6,Math.min(314,toX(q)));
+  document.getElementById("ptP").setAttribute("cx",px);
+  document.getElementById("labP").setAttribute("x",px);
+  document.getElementById("valP").setAttribute("x",px);
+  document.getElementById("valP").textContent=fmt(p);
+  document.getElementById("ptQ").setAttribute("cx",qx);
+  document.getElementById("labQ").setAttribute("x",qx);
+  document.getElementById("valQ").setAttribute("x",qx);
+  document.getElementById("valQ").textContent=fmt(q);
+  document.getElementById("vp").textContent=fmt(p);
+  document.getElementById("vq").textContent=fmt(q);
+  document.getElementById("vs").textContent=(p*q>0)?"是":"否";
+  const v=document.getElementById("labv");
+  if(Math.abs(mag-1)<0.051){
+    v.className="verdict warn";
+    v.innerHTML="<strong>兩個點疊在一起了。</strong>"+(sign<0?"−1":"1")+" 的倒數就是它自己——全世界只有這兩個數會這樣。";
+  }else if(sign<0&&p<-2){
+    v.className="verdict good";
+    v.innerHTML="這就是題目的情況：<strong>P 在 A(−2) 左邊</strong>，而 Q ＝ "+fmt(q)+" 落在 <strong>A 和 O 之間、緊貼著 O</strong>。<br>兩個點都在 0 的左邊——<em>Q 沒有跳到右邊去。</em>";
+  }else if(mag<1){
+    v.className="verdict";
+    v.innerHTML="P 離 0 很近（"+fmt(p)+"），Q 反而被甩到 "+fmt(q)+" 那麼遠。<strong>一個進來，另一個就出去</strong>——但始終在同一邊。";
+  }else{
+    v.className="verdict";
+    v.innerHTML="P ＝ "+fmt(p)+"，Q ＝ "+fmt(q)+"。P 越往外，Q 越往 0 貼。<strong>注意兩個點的正負號從來沒有分開過。</strong>";
+  }
+}
+sl.addEventListener("input",labA);
+document.querySelectorAll(".chip").forEach(c=>{
+  c.addEventListener("click",()=>{
+    document.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));
+    c.classList.add("on");sign=parseInt(c.dataset.sign,10);labA();
+  });
+});
+labA();
+
+/* ── 實驗室 B：拖原點 ── */
+const sl2=document.getElementById("sl2");
+function labB(){
+  const t=sl2.value/100;             /* 原點在 A 右方 t 格，0~4 */
+  const a=-t, b=1-t, e=4-t;
+  const left=Math.abs(a)+Math.abs(b), right=Math.abs(e), diff=Math.abs(left-right);
+  document.getElementById("v1").textContent=left.toFixed(2);
+  document.getElementById("v2").textContent=right.toFixed(2);
+  document.getElementById("v3").textContent=diff.toFixed(2);
+  const x=50+t*60;
+  document.getElementById("orig").setAttribute("transform","translate("+((x-50)).toFixed(1)+",0)");
+  const v=document.getElementById("labv2");
+  if(diff<0.03){
+    v.className="verdict good";
+    v.innerHTML="<strong>找到了。</strong>原點在 A 右方約 <span class='eq'>1.67</span> 格 ＝ <span class='eq'>5/3</span> 格——落在 <strong>B 和 C 之間，離 C 比較近</strong>（距 B 0.67 格、距 C 只有 0.33 格）。";
+  }else if(diff<0.5){
+    v.className="verdict warn";
+    v.innerHTML="很接近了，差距剩 "+diff.toFixed(2)+"。再微調一點點。";
+  }else{
+    v.className="verdict";
+    v.innerHTML="現在 <span class='eq'>|a|＋|b|</span> ＝ "+left.toFixed(2)+"、<span class='eq'>|e|</span> ＝ "+right.toFixed(2)+"，差距 "+diff.toFixed(2)+"。往"+(left<right?"右":"左")+"拖。";
+  }
+}
+sl2.addEventListener("input",labB);
+labB();
+
+document.querySelectorAll(".opts").forEach(box=>{
+  const qi=box.dataset.q, saved=state["q"+qi];
+  if(saved!==undefined)reveal(qi,saved,box.dataset.ans,box,false);
+});
+gate();
+
+document.getElementById("rst").addEventListener("click",()=>{
+  try{localStorage.removeItem(KEY)}catch(e){}
+  location.reload();
+});
+})();
+</script>
+</body>
+</html>
