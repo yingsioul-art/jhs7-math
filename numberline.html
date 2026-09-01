@@ -215,6 +215,21 @@ svg{max-width:100%;height:auto;display:block}
 .case p:last-child{margin:0}
 .case.bad{background:var(--red-soft);border:1px solid #edc4c4}
 .case.good{background:var(--green-soft);border:1px solid #b7ddc3}
+
+/* 114-15 換一種說法：距離表 */
+.dtab{width:100%;border-collapse:collapse;font-size:14px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:0}
+.dtab th,.dtab td{padding:7px 8px;text-align:center;border-bottom:1px solid #eceee9;
+  font-family:"Cambria",Georgia,serif;font-variant-numeric:tabular-nums}
+.dtab th{background:#eef1eb;font-family:inherit;font-size:12.5px;font-weight:700;letter-spacing:.02em}
+.dtab td:first-child,.dtab th:first-child{font-family:inherit}
+.dtab tr:last-child td{border-bottom:none}
+.dtab tr.pt td{background:#f2f5f0;font-weight:700}
+.dtab tr.hit td{background:var(--green-soft);font-weight:700;color:var(--green)}
+.dtab tr.hit td:first-child{color:var(--green)}
+.dtab .lt{color:var(--red)} .dtab .rt{color:var(--blue)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin:10px 0 0;justify-content:center}
+.legend i{display:inline-block;width:20px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
 </style>
 </head>
 <body>
@@ -508,8 +523,156 @@ svg{max-width:100%;height:auto;display:block}
   </div>
 
   <div class="locked-zone" id="z5a">
-  <h3>完整算法：一步一步來</h3>
-  <p>用拖的可以<em>找到</em>答案，但考場上沒有滑桿。下面是紙筆的做法——<strong>六步，每一步都不跳。</strong></p>
+  <h3>換一種說法：這題其實沒有負數</h3>
+
+  <p>題目裡有 <span class="eq">a</span>、<span class="eq">b</span>、<span class="eq">e</span>，還有絕對值符號，<strong>看起來很像在考正負號</strong>。</p>
+
+  <p>但回想 1-1 學過的那一句：</p>
+
+  <div class="quote">
+    <p class="eq" style="font-size:19px;margin:0"><strong>絕對值 ＝ 這個點離原點有多遠。</strong></p>
+  </div>
+
+  <p>所以 <span class="eq">|a|</span> 不是什麼奇怪的東西，它就是<strong>原點到 A 的距離</strong>。同理 <span class="eq">|b|</span> 是到 B 的距離、<span class="eq">|e|</span> 是到 E 的距離。</p>
+
+  <p>把整個題目翻成人話，是這樣：</p>
+
+  <div class="card" style="border:2px solid var(--accent)">
+    <p style="margin:0;font-size:18px;line-height:1.9">五個點等距排成一排。<br>
+    <strong>原點要站在哪裡，才會剛好：</strong></p>
+    <p class="eq" style="text-align:center;font-size:19px;margin:14px 0 0">
+      <span style="color:var(--red)">到 A 的距離</span> ＋ <span style="color:var(--red)">到 B 的距離</span>
+      ＝ <span style="color:var(--blue)">到 E 的距離</span>
+    </p>
+  </div>
+
+  <p class="big">整題到這裡，一個負號都不剩了。</p>
+
+  <p>剩下的只是<em>量長度</em>——而長度是可以用數格子數出來的。</p>
+
+  <h3>把每一格再切成 3 小格</h3>
+
+  <p>先給五個點編號：<strong>A 在第 0 格、B 第 1 格、C 第 2 格、D 第 3 格、E 第 4 格</strong>（一格多長不重要，比例才重要）。</p>
+
+  <p>如果原點只能站在整數格上，其實<strong>找不到答案</strong>——你剛剛拖滑桿的時候已經發現了，它停在 1.67 這種地方。</p>
+
+  <p>所以把<strong>每一格再切成 3 小格</strong>，整條 <span class="eq">AE</span> 就變成 <strong>12 小格</strong>：</p>
+
+  <svg viewBox="0 0 330 74" style="margin:6px auto 18px;max-width:330px">
+    <line x1="20" y1="42" x2="308" y2="42" stroke="#20261f" stroke-width="1.6"/>
+    <g stroke="#c9cfc4" stroke-width="1">
+      <line x1="44" y1="37" x2="44" y2="47"/><line x1="68" y1="37" x2="68" y2="47"/>
+      <line x1="116" y1="37" x2="116" y2="47"/><line x1="140" y1="37" x2="140" y2="47"/>
+      <line x1="188" y1="37" x2="188" y2="47"/><line x1="212" y1="37" x2="212" y2="47"/>
+      <line x1="260" y1="37" x2="260" y2="47"/><line x1="284" y1="37" x2="284" y2="47"/>
+    </g>
+    <g stroke="#20261f" stroke-width="2">
+      <line x1="20" y1="33" x2="20" y2="51"/><line x1="92" y1="33" x2="92" y2="51"/>
+      <line x1="164" y1="33" x2="164" y2="51"/><line x1="236" y1="33" x2="236" y2="51"/>
+      <line x1="308" y1="33" x2="308" y2="51"/>
+    </g>
+    <g font-size="13" text-anchor="middle" font-weight="700" fill="#20261f">
+      <text x="20" y="26">A</text><text x="92" y="26">B</text><text x="164" y="26">C</text>
+      <text x="236" y="26">D</text><text x="308" y="26">E</text>
+    </g>
+    <g font-size="10.5" text-anchor="middle" fill="#8b8694" font-family="Cambria,Georgia,serif">
+      <text x="20" y="66">0</text><text x="92" y="66">3</text><text x="164" y="66">6</text>
+      <text x="236" y="66">9</text><text x="308" y="66">12</text>
+    </g>
+  </svg>
+
+  <p>現在原點可以站的位置只有 <strong>13 個</strong>（第 0 小格到第 12 小格）。<em>一個一個試過去就好。</em></p>
+
+  <h3>把 13 個位置全部列出來</h3>
+
+  <p>每一列都只做三件事：量到 A 多遠、量到 B 多遠、量到 E 多遠。<strong>全部都是數格子，沒有任何算式。</strong></p>
+
+  <div class="scroll">
+    <table class="dtab">
+      <tr>
+        <th>原點站在<br>第幾小格</th>
+        <th class="lt">到 A<br>幾小格</th>
+        <th class="lt">到 B<br>幾小格</th>
+        <th class="lt">左邊<br>兩段相加</th>
+        <th class="rt">右邊<br>到 E</th>
+        <th>一樣嗎</th>
+      </tr>
+      <tbody id="dtb"></tbody>
+    </table>
+  </div>
+
+  <p>只有<strong>一列</strong>兩邊相等：原點站在<strong>第 5 小格</strong>。</p>
+
+  <p>第 5 小格是哪裡？B 在第 3 小格、C 在第 6 小格——<strong>5 在 3 和 6 中間，而且離 6 比較近</strong>。</p>
+
+  <div class="quote">
+    <p style="margin:0"><strong>所以原點在 <span class="eq">BC</span> 之間，比較靠近 C。</strong>換算回原本的格子就是 <span class="eq">5 ÷ 3 ＝ 5/3 ≈ 1.67</span> 格——<em>和你剛剛拖出來的位置一模一樣。</em></p>
+  </div>
+
+  <h3>為什麼只會有一個答案</h3>
+
+  <p>回頭看那張表的兩欄數字：</p>
+
+  <div class="card">
+    <p><span style="color:var(--red)"><strong>左邊（到 A ＋ 到 B）</strong></span>：原點越往右走，離 A 越遠 → <strong>一直變大</strong></p>
+    <p style="margin-bottom:0"><span style="color:var(--blue)"><strong>右邊（到 E）</strong></span>：原點越往右走，離 E 越近 → <strong>一直變小</strong></p>
+  </div>
+
+  <p>畫成圖就很清楚了——<em>一條往上、一條往下，只會交會一次</em>：</p>
+
+  <svg viewBox="0 0 330 170" style="margin:10px auto 4px;max-width:330px">
+    <line x1="30" y1="140" x2="318" y2="140" stroke="#d8ded4"/>
+    <line x1="30" y1="14" x2="30" y2="140" stroke="#d8ded4"/>
+    <g font-size="10" fill="#8b8694" font-family="Cambria,Georgia,serif" text-anchor="middle">
+      <text x="30" y="154">0</text><text x="102" y="154">3</text><text x="174" y="154">6</text>
+      <text x="246" y="154">9</text><text x="318" y="154">12</text>
+      <text x="24" y="143" text-anchor="end">0</text><text x="24" y="20" text-anchor="end">12</text>
+    </g>
+    <path id="lineL" d="" fill="none" stroke="#b03030" stroke-width="2.2"/>
+    <path id="lineR" d="" fill="none" stroke="#1d5b79" stroke-width="2.2"/>
+    <circle id="cross" cx="0" cy="0" r="5" fill="#15803d"/>
+    <text id="crosstx" x="0" y="0" font-size="11" fill="#15803d" font-weight="700" text-anchor="middle">交會</text>
+  </svg>
+  <div class="legend">
+    <span><i style="background:#b03030"></i>左邊：到 A ＋ 到 B</span>
+    <span><i style="background:#1d5b79"></i>右邊：到 E</span>
+  </div>
+
+  <p style="margin-top:20px">📌 <strong>這也回答了「為什麼答案只有一個」</strong>——一個一直上升、一個一直下降的東西，<em>只可能在一個地方碰到</em>。</p>
+
+  <h3>不想列表的話，兩句話講完</h3>
+
+  <p>列表一定找得到答案，但考場上比較慢。下面是同一件事的<strong>快速版</strong>——還是只用距離，不用設任何字母：</p>
+
+  <div class="sol">
+    <div class="sstep">
+      <div class="sn">1</div>
+      <div class="sb">
+        <h4>先問：原點有沒有可能在 A 和 B 之間？</h4>
+        <p>如果原點站在 <span class="eq">A</span> 和 <span class="eq">B</span> 中間，那「到 A 的距離」加上「到 B 的距離」<strong>剛好就是 AB 這一整段</strong>，也就是 <strong>1 格</strong>。</p>
+        <p>可是這時候原點離 E 至少有 3 格。</p>
+        <p class="warn">⚠️ 1 格 ≠ 3 格以上 → <strong>原點不可能在 A、B 之間。</strong>那它只能在 B 的右邊。</p>
+      </div>
+    </div>
+
+    <div class="sstep">
+      <div class="sn">2</div>
+      <div class="sb">
+        <h4>原點在 B 右邊，就只剩兩個關係</h4>
+        <p><strong>關係一：</strong>A、B、原點依序排列 → <span class="eq">到 B 的距離 ＝ 到 A 的距離 − 1 格</span></p>
+        <p><strong>關係二：</strong>原點在 <span class="eq">AE</span> 上 → <span class="eq">到 A 的距離 ＋ 到 E 的距離 ＝ 4 格</span></p>
+        <p>把這兩句代進題目的條件「到 A ＋ 到 B ＝ 到 E」：</p>
+        <p class="eq" style="text-align:center">到 A ＋ (到 A − 1) ＝ 4 − 到 A</p>
+        <p class="eq" style="text-align:center">⟹　<strong>3 趟「到 A」 ＝ 5 格</strong>　⟹　到 A ＝ <span class="frac"><span>5</span><span>3</span></span> 格</p>
+        <p>📌 <span class="eq">5/3</span> 格 ＝ 1 又 <span class="eq">2/3</span> 格 → 在 B（1 格）和 C（2 格）之間，<strong>離 C 比較近</strong>。</p>
+      </div>
+    </div>
+  </div>
+
+  <details class="pre" style="margin-top:26px">
+    <summary>如果你想看課本式的代數解法（設 t、拆絕對值）</summary>
+    <div class="bd">
+      <p>下面這個做法會在<strong>八年級解方程式</strong>之後變得很自然。現在看不懂沒關係——<em>上面兩種做法已經足夠答對這一題</em>。</p>
 
   <div class="sol">
     <div class="sstep">
@@ -622,11 +785,14 @@ svg{max-width:100%;height:auto;display:block}
       </div>
     </div>
   </div>
+    </div>
+  </details>
 
   <div class="note">
     <p><b>這題真正在考什麼？</b></p>
-    <p style="margin-top:10px">不是算式難，而是<strong>你敢不敢把「不知道的東西」設成一個字母</strong>，還有<strong>記不記得絕對值要分情況</strong>。</p>
-    <p style="margin-top:10px">那個「分兩種情況」不是老師刁難——<em>是因為 B 有可能在原點的任一邊，而絕對值在兩邊的算法真的不一樣</em>。你在滑桿上已經親眼看過 b 變號的那一刻了。</p>
+    <p style="margin-top:10px">不是算式難，是<strong>你有沒有把「絕對值」讀成「距離」</strong>。</p>
+    <p style="margin-top:10px">只要把 <span class="eq">|a|</span> 唸成「原點到 A 有多遠」，整題的負號就全部消失了，剩下的只是量長度——<em>那是小學就會的事</em>。</p>
+    <p style="margin-top:10px">📌 <strong>15.57% 的人選了「BC 上但靠近 B」</strong>：他們方向找對了，只是沒真的量一次距離。</p>
   </div>
   </div>
 
@@ -901,10 +1067,10 @@ $("pNext").addEventListener("click",()=>{
 /* ══ 會考挑戰回饋 ══ */
 const FB={
  0:{ans:"B",
-  A:["在 BC 上是對的，但偏向錯了","<p>用滑桿驗證：把差距調到 0 時，綠線會停在 B 和 C 之間，<strong>比較靠近 C</strong>（大約在 B 往右 0.67 格的位置）。</p><p>往下有<strong>一步一步的完整算法</strong>，看完就會知道 1.67 是怎麼算出來的。</p>"],
-  B:["正確","<p>原點落在 A 右邊 <span class='eq'>5/3</span> 格 ≈ 1.67 格處，也就是 <strong>B 和 C 之間、離 C 只有 0.33 格</strong>。</p><p>用拖的可以找到答案，但考場上沒有滑桿——<strong>往下有一步一步的紙筆算法</strong>，包含為什麼要分兩種情況。</p>"],
-  C:["超過了","<p>在 <span class='eq'>CD</span> 上的話，<span class='eq'>|a|＋|b|</span> 會比 <span class='eq'>|e|</span> 大太多。拖滑桿過去看看差距變成多少。</p><p>往下有<strong>一步一步的完整算法</strong>，看完就會知道 1.67 是怎麼算出來的。</p>"],
-  D:["更遠了","<p>原點越往右，<span class='eq'>|a|</span> 和 <span class='eq'>|b|</span> 越大、<span class='eq'>|e|</span> 越小，兩邊差距只會拉開。往左拉找差距 0 的地方。</p><p>往下有<strong>一步一步的完整算法</strong>，看完就會知道 1.67 是怎麼算出來的。</p>"]},
+  A:["在 BC 上是對的，但偏向錯了","<p>用滑桿驗證：把差距調到 0 時，綠線會停在 B 和 C 之間，<strong>比較靠近 C</strong>（大約在 B 往右 0.67 格的位置）。</p><p>往下<strong>換一種說法重講一次</strong>——不用設未知數、不用拆絕對值，<em>只要把每一格切成 3 小份，數格子就找得到</em>。</p>"],
+  B:["正確","<p>原點落在 A 右邊 <span class='eq'>5/3</span> 格 ≈ 1.67 格處，也就是 <strong>B 和 C 之間、離 C 只有 0.33 格</strong>。</p><p>用拖的可以找到答案，但考場上沒有滑桿——<strong>往下換一種說法重講一次</strong>：整題其實一個負號都用不到，<em>只是在量距離</em>。</p>"],
+  C:["超過了","<p>在 <span class='eq'>CD</span> 上的話，<span class='eq'>|a|＋|b|</span> 會比 <span class='eq'>|e|</span> 大太多。拖滑桿過去看看差距變成多少。</p><p>往下<strong>換一種說法重講一次</strong>——不用設未知數、不用拆絕對值，<em>只要把每一格切成 3 小份，數格子就找得到</em>。</p>"],
+  D:["更遠了","<p>原點越往右，<span class='eq'>|a|</span> 和 <span class='eq'>|b|</span> 越大、<span class='eq'>|e|</span> 越小，兩邊差距只會拉開。往左拉找差距 0 的地方。</p><p>往下<strong>換一種說法重講一次</strong>——不用設未知數、不用拆絕對值，<em>只要把每一格切成 3 小份，數格子就找得到</em>。</p>"]},
  1:{ans:"B",
   A:["方向對了，長度反了","<p>你把 Q 放在 <span class='eq'>AO</span> 之間——<strong>這是對的</strong>，比六成的人強。</p><p>但你認為 <span class='eq'>AQ ＜ QO</span>，也就是 Q 比較靠近 A（靠近 −2）。回去拖一次滑桿：Q 其實<em>非常靠近 0</em>。</p>"],
   B:["答對了，而且你避開了最大的坑","<p>Q 在 <span class='eq'>AO</span> 之間，而且緊貼著 O，所以 <span class='eq'>AQ ＞ QO</span>。</p><p>往下看——<strong>將近四成的人把 Q 放到了數線的另一半</strong>。</p>"],
@@ -1036,7 +1202,7 @@ function labB(){
   const v=$("labv2");
   if(diff<0.03){
     v.className="verdict good";
-    v.innerHTML="<strong>找到了。</strong>原點在 A 右方約 <span class='eq'>1.67</span> 格 ＝ <span class='eq'>5/3</span> 格——落在 <strong>B 和 C 之間，離 C 比較近</strong>（距 B 0.67 格、距 C 只有 0.33 格）。<br>選好答案之後，下面有一步一步的完整算法。";
+    v.innerHTML="<strong>找到了。</strong>原點在 A 右方約 <span class='eq'>1.67</span> 格 ＝ <span class='eq'>5/3</span> 格——落在 <strong>B 和 C 之間，離 C 比較近</strong>（距 B 0.67 格、距 C 只有 0.33 格）。<br>選好答案之後，下面會用<strong>數格子</strong>的方式再講一次為什麼是這裡。";
   }else if(diff<0.5){
     v.className="verdict warn";
     v.innerHTML="很接近了，差距剩 "+diff.toFixed(2)+"。再微調一點點。";
@@ -1085,6 +1251,37 @@ document.querySelectorAll(".chip").forEach(c=>{
   });
 });
 labC();
+
+
+/* ══ 114-15 換一種說法：13 個位置的距離表 ＋ 兩條折線 ══ */
+(function(){
+  const tb=$("dtb"); if(!tb) return;
+  const PT={0:"A",3:"B",6:"C",9:"D",12:"E"};
+  let rows="";
+  for(let k=0;k<=12;k++){
+    const dA=k, dB=Math.abs(k-3), L=dA+dB, R=12-k;
+    const hit=(L===R);
+    const name=PT[k] ? "　<span style='font-size:12px;color:var(--ink2)'>("+PT[k]+")</span>" : "";
+    rows+='<tr class="'+(hit?"hit":(PT[k]?"pt":""))+'">'+
+      '<td>'+k+name+'</td><td>'+dA+'</td><td>'+dB+'</td>'+
+      '<td><b>'+L+'</b></td><td><b>'+R+'</b></td>'+
+      '<td>'+(hit?"✓ 相等":(L<R?"左邊比較小":"左邊比較大"))+'</td></tr>';
+  }
+  tb.innerHTML=rows;
+
+  // 折線：x 每小格 24px（30 → 318），y 每單位 10.5px（140 → 14）
+  const px=(k)=>30+k*24, py=(v)=>140-v*10.5;
+  let pL="", pR="";
+  for(let k=0;k<=12;k++){
+    const L=k+Math.abs(k-3), R=12-k;
+    pL+=(k?"L":"M")+px(k).toFixed(1)+" "+py(L).toFixed(1)+" ";
+    pR+=(k?"L":"M")+px(k).toFixed(1)+" "+py(R).toFixed(1)+" ";
+  }
+  $("lineL").setAttribute("d",pL.trim());
+  $("lineR").setAttribute("d",pR.trim());
+  $("cross").setAttribute("cx",px(5)); $("cross").setAttribute("cy",py(7));
+  $("crosstx").setAttribute("x",px(5)); $("crosstx").setAttribute("y",py(7)-11);
+})();
 
 /* ══ 還原進度 ══ */
 if(pDone>0 && pDone<PRAC.length) pi=pDone;
