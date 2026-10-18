@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>分數的四則運算｜七上 2-3</title>
+<style>
+:root{
+  --paper:#f7f8f5; --ink:#20261f; --ink2:#525c50; --line:#d8ded4;
+  --accent:#15803d; --accent-soft:#e9f5ec;
+  --teal:#0f6b63; --teal-soft:#e6f2f0;
+  --blue:#1d5b79; --blue-soft:#e8f1f5;
+  --green:#15803d; --green-soft:#e9f5ec;
+  --red:#b03030; --red-soft:#fdeeee;
+  --shadow:0 1px 2px rgba(32,38,31,.06),0 8px 24px rgba(32,38,31,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  font-size:17px;line-height:1.85;letter-spacing:.01em}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px 120px}
+
+header{padding:56px 0 28px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+.kicker{font-size:13px;letter-spacing:.22em;color:var(--accent);font-weight:700;margin-bottom:14px}
+h1{font-size:34px;line-height:1.3;margin:0 0 14px;letter-spacing:-.01em}
+.sub{color:var(--ink2);font-size:15px;margin:0}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.tag{font-size:12px;padding:4px 11px;border:1px solid var(--line);border-radius:99px;color:var(--ink2);background:#fff}
+
+.bar{position:sticky;top:0;z-index:50;background:rgba(247,248,245,.95);
+  border-bottom:1px solid var(--line);margin:0 -20px 0;padding:10px 20px}
+.bar-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.track{flex:1;height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.bar b{font-size:12px;color:var(--ink2);font-weight:600;font-variant-numeric:tabular-nums}
+
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+.step{font-size:12px;letter-spacing:.2em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.step .n{display:inline-block;background:var(--accent);color:#fff;border-radius:50%;
+  width:20px;height:20px;line-height:20px;text-align:center;margin-right:8px;letter-spacing:0}
+h2{font-size:25px;line-height:1.4;margin:0 0 20px;letter-spacing:-.01em}
+h3{font-size:19px;margin:34px 0 12px}
+h4{font-size:16.5px;margin:24px 0 8px;color:var(--teal)}
+p{margin:0 0 18px}
+.lead{font-size:19px;line-height:1.9}
+.dim{color:var(--ink2)}
+.big{font-size:22px;font-weight:700;line-height:1.6;margin:26px 0}
+em{font-style:normal;background:linear-gradient(transparent 62%,#bfe6c9 62%);font-weight:600;padding:0 1px}
+.eq{font-family:"Cambria","Times New Roman",Georgia,serif;font-size:1.06em;font-variant-numeric:tabular-nums}
+.eq sup{font-size:.68em;vertical-align:super;line-height:0}
+.eq.blk{display:block;text-align:center;font-size:21px;margin:20px 0}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;
+  font-size:.82em;line-height:1.15;margin:0 2px}
+.frac span:first-child{border-bottom:1.3px solid currentColor;padding:0 4px}
+.hl{background:#fff3c4;border-radius:3px;padding:0 3px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin:24px 0;box-shadow:var(--shadow)}
+.quote{border-left:3px solid var(--accent);background:var(--accent-soft);padding:18px 20px;border-radius:0 10px 10px 0;margin:24px 0}
+.quote p:last-child{margin:0}
+.note{background:var(--blue-soft);border:1px solid #cfe0e8;border-radius:12px;padding:18px 20px;margin:24px 0;font-size:16px}
+.note p:last-child{margin:0}
+.note b{color:var(--blue)}
+.aside{background:#fdf8e8;border:1px dashed #e3d5a4;border-radius:12px;padding:16px 18px;margin:24px 0;font-size:15px;color:#5c4d20}
+.aside p:last-child{margin:0}
+
+.fcard{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:20px;margin:16px 0;box-shadow:var(--shadow)}
+.fcard .fname{font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700;margin-bottom:10px}
+.fcard .fbody{font-size:21px;text-align:center;margin:10px 0 14px;font-family:"Cambria",Georgia,serif}
+.fcard .fsay{font-size:15.5px;color:var(--ink2);line-height:1.75;margin:0}
+.fcard .fsay strong{color:var(--ink)}
+
+.q{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:24px;margin:26px 0;box-shadow:var(--shadow)}
+.q-src{font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:12px}
+.q-body{font-size:16.5px;line-height:1.9;margin-bottom:20px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:12px;align-items:center;padding:14px 16px;border:1.5px solid var(--line);
+  border-radius:11px;cursor:pointer;background:#fff;font-size:16px;line-height:1.7;
+  transition:border-color .15s,background .15s;text-align:left;width:100%;font-family:inherit;color:inherit}
+.opt:hover:not(.locked){border-color:var(--ink2);background:#fbfcfa}
+.opt .k{font-weight:700;flex-shrink:0;width:22px;color:var(--ink2)}
+.opt.picked{border-color:var(--ink);border-width:2px}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.right .k{color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt.wrong .k{color:var(--red)}
+.opt.locked{cursor:default}
+.fb{margin-top:18px;padding-top:18px;border-top:1px solid var(--line);font-size:16px;display:none}
+.fb.show{display:block;animation:rise .45s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fb h4{margin:0 0 8px;font-size:15px;letter-spacing:.06em;color:inherit}
+.fb p:last-child{margin:0}
+
+.locked-zone{opacity:.3;pointer-events:none;filter:blur(4px) saturate(.2);user-select:none}
+.revealed{animation:reveal .6s ease both}
+@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.prac{background:#fff;border:2px solid var(--teal);border-radius:16px;padding:22px;margin:26px 0;box-shadow:var(--shadow)}
+.prac-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;
+  font-size:13px;color:var(--ink2);font-weight:600;gap:10px;flex-wrap:wrap}
+.prac-top .src{color:var(--teal);letter-spacing:.08em}
+.dots{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap}
+.dot{width:22px;height:6px;border-radius:99px;background:var(--line);transition:background .3s}
+.dot.done{background:var(--green)}
+.dot.now{background:var(--teal)}
+.prac-q{font-size:17.5px;line-height:2;margin-bottom:8px}
+.prac-hint{font-size:14.5px;color:var(--ink2);margin-bottom:16px;line-height:1.7}
+.prac-fb{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:15.5px;line-height:1.8;display:none}
+.prac-fb.show{display:block;animation:rise .3s ease}
+.prac-fb.ok{background:var(--green-soft);border:1px solid #b7ddc3}
+.prac-fb.no{background:var(--red-soft);border:1px solid #edc4c4}
+
+.btn{padding:9px 18px;border:1.5px solid var(--accent);background:var(--accent);color:#fff;
+  border-radius:99px;cursor:pointer;font-size:14.5px;font-family:inherit;font-weight:600;transition:opacity .15s}
+.btn:hover{opacity:.86}
+.btn.ghost{background:#fff;color:var(--accent)}
+.btn:disabled{opacity:.35;cursor:default}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+.lab{background:linear-gradient(#fff,#fbfcfa);border:1px solid var(--line);border-radius:16px;
+  padding:22px;margin:26px 0;box-shadow:var(--shadow)}
+.lab-t{font-size:12px;letter-spacing:.18em;color:var(--blue);font-weight:700;margin-bottom:16px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{padding:7px 14px;border:1.5px solid var(--line);background:#fff;border-radius:99px;
+  cursor:pointer;font-size:14px;font-family:inherit;color:var(--ink2);transition:all .15s}
+.chip:hover{border-color:var(--ink2)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--accent);height:26px}
+.slider-lab{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);margin:6px 0 2px}
+.readout{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.pill{flex:1;min-width:106px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.pill .lb{font-size:12.5px;color:var(--ink2)}
+.pill .vl{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.pill.hi{background:var(--accent-soft);border-color:#b7ddc3}
+.pill.hi .vl{color:var(--accent)}
+.verdict{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:15px;line-height:1.7;
+  background:var(--blue-soft);border:1px solid #cfe0e8}
+.verdict.good{background:var(--green-soft);border-color:#b7ddc3}
+.verdict.warn{background:#fdf8e8;border-color:#e3d5a4}
+
+table{width:100%;border-collapse:collapse;margin:24px 0;font-size:15px;background:#fff;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#eef1eb;font-weight:700;font-size:13.5px;letter-spacing:.04em}
+tr:last-child td{border-bottom:none}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px -20px;padding:0 20px}
+.scroll table{margin:0;min-width:460px}
+
+.flow{counter-reset:s;list-style:none;padding:0;margin:14px 0 0}
+.flow li{counter-increment:s;position:relative;padding:7px 0 7px 40px;font-size:15.5px;line-height:1.7}
+.flow li::before{content:counter(s);position:absolute;left:0;top:8px;width:25px;height:25px;
+  background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:12.5px;font-weight:700}
+details.pre{background:#fff;border:1px solid var(--line);border-radius:11px;margin-bottom:9px;overflow:hidden}
+details.pre summary{padding:13px 16px;cursor:pointer;font-size:16px;font-weight:600;list-style:none;
+  display:flex;align-items:center;gap:10px}
+details.pre summary::-webkit-details-marker{display:none}
+details.pre summary::before{content:"?";flex-shrink:0;width:22px;height:22px;border-radius:50%;
+  background:var(--line);color:var(--ink2);display:flex;align-items:center;justify-content:center;
+  font-size:12.5px;font-weight:700}
+details.pre[open] summary::before{content:"\2713";background:var(--green);color:#fff}
+details.pre[open] summary{border-bottom:1px solid var(--line)}
+details.pre .bd{padding:14px 16px;font-size:15.5px;line-height:1.8;color:var(--ink2)}
+details.pre .bd strong{color:var(--ink)}
+details.pre .bd p{margin:0 0 10px}
+details.pre .bd p:last-child{margin:0}
+
+.done{text-align:center;padding:52px 0 20px}
+.done h2{font-size:27px}
+.reset{background:none;border:1px solid var(--line);color:var(--ink2);padding:9px 18px;
+  border-radius:99px;cursor:pointer;font-size:13px;font-family:inherit;margin-top:28px}
+footer{padding:36px 0;color:var(--ink2);font-size:13px;line-height:1.9;text-align:center}
+svg{max-width:100%;height:auto;display:block}
+
+/* 原始考題下載 */
+.dl{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:20px 22px;margin:24px 0;text-align:left}
+.dl h4{margin:0 0 8px;font-size:17px;color:var(--ink)}
+.dl p{font-size:15px;line-height:1.8;margin:0 0 14px;color:var(--ink2)}
+.dl a.get{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#fff;
+  text-decoration:none;padding:11px 20px;border-radius:99px;font-size:15px;font-weight:700;
+  transition:opacity .15s}
+.dl a.get:hover{opacity:.86}
+.dl .meta{font-size:13px;color:var(--ink2);margin:10px 0 0}
+
+/* 完整解法步驟 */
+.sol{margin:20px 0}
+.sstep{display:flex;gap:14px;margin-bottom:20px}
+.sn{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-top:2px}
+.sb{flex:1;min-width:0}
+.sb h4{margin:2px 0 8px;font-size:17px;color:var(--ink)}
+.sb p{font-size:15.5px;line-height:1.85;margin:0 0 10px}
+.sb p:last-child{margin:0}
+.sb p.warn{background:#fdf8e8;border-left:3px solid #e3d5a4;padding:8px 12px;border-radius:0 8px 8px 0;font-size:14.5px}
+
+
+.nl{margin:10px 0 2px}
+.fpick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
+.fbox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.fbox .t{font-size:12.5px;color:var(--ink2);font-weight:700;margin-bottom:4px}
+.fbox .row{display:flex;align-items:center;gap:6px;font-size:14px;margin:3px 0}
+.fbox .row input{flex:1}
+.fbox .big{font-family:Cambria,Georgia,serif;font-size:22px;text-align:center;margin:4px 0}
+.cmp{font-size:28px;font-weight:700;text-align:center;font-family:Cambria,Georgia,serif;margin:6px 0}
+.recip{display:flex;align-items:center;justify-content:center;gap:16px;margin:12px 0;font-family:Cambria,Georgia,serif;font-size:24px;flex-wrap:wrap}
+.recip .card2{background:#fff;border:2px solid var(--teal);border-radius:12px;padding:8px 16px;text-align:center}
+.recip .card2.b{border-color:#a15c07}
+.recip small{display:block;font-family:inherit;font-size:12px;color:var(--ink2)}
+
+</style>
+<style id="sitenav-css">
+.sitenav{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+ padding:10px 0 12px;margin:0 0 6px;border-bottom:1px solid rgba(0,0,0,.08);font-size:13.5px;scrollbar-width:none}
+.sitenav::-webkit-scrollbar{display:none}
+.sitenav a{flex:0 0 auto;text-decoration:none;color:#4b5563;background:#fff;border:1px solid rgba(0,0,0,.12);
+ border-radius:99px;padding:4px 12px;line-height:1.6;white-space:nowrap}
+.sitenav a:hover{border-color:#15803d;color:#15803d}
+.sitenav a.home{font-weight:700;color:#15803d;border-color:#15803d;background:#fff}
+.sitenav a.now{background:#15803d;color:#fff;border-color:#15803d;font-weight:700}
+.sitenav .sep{flex:0 0 auto;color:#9ca3af;padding:0 2px}
+.sitenav-b{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch;margin:34px 0 8px}
+.sitenav-b a{text-decoration:none;color:#374151;background:#fff;border:1px solid rgba(0,0,0,.14);border-radius:12px;
+ padding:12px 14px;line-height:1.5;font-size:14.5px;display:flex;flex-direction:column;justify-content:center}
+.sitenav-b a:hover{border-color:#15803d;color:#15803d}
+.sitenav-b a small{font-size:11.5px;color:#9ca3af;letter-spacing:.08em}
+.sitenav-b a.next{text-align:left}
+.sitenav-b a.homeb{justify-content:center;text-align:center;font-weight:700;color:#15803d;border-color:#15803d}
+.sitenav-b span{display:block}
+@media(max-width:640px){.sitenav{flex-wrap:wrap;overflow:visible;gap:6px 5px;font-size:13px}.sitenav a{padding:3px 10px}}
+@media(max-width:520px){.sitenav-b{grid-template-columns:1fr 1fr}.sitenav-b a.homeb{grid-column:1/-1;order:-1}}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="bar-inner">
+  <b id="pnum">0 / 15</b>
+  <div class="track"><div class="fill" id="pfill"></div></div>
+</div></div>
+
+<div class="wrap">
+
+<!-- SITENAV:top 由 _add_site_nav.py 產生，勿手改 -->
+<nav class="sitenav" aria-label="站內導覽"><a class="home" href="index.html">七年級數學自學站</a><span class="sep">·</span><a class="" href="numberline.html">1-1 負數與數線</a><a class="" href="addsub.html">1-2 整數加減</a><a class="" href="arith.html">1-3 乘除四則</a><a class="" href="power.html">1-4 乘方</a><a class="" href="scinot.html">1-4 科學記號</a><a class="" href="factor.html">2-1 因數倍數</a><a class="" href="gcdlcm.html">2-2 公因數公倍數</a><a class="now" href="fraction.html">2-3 分數四則</a><a class="" href="explaw.html">2-4 指數律</a><span class="sep">·</span><a class="" href="exam-sections.html">段考・照節次練</a></nav>
+<!-- /SITENAV:top -->
+
+<header>
+  <div class="kicker">七年級上 · 第二章 2-3 分數的四則運算</div>
+  <h1>規則都學過了，只是換成分數</h1>
+  <p class="sub">負分數的加減乘除，<strong>沒有任何一條新規則</strong>——符號照第 1 章，分數照國小。<br>難的是兩邊同時來：先處理符號，還是先通分？<strong>這一節教你固定一個順序，就不會亂。</strong></p>
+  <div class="meta">
+    <span class="tag">課本 p.128–146</span>
+    <span class="tag">課本練習 8 題</span>
+    <span class="tag">會考挑戰 7 題</span>
+    <span class="tag">約 40 分鐘</span>
+  </div>
+</header>
+
+<!-- ══ 開始之前 ══ -->
+<section>
+  <div class="step">開始之前</div>
+  <h2>這一課會怎麼走</h2>
+  <div class="card">
+    <ol class="flow">
+      <li><strong>先把六件事認熟</strong>：負號的位置、最簡分數、比大小、加減、乘除、四則運算</li>
+      <li><strong>兩個實驗</strong>：把兩個分數放上數線比大小；倒數和相反數差在哪</li>
+      <li>三千六百年前的埃及人怎麼寫分數，以及<strong>「除以分數要乘倒數」到底為什麼</strong></li>
+      <li><strong>用課本的例題和隨堂練習動手做</strong>（8 題）</li>
+      <li>重點整理，最後是<strong>會考挑戰 7 題</strong>（含兩題要用到 2-2 的題目）</li>
+    </ol>
+  </div>
+  <h3>先確認你知道這些</h3>
+
+  <details class="pre"><summary>第 1 章的符號規則</summary><div class="bd">
+    <p><strong>加減</strong>：同號相加，數字相加、符號照抄；異號相加，大減小、符號跟大的。減法變加法：<span class="eq">a−b＝a＋(−b)</span>。<br>
+    <strong>乘除</strong>：同號得正、異號得負；連乘數負號個數。</p>
+    <p>📌 這一課<strong>完全照搬</strong>，只是數字變成分數。忘了先回 <a href="addsub.html" style="color:var(--accent);font-weight:700">1-2</a>、<a href="arith.html" style="color:var(--accent);font-weight:700">1-3</a>。</p>
+  </div></details>
+  <details class="pre"><summary>國小的約分、通分、帶分數</summary><div class="bd">
+    <p><strong>約分</strong>：分子分母同除一個數，<span class="eq">6/8＝3/4</span>。<strong>通分</strong>：化成相同分母，<span class="eq">1/2＝3/6</span>。<br>
+    <strong>帶分數</strong>：<span class="eq">2<span class="frac"><span>1</span><span>3</span></span>＝<span class="frac"><span>7</span><span>3</span></span></span>。</p>
+  </div></details>
+  <details class="pre"><summary>2-2 的最大公因數、最小公倍數</summary><div class="bd">
+    <p><strong>約分一次到位</strong>：分子分母同除它們的最大公因數。<br><strong>通分用最小的分母</strong>：分母的最小公倍數，例如 6 和 8 通分成 <span class="eq">[6,8]＝24</span>。</p>
+  </div></details>
+
+</section>
+
+<!-- ══ 1 概念 ══ -->
+<section>
+  <div class="step"><span class="n">1</span>這一節在教什麼</div>
+
+  <h2>六件事，先認熟</h2>
+
+  <div class="fcard">
+    <div class="fname">① 負號放哪裡都一樣（課本 p.128）</div>
+    <div class="fbody"><span class="frac"><span>−7</span><span>4</span></span> ＝ <span class="frac"><span>7</span><span>−4</span></span> ＝ −<span class="frac"><span>7</span><span>4</span></span></div>
+    <p class="fsay">因為 <span class="eq">(−7)÷4＝7÷(−4)＝−(7÷4)</span>（異號得負）。<br>
+    習慣上把負號<strong>寫在最前面</strong>，分母保持正的。<br>
+    分子分母互質的分數叫<strong>最簡分數</strong>：<span class="eq">(a,b)＝1</span>。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">② 比大小（課本 p.130–131）</div>
+    <div class="fbody">通分母比分子，或通分子比分母</div>
+    <p class="fsay">正分數：分母一樣，分子大的大；分子一樣，<strong>分母小的大</strong>（切的塊數少，每塊比較大）。<br>
+    負分數：<strong>絕對值大的反而小</strong>——和第 1 章負整數一樣，<span class="eq">−3＜−2</span>。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">③ 加減（課本 p.132–135）</div>
+    <div class="fbody">先通分，再用整數的加減規則算分子</div>
+    <p class="fsay">例：<span class="eq"><span class="frac"><span>−7</span><span>8</span></span> − <span class="frac"><span>−3</span><span>8</span></span> ＝ <span class="frac"><span>(−7)−(−3)</span><span>8</span></span> ＝ <span class="frac"><span>−4</span><span>8</span></span> ＝ −<span class="frac"><span>1</span><span>2</span></span></span><br>
+    帶分數可以化成假分數算，也可以<strong>整數部分、分數部分分開算</strong>（課本例 6 兩種解法）。<br>
+    去括號規則、交換律、結合律全部照用。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">④ 乘法（課本 p.136–138）</div>
+    <div class="fbody">先定符號，再分子乘分子、分母乘分母</div>
+    <p class="fsay">同號得正、異號得負；連乘數負號。帶分數先化成假分數。<br>
+    <em>先約分再乘</em>，數字比較小：<span class="eq">−<span class="frac"><span>3</span><span>7</span></span> × −<span class="frac"><span>14</span><span>15</span></span> ＝ ＋(<span class="frac"><span>3</span><span>7</span></span>×<span class="frac"><span>14</span><span>15</span></span>) ＝ <span class="frac"><span>2</span><span>5</span></span></span></p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">⑤ 倒數與除法（課本 p.139–140）</div>
+    <div class="fbody">除以一個數 ＝ 乘以它的倒數</div>
+    <p class="fsay"><span class="frac"><span>b</span><span>a</span></span> 的倒數是 <span class="frac"><span>a</span><span>b</span></span>，兩個數相乘等於 1 就互為倒數。<br>
+    <span class="eq">−2</span> 的倒數是 <span class="eq">−<span class="frac"><span>1</span><span>2</span></span></span>（<strong>倒數不會改變正負</strong>）；1 的倒數是 1；<strong>0 沒有倒數</strong>。<br>
+    ⚠️ 別和<strong>相反數</strong>搞混：相反數是相加等於 0（換符號），倒數是相乘等於 1（翻上下）。</p>
+  </div>
+
+  <div class="fcard">
+    <div class="fname">⑥ 四則運算（課本 p.141）</div>
+    <div class="fbody">順序和整數一樣：括號 → 乘除 → 加減</div>
+    <p class="fsay">小數可以先化成分數：<span class="eq">−0.6＝−<span class="frac"><span>3</span><span>5</span></span></span>。<br>
+    <strong>分配律反著用</strong>一樣好用：<span class="eq">3<span class="frac"><span>9</span><span>11</span></span>×(−57) − 1<span class="frac"><span>9</span><span>11</span></span>×(−57) ＝ (3<span class="frac"><span>9</span><span>11</span></span>−1<span class="frac"><span>9</span><span>11</span></span>)×(−57) ＝ 2×(−57) ＝ −114</span></p>
+  </div>
+
+  <h3>先玩一下：把兩個分數放上數線</h3>
+  <p>調整兩個分數，看它們在數線上誰在右邊（右邊比較大）。<strong>特別試試看兩個負數</strong>——絕對值大的反而在左邊。</p>
+  <div class="lab">
+    <div class="lab-t">實驗一 ── 分數比大小</div>
+    <div class="fpick">
+      <div class="fbox"><div class="t">甲</div>
+        <div class="row">分子 <input type="range" id="an" min="-20" max="20" value="-2"></div>
+        <div class="row">分母 <input type="range" id="ad" min="1" max="12" value="3"></div>
+        <div class="big" id="af"></div></div>
+      <div class="fbox"><div class="t">乙</div>
+        <div class="row">分子 <input type="range" id="bn" min="-20" max="20" value="-3"></div>
+        <div class="row">分母 <input type="range" id="bd" min="1" max="12" value="5"></div>
+        <div class="big" id="bf"></div></div>
+    </div>
+    <svg class="nl" viewBox="0 0 620 70" id="nl"></svg>
+    <div class="cmp" id="cmp"></div>
+    <div class="verdict" id="vcmp"></div>
+  </div>
+
+</section>
+
+<!-- ══ 2 歷史 ══ -->
+<section>
+  <div class="step"><span class="n">2</span>分數從哪裡來</div>
+
+  <h2>埃及人只會寫「幾分之一」</h2>
+  <p class="lead">三千六百年前的埃及《萊因德紙草書》（約西元前 1650 年）裡，有一張很奇怪的表：<strong>2/5 要寫成 1/3＋1/15。</strong></p>
+  <p>因為古埃及人<strong>只有「幾分之一」的寫法</strong>（分子一定是 1，稱為單位分數）。要表示 2/5，只能拆成不同的單位分數相加：</p>
+  <p class="eq blk"><span class="frac"><span>2</span><span>5</span></span> ＝ <span class="frac"><span>1</span><span>3</span></span> ＋ <span class="frac"><span>1</span><span>15</span></span></p>
+  <p>驗算一下：通分成 15，<span class="eq"><span class="frac"><span>5</span><span>15</span></span>＋<span class="frac"><span>1</span><span>15</span></span>＝<span class="frac"><span>6</span><span>15</span></span>＝<span class="frac"><span>2</span><span>5</span></span></span>——<strong>他們每次算分數，都要先做一次通分。</strong></p>
+  <div class="aside"><p>📌 今天這種「分子在上、分母在下、中間一條線」的寫法，是中世紀阿拉伯數學家開始用的，傳到歐洲已經是十三世紀以後了。<em>分數的概念很古老，但你現在用的這種寫法，其實很年輕。</em></p></div>
+
+  <h3>為什麼「除以分數」要「乘以倒數」？</h3>
+  <p>這是這一節最多人背了、卻說不出為什麼的規則。用課本 p.140 的說法：<strong>除法就是在問「裡面裝得下幾份」</strong>。</p>
+  <div class="card">
+    <p><span class="eq">3 ÷ <span class="frac"><span>1</span><span>2</span></span></span>：3 個披薩，每人吃半個，可以分給幾個人？</p>
+    <p style="margin:0">每個披薩分給 2 個人，3 個披薩就是 <span class="eq">3×2＝6</span> 個人。<strong>除以 1/2，就是乘以 2。</strong></p>
+  </div>
+  <div class="card">
+    <p><span class="eq">3 ÷ <span class="frac"><span>3</span><span>4</span></span></span>：3 公升的果汁，每杯裝 3/4 公升，可以裝幾杯？</p>
+    <p style="margin:0">每 1 公升可以裝 <span class="eq"><span class="frac"><span>4</span><span>3</span></span></span> 杯，3 公升就是 <span class="eq">3×<span class="frac"><span>4</span><span>3</span></span>＝4</span> 杯。<strong>除以 3/4，就是乘以 4/3。</strong></p>
+  </div>
+  <div class="quote"><p><strong>「1 裡面裝得下幾個 b/a」，答案剛好是 a/b。</strong>所以除以 b/a，等於每一個 1 都換成 a/b 份——也就是乘以倒數。</p></div>
+
+  <h3>再玩一下：倒數 vs 相反數</h3>
+  <p>選一個數，看它的<strong>相反數</strong>（換符號）和<strong>倒數</strong>（翻上下）。會考 113-19 考的就是負數的倒數，全國有 38.6% 的人把它放錯了邊（見 <a href="numberline.html" style="color:var(--accent);font-weight:700">1-1</a>）。</p>
+  <div class="lab">
+    <div class="lab-t">實驗二 ── 一個翻符號，一個翻上下</div>
+    <div class="chips" id="rchips"></div>
+    <div class="recip" id="recip"></div>
+    <div class="verdict" id="vrec"></div>
+  </div>
+
+</section>
+
+<!-- ══ 3 課本練習 ══ -->
+<section>
+  <div class="step"><span class="n">3</span>動手練</div>
+  <h2>照課本的順序，一題一題來</h2>
+  <p>下面 8 題<strong>全部出自課本 2-3 的例題和隨堂練習</strong>，順序照課本：<em>最簡分數 → 比大小 → 加減 → 乘法 → 除法 → 四則運算</em>。</p>
+  <div class="prac">
+    <div class="prac-top"><span class="src" id="pSrc"></span><span id="pNo"></span></div>
+    <div class="dots" id="pDots"></div>
+    <div class="prac-q" id="pQ"></div>
+    <div class="prac-hint" id="pHint"></div>
+    <div class="opts" id="pOpts"></div>
+    <div class="prac-fb" id="pFb"></div>
+    <div class="btnrow"><button class="btn" id="pNext" disabled>下一題</button></div>
+  </div>
+</section>
+
+<!-- ══ 4 重點整理 ══ -->
+<section class="locked-zone" id="z4">
+  <div class="step"><span class="n">4</span>重點整理</div>
+
+  <h2>整節 2-3 收成一張表</h2>
+  <div class="scroll"><table>
+    <tr><th style="width:80px">課本位置</th><th>先備知識</th><th>2-3 新學的</th></tr>
+    <tr><td><b>主題 1</b><br>p.128–131<br>最簡分數、比大小</td><td>國小約分、通分<br>2-2 最大公因數</td><td>負號放哪都一樣，習慣寫最前面<br>最簡分數：分子分母互質<br>負分數：絕對值大的反而小</td></tr>
+    <tr><td><b>主題 2</b><br>p.132–135<br>加減</td><td>1-2 加減規則<br>2-2 最小公倍數</td><td>先通分，分子照整數規則算<br>帶分數：化假分數，或整數、分數分開算</td></tr>
+    <tr><td><b>主題 3、4</b><br>p.136–140<br>乘除</td><td>1-3 乘除規則</td><td>先定符號，先約分再乘<br>倒數：相乘為 1；0 沒有倒數；倒數不變號<br>除以一個數 ＝ 乘以倒數</td></tr>
+    <tr><td><b>主題 5</b><br>p.141–142<br>四則運算</td><td>1-3 運算順序、分配律</td><td>小數先化分數；分配律反著用</td></tr>
+  </table></div>
+  <h3>三個最容易錯的地方</h3>
+  <div class="card"><p><strong>① 分數加減，分子加分子、分母加分母</strong></p><p style="margin-bottom:0"><span class="eq"><span class="frac"><span>1</span><span>2</span></span>＋<span class="frac"><span>1</span><span>3</span></span>≠<span class="frac"><span>2</span><span>5</span></span></span>。加減一定要先通分；<em>只有乘法才是上乘上、下乘下</em>。</p></div>
+  <div class="card"><p><strong>② 帶分數拆開時，分數部分忘了帶負號</strong></p><p style="margin-bottom:0"><span class="eq">−2<span class="frac"><span>3</span><span>4</span></span>＝−2−<span class="frac"><span>3</span><span>4</span></span></span>，不是 <span class="eq">−2＋<span class="frac"><span>3</span><span>4</span></span></span>。</p></div>
+  <div class="card"><p><strong>③ 倒數和相反數搞混</strong></p><p style="margin-bottom:0"><span class="eq">−<span class="frac"><span>2</span><span>3</span></span></span> 的倒數是 <span class="eq">−<span class="frac"><span>3</span><span>2</span></span></span>（還是負的），相反數才是 <span class="eq"><span class="frac"><span>2</span><span>3</span></span></span>。</p></div>
+
+</section>
+
+<!-- ══ 5 會考挑戰 ══ -->
+<section class="locked-zone" id="z5">
+  <div class="step"><span class="n">5</span>會考挑戰</div>
+  <h2>同樣的東西，考場上怎麼問</h2>
+
+  <p>13 年來分數的計算考了好幾題。下面 7 題<strong>由淺入深</strong>：前 5 題是計算和比大小，最後 2 題要把<strong>最簡分數</strong>和 2-2 的<strong>最小公倍數</strong>綁在一起想。</p>
+
+
+  <div class="q">
+    <div class="q-src">會考 113 年 第 1 題　·　全國答對率 88.3%</div>
+    <div class="q-body">算式 <b class='eq'><span class="frac"><span>3</span><span>7</span></span> − (−<span class="frac"><span>1</span><span>4</span></span>)</b> 之值為何？</div>
+    <div class="opts" data-q="0" data-ans="A">
+      <button class="opt" data-k="A"><span class="k">A</span><span><span class='eq'><span class="frac"><span>19</span><span>28</span></span></span></span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span><span class='eq'><span class="frac"><span>5</span><span>28</span></span></span></span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span><span class='eq'><span class="frac"><span>4</span><span>11</span></span></span></span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span><span class='eq'><span class="frac"><span>2</span><span>3</span></span></span></span></button>
+    </div>
+    <div class="fb" id="fb0"></div>
+  </div>
+
+  <div class="locked-zone" id="zq1">
+  <div class="q">
+    <div class="q-src">會考 108 年 第 1 題</div>
+    <div class="q-body">算式 <b class='eq'>−<span class="frac"><span>5</span><span>3</span></span> − (−<span class="frac"><span>1</span><span>6</span></span>)</b> 之值為何？</div>
+    <div class="opts" data-q="1" data-ans="A">
+      <button class="opt" data-k="A"><span class="k">A</span><span><span class='eq'>−<span class="frac"><span>3</span><span>2</span></span></span></span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span><span class='eq'>−<span class="frac"><span>4</span><span>3</span></span></span></span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span><span class='eq'>−<span class="frac"><span>11</span><span>6</span></span></span></span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span><span class='eq'>−<span class="frac"><span>4</span><span>9</span></span></span></span></button>
+    </div>
+    <div class="fb" id="fb1"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="zq2">
+  <div class="q">
+    <div class="q-src">會考 111 年 第 5 題　·　全國答對率 80.9%</div>
+    <div class="q-body">算式 <b class='eq'><span class="frac"><span>9</span><span>22</span></span> ＋ <span class="frac"><span>11</span><span>18</span></span> − (<span class="frac"><span>23</span><span>22</span></span> − <span class="frac"><span>7</span><span>18</span></span>)</b> 之值為何？</div>
+    <div class="opts" data-q="2" data-ans="A">
+      <button class="opt" data-k="A"><span class="k">A</span><span><span class='eq'><span class="frac"><span>4</span><span>11</span></span></span></span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span><span class='eq'><span class="frac"><span>9</span><span>10</span></span></span></span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span><span class='eq'><span class="frac"><span>1</span><span>9</span></span></span></span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span><span class='eq'><span class="frac"><span>5</span><span>4</span></span></span></span></button>
+    </div>
+    <div class="fb" id="fb2"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="zq3">
+  <div class="q">
+    <div class="q-src">會考 112 年 第 6 題</div>
+    <div class="q-body">已知 <b class='eq'>a＝−1</b>，<b class='eq'>b＝−1<span class="frac"><span>3</span><span>4</span></span></b>，<b class='eq'>c＝−1<span class="frac"><span>5</span><span>8</span></span></b>，下列關於 a、b、c 三數的大小關係，何者正確？</div>
+    <div class="opts" data-q="3" data-ans="A">
+      <button class="opt" data-k="A"><span class="k">A</span><span><span class='eq'>a ＞ c ＞ b</span></span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span><span class='eq'>a ＞ b ＞ c</span></span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span><span class='eq'>b ＞ c ＞ a</span></span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span><span class='eq'>c ＞ b ＞ a</span></span></button>
+    </div>
+    <div class="fb" id="fb3"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="zq4">
+  <div class="q">
+    <div class="q-src">會考 104 年 第 1 題</div>
+    <div class="q-body">算式 <b class='eq'>(−1<span class="frac"><span>1</span><span>2</span></span>) × (−3<span class="frac"><span>1</span><span>4</span></span>) × <span class="frac"><span>2</span><span>3</span></span></b> 之值為何？</div>
+    <div class="opts" data-q="4" data-ans="D">
+      <button class="opt" data-k="A"><span class="k">A</span><span><span class='eq'><span class="frac"><span>1</span><span>4</span></span></span></span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span><span class='eq'><span class="frac"><span>11</span><span>12</span></span></span></span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span><span class='eq'><span class="frac"><span>11</span><span>4</span></span></span></span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span><span class='eq'><span class="frac"><span>13</span><span>4</span></span></span></span></button>
+    </div>
+    <div class="fb" id="fb4"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="zq5">
+  <h3>最後兩題：最簡分數 × 最小公倍數</h3>
+  <p>下面兩題要同時用到「最簡分數＝分子分母互質」和 2-2 的「次方取大」。<strong>先寫下「最簡」告訴你什麼，再往下。</strong></p>
+  <div class="q">
+    <div class="q-src">會考 113 年 第 15 題　·　全國答對率 54.7%</div>
+    <div class="q-body">甲、乙兩個最簡分數分別為 <b class='eq'><span class="frac"><span>10</span><span>a</span></span></b>、<b class='eq'><span class="frac"><span>18</span><span>b</span></span></b>，其中 a、b 為正整數。若將甲、乙通分化成相同的分母後，甲的分子變為 50，乙的分子變為 54，則下列關於 a 的敘述，何者正確？</div>
+    <div class="opts" data-q="5" data-ans="B">
+      <button class="opt" data-k="A"><span class="k">A</span><span>a 是 3 的倍數，也是 5 的倍數</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span>a 是 3 的倍數，但不是 5 的倍數</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span>a 是 5 的倍數，但不是 3 的倍數</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span>a 不是 3 的倍數，也不是 5 的倍數</span></button>
+    </div>
+    <div class="fb" id="fb5"></div>
+  </div>
+  </div>
+
+  <div class="locked-zone" id="zq6">
+  <div class="q">
+    <div class="q-src">會考 104 年 第 24 題　·　這一節最難的一題</div>
+    <div class="q-body">將甲、乙、丙三個正分數化為最簡分數後，其分子分別為 6、15、10，其分母的最小公倍數為 <b class='eq'>360</b>。判斷甲、乙、丙三數的大小關係為何？</div>
+    <div class="opts" data-q="6" data-ans="A">
+      <button class="opt" data-k="A"><span class="k">A</span><span>乙 ＞ 甲 ＞ 丙</span></button>
+      <button class="opt" data-k="B"><span class="k">B</span><span>乙 ＞ 丙 ＞ 甲</span></button>
+      <button class="opt" data-k="C"><span class="k">C</span><span>甲 ＞ 乙 ＞ 丙</span></button>
+      <button class="opt" data-k="D"><span class="k">D</span><span>甲 ＞ 丙 ＞ 乙</span></button>
+    </div>
+    <div class="fb" id="fb6"></div>
+  </div>
+
+  <div class="locked-zone" id="zs6">
+  <h3>104-24 的完整想法</h3>
+  <div class="sol">
+    <div class="sstep"><div class="sn">1</div><div class="sb"><h4>360 拆開</h4><p class="eq">360 ＝ 2<sup>3</sup> × 3<sup>2</sup> × 5</p><p>三個分母的最小公倍數是它 → 三個分母合起來，要湊出 2<sup>3</sup>、3<sup>2</sup>、5（次方取大）。</p></div></div>
+    <div class="sstep"><div class="sn">2</div><div class="sb"><h4>「最簡分數」限制每個分母不能有什麼</h4>
+      <p>甲 6/□：分母和 6 互質 → <strong>不能有 2、3</strong> → 只能用 5<br>
+      乙 15/□：分母和 15 互質 → <strong>不能有 3、5</strong> → 只能用 2<br>
+      丙 10/□：分母和 10 互質 → <strong>不能有 2、5</strong> → 只能用 3</p></div></div>
+    <div class="sstep"><div class="sn">3</div><div class="sb"><h4>2<sup>3</sup>、3<sup>2</sup>、5 各只有一個人能給</h4>
+      <p>2<sup>3</sup> 只有乙能給 → 乙的分母是 8；3<sup>2</sup> 只有丙能給 → 丙是 9；5 只有甲能給 → 甲是 5。</p>
+      <p class="warn">💡 每個質因數「只有一個人能給」，所以那個人<strong>一定要給到最大次方</strong>——這就是「次方取大」反過來用。</p></div></div>
+    <div class="sstep"><div class="sn">4</div><div class="sb"><h4>比大小</h4><p>甲＝<span class="eq"><span class="frac"><span>6</span><span>5</span></span></span>＝1.2、乙＝<span class="eq"><span class="frac"><span>15</span><span>8</span></span></span>＝1.875、丙＝<span class="eq"><span class="frac"><span>10</span><span>9</span></span></span>≈1.11 → <strong>乙 ＞ 甲 ＞ 丙</strong></p></div></div>
+  </div>
+  </div>
+  </div>
+</section>
+
+<!-- ══ 結案 ══ -->
+<section class="locked-zone" id="z6">
+  <div class="done">
+    <h2>2-3 走完了</h2>
+    <p class="dim">負分數、最簡分數、比大小、加減乘除、四則運算——分數這一關過了。</p>
+  </div>
+
+  <div class="quote">
+    <p><strong>7 題排在一起看：</strong></p>
+    <p>計算題錯的地方，幾乎都不是分數本身，而是<em>第 1 章的符號規則</em>——減去負數、去括號。<strong>最後兩題則是 2-1 到 2-3 全部綁在一起。</strong></p>
+  </div>
+  <div class="dl">
+    <h4>📄 這一節的會考原題（PDF）</h4>
+    <p>上面的題目在網頁上是重新排版過的。這份 PDF 是<strong>原本考卷上的樣子</strong>——官方排版、原始選項。</p>
+    <p>建議：印出來，<strong>限時 12 分鐘</strong>做完，再對答案。</p>
+    <a class="get" href="pdf/fraction_exam.pdf" download>下載原始考題 PDF</a>
+    <p class="meta">7 題 · 113-01、108-01、111-05、112-06、104-01、113-15、104-24 · 取自國中教育會考正式試題</p>
+  </div>
+
+  <div class="card">
+    <p><strong>下一課（照課本順序）：</strong><a href="explaw.html" style="color:var(--accent);font-weight:700">指數律</a>（2-4）<br>
+    <span class="eq">5<sup>2</sup>×5<sup>4</sup>＝5<sup>6</sup></span>——<strong>指數只是在數有幾個</strong>，四條規則都是數出來的。</p>
+  </div>
+  <div class="btnrow" style="justify-content:center;margin-top:26px">
+    <a class="btn ghost" href="index.html" style="text-decoration:none">回到單元列表</a>
+  </div>
+  <div style="text-align:center"><button class="reset" id="rst">清除這一課的進度，重新做一次</button></div>
+</section>
+
+<!-- SITENAV:bottom 由 _add_site_nav.py 產生，勿手改 -->
+<div class="sitenav-b"><a class="prev" href="gcdlcm.html"><small>← 上一頁</small><span>2-2 公因數公倍數</span></a><a class="homeb" href="index.html">回七年級首頁</a><a class="next" href="explaw.html"><small>下一頁 →</small><span>2-4 指數律</span></a></div>
+<!-- /SITENAV:bottom -->
+
+<footer>
+  國中數學七上自學站 · 第二章 2-3 分數的四則運算<br>
+  課本例題與隨堂練習取自康軒版第一冊；會考題取自國中教育會考正式試題<br>
+  <a href="index.html" style="color:var(--accent)">單元列表</a> ·
+  <a href="https://yingsioul-art.github.io/jhs8-math/" style="color:var(--accent)">八上數學</a> ·
+  <a href="https://yingsioul-art.github.io/jhs8-science/" style="color:var(--accent)">八上自然</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+const KEY="jhs7-fraction-v1", NQ=7;
+const PRAC=[
+ {
+  "src": "課本 p.129 隨堂練習（最簡分數）",
+  "q": "判斷 <b class='eq'><span class=\"frac\"><span>45</span><span>60</span></span></b> 是不是最簡分數；如果不是，化成最簡分數。",
+  "hint": "分子分母有沒有共同的因數？用 (45, 60) 一次約完。",
+  "o": [
+   "不是，化成 <span class=\"frac\"><span>3</span><span>4</span></span>",
+   "是最簡分數",
+   "不是，化成 <span class=\"frac\"><span>9</span><span>12</span></span>",
+   "不是，化成 <span class=\"frac\"><span>15</span><span>20</span></span>"
+  ],
+  "a": 0,
+  "why": "<span class='eq'>(45,60)＝15</span>，分子分母同除 15 → <span class='eq'><span class=\"frac\"><span>3</span><span>4</span></span></span>。<br>📌 9/12、15/20 也是約分過的，但<b>還能再約</b>——用最大公因數一次約到底。"
+ },
+ {
+  "src": "課本 例 2（負分數的比較大小）",
+  "q": "比較 <b class='eq'>−<span class=\"frac\"><span>2</span><span>3</span></span></b> 和 <b class='eq'>−<span class=\"frac\"><span>3</span><span>5</span></span></b> 的大小。",
+  "hint": "先比絕對值：2/3 和 3/5 通分成 15。負數是絕對值大的反而小。",
+  "o": [
+   "−<span class=\"frac\"><span>3</span><span>5</span></span> ＞ −<span class=\"frac\"><span>2</span><span>3</span></span>",
+   "−<span class=\"frac\"><span>2</span><span>3</span></span> ＞ −<span class=\"frac\"><span>3</span><span>5</span></span>",
+   "一樣大",
+   "負數不能比大小"
+  ],
+  "a": 0,
+  "why": "絕對值：<span class='eq'><span class=\"frac\"><span>2</span><span>3</span></span>＝<span class=\"frac\"><span>10</span><span>15</span></span></span>、<span class='eq'><span class=\"frac\"><span>3</span><span>5</span></span>＝<span class=\"frac\"><span>9</span><span>15</span></span></span>，2/3 的絕對值比較大。<br>負數<b>絕對值大的反而小</b> → <span class='eq'>−<span class=\"frac\"><span>3</span><span>5</span></span> ＞ −<span class=\"frac\"><span>2</span><span>3</span></span></span>。"
+ },
+ {
+  "src": "課本 例 3（同分母的分數加減）",
+  "q": "計算 <b class='eq'>(−<span class=\"frac\"><span>7</span><span>8</span></span>) − (−<span class=\"frac\"><span>3</span><span>8</span></span>)</b>",
+  "hint": "分母一樣，直接算分子：(−7) − (−3)，減去負數要變加。",
+  "o": [
+   "−<span class=\"frac\"><span>1</span><span>2</span></span>",
+   "−<span class=\"frac\"><span>5</span><span>4</span></span>",
+   "<span class=\"frac\"><span>1</span><span>2</span></span>",
+   "−<span class=\"frac\"><span>1</span><span>8</span></span>"
+  ],
+  "a": 0,
+  "why": "<span class='eq'><span class=\"frac\"><span>(−7)−(−3)</span><span>8</span></span> ＝ <span class=\"frac\"><span>(−7)＋3</span><span>8</span></span> ＝ <span class=\"frac\"><span>−4</span><span>8</span></span> ＝ −<span class=\"frac\"><span>1</span><span>2</span></span></span><br>📌 −5/4 是把 −3 當成「減 3」算成 −10/8 的結果——<b>減去負數要變加</b>。"
+ },
+ {
+  "src": "課本 例 4（異分母的分數加減）",
+  "q": "計算 <b class='eq'>(−<span class=\"frac\"><span>5</span><span>6</span></span>) − <span class=\"frac\"><span>11</span><span>8</span></span></b>",
+  "hint": "通分：[6, 8] ＝ 24。",
+  "o": [
+   "−<span class=\"frac\"><span>53</span><span>24</span></span>",
+   "<span class=\"frac\"><span>13</span><span>24</span></span>",
+   "−<span class=\"frac\"><span>13</span><span>24</span></span>",
+   "−<span class=\"frac\"><span>16</span><span>14</span></span>"
+  ],
+  "a": 0,
+  "why": "<span class='eq'><span class=\"frac\"><span>−20</span><span>24</span></span> − <span class=\"frac\"><span>33</span><span>24</span></span> ＝ <span class=\"frac\"><span>(−20)−33</span><span>24</span></span> ＝ −<span class=\"frac\"><span>53</span><span>24</span></span></span>（或 <span class='eq'>−2<span class=\"frac\"><span>5</span><span>24</span></span></span>）。<br>⚠️ −16/14 是分子加分子、分母加分母——<b>分數加減不能這樣做</b>，一定要先通分。"
+ },
+ {
+  "src": "課本 例 6（帶分數的加減）",
+  "q": "計算 <b class='eq'>(−2<span class=\"frac\"><span>3</span><span>4</span></span>) ＋ 1<span class=\"frac\"><span>2</span><span>7</span></span></b>",
+  "hint": "可以把整數、分數分開算：(−2＋1) ＋ (−3/4＋2/7)。",
+  "o": [
+   "−1<span class=\"frac\"><span>13</span><span>28</span></span>",
+   "−1<span class=\"frac\"><span>1</span><span>28</span></span>",
+   "−3<span class=\"frac\"><span>29</span><span>28</span></span>",
+   "−<span class=\"frac\"><span>13</span><span>28</span></span>"
+  ],
+  "a": 0,
+  "why": "整數部分 <span class='eq'>−2＋1＝−1</span>；分數部分 <span class='eq'>−<span class=\"frac\"><span>3</span><span>4</span></span>＋<span class=\"frac\"><span>2</span><span>7</span></span>＝<span class=\"frac\"><span>−21＋8</span><span>28</span></span>＝−<span class=\"frac\"><span>13</span><span>28</span></span></span>。<br>合起來 <span class='eq'>−1−<span class=\"frac\"><span>13</span><span>28</span></span>＝−1<span class=\"frac\"><span>13</span><span>28</span></span>＝−<span class=\"frac\"><span>41</span><span>28</span></span></span>。<br>📌 <b>−2¾ 是 −2 和 −¾ 兩個都是負的</b>，拆開時分數部分也要帶負號。"
+ },
+ {
+  "src": "課本 例 7（分數的乘法）",
+  "q": "計算 <b class='eq'>(−<span class=\"frac\"><span>3</span><span>7</span></span>) × (−<span class=\"frac\"><span>14</span><span>15</span></span>)</b>",
+  "hint": "先定符號（兩個負數 → 正），再約分：3 和 15、7 和 14。",
+  "o": [
+   "<span class=\"frac\"><span>2</span><span>5</span></span>",
+   "−<span class=\"frac\"><span>2</span><span>5</span></span>",
+   "−<span class=\"frac\"><span>42</span><span>105</span></span>",
+   "<span class=\"frac\"><span>1</span><span>5</span></span>"
+  ],
+  "a": 0,
+  "why": "同號得正；約分 3 和 15（÷3）、7 和 14（÷7）→ <span class='eq'><span class=\"frac\"><span>1×2</span><span>1×5</span></span> ＝ <span class=\"frac\"><span>2</span><span>5</span></span></span>。<br>📌 42/105 數值一樣，但沒有約到最簡，而且符號錯了。"
+ },
+ {
+  "src": "課本 例 9（分數的除法）",
+  "q": "計算 <b class='eq'><span class=\"frac\"><span>5</span><span>6</span></span> ÷ (−3<span class=\"frac\"><span>1</span><span>3</span></span>)</b>",
+  "hint": "帶分數先化成假分數：−3⅓ ＝ −10/3。除以它 ＝ 乘以它的倒數。",
+  "o": [
+   "−<span class=\"frac\"><span>1</span><span>4</span></span>",
+   "<span class=\"frac\"><span>1</span><span>4</span></span>",
+   "−<span class=\"frac\"><span>25</span><span>9</span></span>",
+   "−4"
+  ],
+  "a": 0,
+  "why": "<span class='eq'><span class=\"frac\"><span>5</span><span>6</span></span> ÷ (−<span class=\"frac\"><span>10</span><span>3</span></span>) ＝ <span class=\"frac\"><span>5</span><span>6</span></span> × (−<span class=\"frac\"><span>3</span><span>10</span></span>) ＝ −<span class=\"frac\"><span>1</span><span>4</span></span></span><br>⚠️ −25/9 是<b>沒有翻成倒數</b>、直接相乘的結果。"
+ },
+ {
+  "src": "課本 例 10（數的四則運算）",
+  "q": "計算 <b class='eq'>3<span class=\"frac\"><span>9</span><span>11</span></span> × (−57) − 1<span class=\"frac\"><span>9</span><span>11</span></span> × (−57)</b>",
+  "hint": "先別化假分數。兩項都 ×(−57)——第 1 章的分配律反著用。",
+  "o": [
+   "−114",
+   "114",
+   "−228",
+   "−57"
+  ],
+  "a": 0,
+  "why": "<span class='eq'>(3<span class=\"frac\"><span>9</span><span>11</span></span> − 1<span class=\"frac\"><span>9</span><span>11</span></span>) × (−57) ＝ 2 × (−57) ＝ −114</span><br>📌 兩個帶分數的分數部分一樣，相減剛好消掉——<b>出題者故意的</b>，和 1-3 那題 983×(−5)＋17×(−5) 是同一招。<b>八題做完了。</b>"
+ }
+];
+const FB={
+ "0": {
+  "A": [
+   "對了",
+   "<p>減去負數變加：<span class='eq'><span class=\"frac\"><span>3</span><span>7</span></span>＋<span class=\"frac\"><span>1</span><span>4</span></span>＝<span class=\"frac\"><span>12</span><span>28</span></span>＋<span class=\"frac\"><span>7</span><span>28</span></span>＝<span class=\"frac\"><span>19</span><span>28</span></span></span>。</p>"
+  ],
+  "B": [
+   "減去負數要變加",
+   "<p>5/28 是 <span class='eq'><span class=\"frac\"><span>12</span><span>28</span></span>−<span class=\"frac\"><span>7</span><span>28</span></span></span> 的結果——把「減去 −1/4」當成「減去 1/4」了。</p><p><span class='eq'>a−(−b)＝a＋b</span>，這是 1-2 的規則。全國 5.6% 的人錯在這裡。</p>"
+  ],
+  "C": [
+   "分母不能相加",
+   "<p>4/11 是分子 3＋1、分母 7＋4 的結果。分數加減<strong>一定要先通分</strong>：[7,4]＝28。</p>"
+  ],
+  "D": [
+   "再算一次通分",
+   "<p>通分成 28：<span class='eq'><span class=\"frac\"><span>3</span><span>7</span></span>＝<span class=\"frac\"><span>12</span><span>28</span></span></span>、<span class='eq'><span class=\"frac\"><span>1</span><span>4</span></span>＝<span class=\"frac\"><span>7</span><span>28</span></span></span>，相加是 19/28。</p>"
+  ]
+ },
+ "1": {
+  "A": [
+   "對了",
+   "<p><span class='eq'>−<span class=\"frac\"><span>5</span><span>3</span></span>＋<span class=\"frac\"><span>1</span><span>6</span></span>＝<span class=\"frac\"><span>−10</span><span>6</span></span>＋<span class=\"frac\"><span>1</span><span>6</span></span>＝<span class=\"frac\"><span>−9</span><span>6</span></span>＝−<span class=\"frac\"><span>3</span><span>2</span></span></span></p><p>📌 最後要<strong>約分</strong>：−9/6 約成 −3/2。</p>"
+  ],
+  "B": [
+   "分母沒有通分",
+   "<p>−4/3 是 <span class='eq'><span class=\"frac\"><span>−5＋1</span><span>3</span></span></span>——直接把 1/6 的分子加到 3 分母上了。要先把 −5/3 化成 −10/6。</p>"
+  ],
+  "C": [
+   "減去負數要變加",
+   "<p>−11/6 是 <span class='eq'><span class=\"frac\"><span>−10</span><span>6</span></span>−<span class=\"frac\"><span>1</span><span>6</span></span></span>。但題目是「減去 −1/6」，要變成<strong>加 1/6</strong>。</p>"
+  ],
+  "D": [
+   "分子分母各自相減了",
+   "<p>−4/9 是分子 −5＋1、分母 3＋6 的結果。分數加減要先通分。</p>"
+  ]
+ },
+ "2": {
+  "A": [
+   "對了，而且你沒有通分 22 和 18",
+   "<p><strong>先去括號</strong>（括號前是減號，裡面兩項都變號）：<br><span class='eq'><span class=\"frac\"><span>9</span><span>22</span></span>＋<span class=\"frac\"><span>11</span><span>18</span></span>−<span class=\"frac\"><span>23</span><span>22</span></span>＋<span class=\"frac\"><span>7</span><span>18</span></span></span></p><p><strong>再把同分母的湊在一起</strong>：<br><span class='eq'>(<span class=\"frac\"><span>9</span><span>22</span></span>−<span class=\"frac\"><span>23</span><span>22</span></span>)＋(<span class=\"frac\"><span>11</span><span>18</span></span>＋<span class=\"frac\"><span>7</span><span>18</span></span>)＝−<span class=\"frac\"><span>14</span><span>22</span></span>＋1＝<span class=\"frac\"><span>4</span><span>11</span></span></span></p><p>📌 22 和 18 的最小公倍數是 198——<em>硬通分會很痛苦。題目故意讓同分母的兩兩配對。</em></p>"
+  ],
+  "B": [
+   "括號裡第二項的符號",
+   "<p>去括號時，<strong>括號前的減號要讓裡面每一項都變號</strong>：−(23/22 − 7/18) ＝ −23/22 <strong>＋</strong> 7/18。</p>"
+  ],
+  "C": [
+   "符號錯了一個",
+   "<p>先去括號、再把同分母的放一起：(9/22 − 23/22) ＋ (11/18 ＋ 7/18) ＝ −7/11 ＋ 1 ＝ 4/11。</p>"
+  ],
+  "D": [
+   "再檢查去括號",
+   "<p>−(23/22 − 7/18) 要變成 −23/22 ＋ 7/18。把同分母配對後是 −14/22 ＋ 18/18。</p>"
+  ]
+ },
+ "3": {
+  "A": [
+   "對了",
+   "<p>先比絕對值：<span class='eq'>1 ＜ 1<span class=\"frac\"><span>5</span><span>8</span></span> ＜ 1<span class=\"frac\"><span>6</span><span>8</span></span></span>（3/4＝6/8）。</p><p>負數<strong>絕對值大的反而小</strong> → <span class='eq'>−1 ＞ −1<span class=\"frac\"><span>5</span><span>8</span></span> ＞ −1<span class=\"frac\"><span>3</span><span>4</span></span></span>，也就是 a ＞ c ＞ b。</p>"
+  ],
+  "B": [
+   "b 和 c 比反了",
+   "<p>3/4＝6/8 比 5/8 大，所以 |b| ＞ |c|，負數絕對值大的反而小 → c ＞ b。</p>"
+  ],
+  "C": [
+   "把絕對值的大小當成數的大小",
+   "<p>這是絕對值由大到小的排列。<strong>對負數來說，順序要整個倒過來。</strong>回去玩實驗一，把兩個分子都調成負的看看。</p>"
+  ],
+  "D": [
+   "負數的順序",
+   "<p>a＝−1 最靠近 0，是三個裡面<strong>最大</strong>的。負數離 0 越遠越小。</p>"
+  ]
+ },
+ "4": {
+  "A": [
+   "帶分數不能拆開乘",
+   "<p>1/4 大概是只拿分數部分 <span class='eq'><span class=\"frac\"><span>1</span><span>2</span></span>×<span class=\"frac\"><span>1</span><span>4</span></span>×<span class=\"frac\"><span>2</span><span>3</span></span></span> 算的。</p><p>帶分數相乘要<strong>先化成假分數</strong>：−1½＝−3/2、−3¼＝−13/4。</p>"
+  ],
+  "B": [
+   "帶分數要整個化成假分數",
+   "<p>帶分數不能拆成整數和分數分別乘。先化：<span class='eq'>−<span class=\"frac\"><span>3</span><span>2</span></span>×−<span class=\"frac\"><span>13</span><span>4</span></span>×<span class=\"frac\"><span>2</span><span>3</span></span></span>。</p>"
+  ],
+  "C": [
+   "−3¼ 化錯了",
+   "<p>−3¼ ＝ −(3×4＋1)/4 ＝ <strong>−13/4</strong>，不是 −11/4。</p>"
+  ],
+  "D": [
+   "對了",
+   "<p>化假分數：<span class='eq'>−<span class=\"frac\"><span>3</span><span>2</span></span>×−<span class=\"frac\"><span>13</span><span>4</span></span>×<span class=\"frac\"><span>2</span><span>3</span></span></span>。</p><p>符號：兩個負數 → 正。約分：3 和 3、2 和 2 → <span class='eq'><span class=\"frac\"><span>13</span><span>4</span></span></span>。</p>"
+  ]
+ },
+ "5": {
+  "A": [
+   "a 不能是 5 的倍數",
+   "<p>10/a 是<strong>最簡分數</strong> → a 和 10 互質 → <strong>a 不能有因數 2 或 5</strong>。</p><p>全國 18.5% 選這個——看到 5a 就以為 a 有 5。</p>"
+  ],
+  "B": [
+   "對了",
+   "<p><strong>第一步：分子怎麼變的。</strong>10→50 是乘 5，18→54 是乘 3。分母也一樣乘：<span class='eq'>5a＝3b</span>（通分後分母相同）。</p><p><strong>第二步：</strong>5a 是 3 的倍數，5 不是 → <strong>a 是 3 的倍數</strong>。</p><p><strong>第三步：</strong>10/a 是最簡分數 → a 和 10 互質 → <strong>a 不能是 5 的倍數</strong>。</p><p>例：a＝3、b＝5 → 10/3＝50/15、18/5＝54/15 ✓</p>"
+  ],
+  "C": [
+   "3 和 5 看反了",
+   "<p>5a＝3b：左邊要能被 3 整除，5 不行，所以是 a 被 3 整除。而 a 和 10 互質，不能有 5。</p><p>全國 18.4% 選這個。</p>"
+  ],
+  "D": [
+   "a 一定是 3 的倍數",
+   "<p>通分後分母相同：<span class='eq'>5a＝3b</span>。5a 是 3 的倍數，而 5 和 3 互質，所以 a 一定是 3 的倍數。</p>"
+  ]
+ },
+ "6": {
+  "A": [
+   "對了",
+   "<p>往下有一步一步的完整想法。</p>"
+  ],
+  "B": [
+   "甲和丙比反了",
+   "<p>三個分母其實只能是 5、8、9：甲＝6/5＝1.2、乙＝15/8＝1.875、丙＝10/9≈1.11。往下看完整想法。</p>"
+  ],
+  "C": [
+   "分子大不代表分數大",
+   "<p>只看分子 6、15、10 是不夠的——分母不同。要先把三個分母找出來：5、8、9。往下看完整想法。</p>"
+  ],
+  "D": [
+   "分母要先找出來",
+   "<p>甲＝6/5、乙＝15/8、丙＝10/9，乙最大。往下看完整想法。</p>"
+  ]
+ }
+};
+
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){state={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+const $=(id)=>document.getElementById(id);
+const TOTAL=PRAC.length+NQ;
+
+/* 打散選項順序 —— 正解不會永遠在同一個位置 */
+PRAC.forEach(function(P){
+  var pairs=P.o.map(function(t,i){return {t:t, ok:(i===P.a)};});
+  for(var i=pairs.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=pairs[i];pairs[i]=pairs[j];pairs[j]=tmp;}
+  P.o=pairs.map(function(x){return x.t;}); P.a=pairs.findIndex(function(x){return x.ok;});
+});
+
+let pi=0, pDone=(state.prac||0);
+function pDots(){
+  $("pDots").innerHTML=PRAC.map((_,i)=>'<span class="dot'+(i<pDone?" done":(i===pi?" now":""))+'"></span>').join("");
+}
+function pRender(){
+  const P=PRAC[pi];
+  $("pSrc").textContent=P.src;
+  $("pNo").textContent="第 "+(pi+1)+" 題 / 共 "+PRAC.length+" 題";
+  $("pQ").innerHTML=P.q; $("pHint").innerHTML=P.hint; pDots();
+  const solved=pi<pDone;
+  $("pOpts").innerHTML=P.o.map((t,i)=>'<button class="opt'+(solved&&i===P.a?" right locked":(solved?" locked":""))+'" data-i="'+i+'"><span class="k">'+"ABCD"[i]+'</span><span>'+t+'</span></button>').join("");
+  const fb=$("pFb");
+  if(solved){fb.className="prac-fb show ok";fb.innerHTML="<b>答對了</b>　"+P.why;$("pNext").disabled=false}
+  else{fb.className="prac-fb";fb.innerHTML="";$("pNext").disabled=true}
+  $("pNext").textContent=pi>=PRAC.length-1?"完成，進入重點整理":"下一題";
+  $("pOpts").querySelectorAll(".opt").forEach(b=>{
+    b.addEventListener("click",()=>{
+      if(b.classList.contains("locked"))return;
+      const i=+b.dataset.i, P=PRAC[pi], fb=$("pFb");
+      if(i===P.a){
+        b.classList.add("right","locked");
+        $("pOpts").querySelectorAll(".opt").forEach(x=>x.classList.add("locked"));
+        fb.className="prac-fb show ok"; fb.innerHTML="<b>答對了</b>　"+P.why;
+        if(pi>=pDone){pDone=pi+1;state.prac=pDone;save();gate()}
+        $("pNext").disabled=false; pDots();
+      }else{
+        b.classList.add("wrong"); fb.className="prac-fb show no";
+        fb.innerHTML="<b>再想一次</b>　"+P.hint+"<br><span style='color:var(--ink2)'>選錯不扣分，直接再選一個。</span>";
+      }
+    });
+  });
+}
+$("pNext").addEventListener("click",()=>{
+  if(pi<PRAC.length-1){pi++;pRender();document.querySelector(".prac").scrollIntoView({behavior:"smooth",block:"start"})}
+  else{unlock("z4");unlock("z5");$("z4").scrollIntoView({behavior:"smooth",block:"start"})}
+});
+
+function qDone(){return Object.keys(state).filter(k=>/^q\d+$/.test(k)).length}
+function paint(){const d=Math.min(state.prac||0,PRAC.length)+qDone();$("pnum").textContent=d+" / "+TOTAL;$("pfill").style.width=(d/TOTAL*100)+"%"}
+function unlock(id){const el=$(id);if(el&&el.classList.contains("locked-zone")){el.classList.remove("locked-zone");el.classList.add("revealed");setTimeout(()=>el.classList.remove("revealed"),700)}}
+function gate(){
+  if((state.prac||0)>=PRAC.length){unlock("z4");unlock("z5")}
+  for(let i=0;i<NQ;i++){if(state["q"+i]!==undefined){unlock("zs"+i);if(i+1<NQ)unlock("zq"+(i+1));else unlock("z6")}}
+  paint();
+}
+document.querySelectorAll(".opts[data-q]").forEach(box=>{
+  const qi=box.dataset.q, ans=box.dataset.ans;
+  box.querySelectorAll(".opt").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      if(box.dataset.locked)return;
+      const k=btn.dataset.k; state["q"+qi]=k; save(); reveal(qi,k,ans,box,true); gate();
+    });
+  });
+});
+function reveal(qi,k,ans,box,scroll){
+  box.dataset.locked="1";
+  box.querySelectorAll(".opt").forEach(b=>{
+    b.classList.add("locked");
+    if(b.dataset.k===k)b.classList.add("picked",k===ans?"right":"wrong");
+    else if(b.dataset.k===ans)b.classList.add("right");
+  });
+  const f=FB[qi][k], fb=$("fb"+qi);
+  fb.innerHTML="<h4 style='color:"+(k===ans?"var(--green)":"var(--red)")+"'>"+f[0]+"</h4>"+f[1];
+  fb.classList.add("show");
+  if(scroll)setTimeout(()=>fb.scrollIntoView({behavior:"smooth",block:"nearest"}),120);
+}
+
+
+/* 實驗一：數線比大小 */
+function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){[x,y]=[y,x%y]}return x||1}
+function fr(n,d){const g=gcd(n,d);n/=g;d/=g;if(d===1)return (n<0?"−":"")+Math.abs(n);return (n<0?"−":"")+'<span class="frac"><span>'+Math.abs(n)+'</span><span>'+d+'</span></span>'}
+function cmpDraw(){
+  const an=+$("an").value,ad=+$("ad").value,bn=+$("bn").value,bd=+$("bd").value;
+  $("af").innerHTML=fr(an,ad); $("bf").innerHTML=fr(bn,bd);
+  const a=an/ad,b=bn/bd, R=Math.max(3,Math.ceil(Math.max(Math.abs(a),Math.abs(b))));
+  const X=v=>30+(v+R)/(2*R)*560;
+  let s='<line x1="20" y1="40" x2="600" y2="40" stroke="#20261f" stroke-width="1.4"/>';
+  for(let k=-R;k<=R;k++){s+='<line x1="'+X(k)+'" y1="34" x2="'+X(k)+'" y2="46" stroke="#20261f"/><text x="'+X(k)+'" y="62" font-size="12" text-anchor="middle" fill="#525c50">'+(k<0?"−"+(-k):k)+'</text>'}
+  s+='<circle cx="'+X(a)+'" cy="40" r="7" fill="#0f6b63"/><text x="'+X(a)+'" y="22" font-size="13" text-anchor="middle" fill="#0f6b63" font-weight="700">甲</text>';
+  s+='<circle cx="'+X(b)+'" cy="40" r="7" fill="#a15c07"/><text x="'+X(b)+'" y="22" font-size="13" text-anchor="middle" fill="#a15c07" font-weight="700">乙</text>';
+  $("nl").innerHTML=s;
+  const L=ad*bd/gcd(ad,bd);
+  $("cmp").innerHTML=fr(an,ad)+(a>b?" ＞ ":(a<b?" ＜ ":" ＝ "))+fr(bn,bd);
+  const v=$("vcmp");
+  let t="通分成分母 "+L+"：甲的分子是 "+String(an*L/ad).replace("-","−")+"、乙的分子是 "+String(bn*L/bd).replace("-","−")+"。分母一樣，<strong>分子大的就大</strong>（在數線上比較右邊）。";
+  if(a<0&&b<0){v.className="verdict warn";t+="<br>📌 兩個都是負的：絕對值大的那個在<strong>左邊</strong>，反而比較小。"}
+  else v.className="verdict";
+  v.innerHTML=t;
+}
+["an","ad","bn","bd"].forEach(id=>$(id).addEventListener("input",cmpDraw)); cmpDraw();
+
+/* 實驗二：倒數 vs 相反數 */
+const RC=[[-2,1],[2,3],[-3,4],[-5,2],[1,1],[0,1]];
+$("rchips").innerHTML=RC.map((r,i)=>'<button class="chip'+(i===2?" on":"")+'" data-i="'+i+'">'+(r[1]===1?(r[0]<0?"−"+(-r[0]):r[0]):(r[0]<0?"−":"")+Math.abs(r[0])+"/"+r[1])+'</button>').join("");
+function recDraw(i){
+  const [n,d]=RC[i];
+  $("rchips").querySelectorAll(".chip").forEach((c,k)=>c.classList.toggle("on",k===i));
+  const me=fr(n,d), opp=fr(-n,d), rec=n===0?"沒有":fr(d*Math.sign(n),Math.abs(n));
+  $("recip").innerHTML='<div class="card2"><small>相反數（相加＝0）</small>'+opp+'</div><div>⟵ '+me+' ⟶</div><div class="card2 b"><small>倒數（相乘＝1）</small>'+rec+'</div>';
+  const v=$("vrec");
+  if(n===0){v.className="verdict warn";v.innerHTML="<strong>0 沒有倒數</strong>——沒有任何數乘以 0 會等於 1。但 0 的相反數是 0 自己。"}
+  else if(n===d){v.className="verdict good";v.innerHTML="1 的倒數是 1 自己，相反數是 −1。"}
+  else if(n<0){v.className="verdict good";v.innerHTML="倒數<strong>還是負的</strong>（"+me+" × "+rec+" ＝ 1，兩個負的相乘才會是正的 1）。相反數才會變成正的。"}
+  else{v.className="verdict";v.innerHTML="相反數換符號、大小不變；倒數符號不變、上下翻過來。"}
+}
+$("rchips").querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>recDraw(+c.dataset.i)));
+recDraw(2);
+
+
+if(pDone>0&&pDone<PRAC.length)pi=pDone; else if(pDone>=PRAC.length)pi=PRAC.length-1;
+pRender();
+document.querySelectorAll(".opts[data-q]").forEach(box=>{const qi=box.dataset.q,saved=state["q"+qi];if(saved!==undefined)reveal(qi,saved,box.dataset.ans,box,false)});
+gate();
+$("rst").addEventListener("click",()=>{try{localStorage.removeItem(KEY)}catch(e){}location.reload()});
+
+})();
+</script>
+</body>
+</html>
